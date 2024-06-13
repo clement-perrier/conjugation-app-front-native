@@ -16,19 +16,19 @@ export default function NewSetLayout() {
       <Stack.Screen 
         name="index"
         options={{
-          title: 'Custom Set or Pre Set'
+          headerShown: false
         }} 
       />
       <Stack.Screen 
         name="customSet/verbSelection"
         options={{
-          title: 'Custom Set'
+          title: 'Verb Selection'
         }} 
       />
       <Stack.Screen 
-        name="preSet/preSetList"
+        name="preSetList"
         options={{
-          title: 'Pre Set'
+          title: 'Pre Set List'
         }} 
       />
     </Stack>

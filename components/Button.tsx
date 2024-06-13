@@ -1,21 +1,23 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Link } from 'expo-router';
 
-export default function Button({ label, theme, onPress } : {label: String, theme?: String, onPress?(): void}) {
+export default function Button({ label, linkTo } : {label:string, linkTo: string}) {
   
-      return (
+      return (  
         <View style={styles.buttonContainer}>
+          <Link href={linkTo} asChild>
             <Pressable style={styles.button}>
-              <Text style={styles.buttonLabel}>{label}</Text>
+                <Text style={{color: 'white'}}>{label}</Text>
             </Pressable>
-          </View>
+          </Link>
+        </View>
       );
 }
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    width: 320,
-    height: 68,
+    width: '50%',
+    height: '25%',
     marginHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -24,18 +26,11 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 10,
     width: '100%',
-    height: '100%',
+    height: 70,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     backgroundColor: 'black',
     color: 'white'
-  },
-  buttonIcon: {
-    paddingRight: 8,
-  },
-  buttonLabel: {
-    color: '#fff',
-    fontSize: 16,
-  },
+  }
 });

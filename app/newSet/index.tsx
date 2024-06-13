@@ -1,20 +1,13 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { View, Pressable, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 import Button from '@/components/Button';
 
-export default function Tab() {
+export default function NewSet() {
 
   return (
     <View style={styles.container}>
-      <Link href='newSet/customSet/verbSelection' asChild>
-        <Pressable style={styles.button}>
-            {/* <Text>Custom Sets</Text> */}
-          Custom Set
-        </Pressable>
-      </Link>
-      <Link href="newSet/preSet">
-        <Button label='Pre Set' />
-      </Link>
+      <Button label='Custom set' linkTo='newSet/customSet/verbSelection'/>
+      <Button label='Pre set' linkTo='newSet/preSetList'/>
     </View>
   );
 }
@@ -24,15 +17,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  button: {
-    borderRadius: 10,
-    alignItems: 'center',
-    width: 320,
-    height: 68,
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'black',
-    color: 'white'
-  },
+  }
 });

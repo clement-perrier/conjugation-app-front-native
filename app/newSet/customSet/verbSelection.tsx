@@ -9,7 +9,6 @@ export default function VerbSelection() {
   return (
     <View style={styles.container}>
       <Text>Verb  Selection</Text>
-      {/* <Button label="Dismiss" onPress={() => router.dismiss(3)} /> */}
     </View>
   );
 }
