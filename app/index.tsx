@@ -1,45 +1,26 @@
-import { StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
-import ImageViewer from "@/components/ImageViewer";
-import Button from "@/components/Button";
-import * as ImagePicker from 'expo-image-picker';
+import { createStackNavigator } from "@react-navigation/stack";
+import TabNavigator from "./TabNavigator";
+import PreSetList from "./new-set-flow/preSetList";
+import TenseSelection from "./new-set-flow/custom-set/TenseSelection";
+import VerbSelection from "./new-set-flow/custom-set/VerbSelection";
+import SetSummary from "./new-set-flow/custom-set/SetSummary";
 
-export default function Home() {
+const Stack = createStackNavigator();
 
-const PlaceholderImage = require('../assets/images/background-image.png');
-
-const [selectedImage, setSelectedImage] = useState<String | null>(null);
-
-const [showAppOptions, setShowAppOptions] = useState(false);
-
-const pickImageAsync = async () => {
-  let result = await ImagePicker.launchImageLibraryAsync({
-    allowsEditing: true,
-    quality: 1,
-  });
-
-  if (!result.canceled) {
-    setSelectedImage(result.assets[0].uri);
-    setShowAppOptions(true);
-  } else {
-    alert('You did not select any image.');
-  }
-};
-
-useEffect(() => {
-  console.log(selectedImage);
-}, [selectedImage])
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      Home
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Main"
+        component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Pre-set list" component={PreSetList} options={{presentation: 'modal'}} />
+      <Stack.Screen name="Tense(s) selection" component={TenseSelection} options={{presentation: 'modal'}}/>
+      <Stack.Screen name="Verb(s) selection" component={VerbSelection}/>
+      <Stack.Screen name="Set summary" component={SetSummary}/>
+  </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  }
-});
+

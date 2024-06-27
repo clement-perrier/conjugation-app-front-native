@@ -1,9 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { Button } from 'react-native';
+import { useRouter } from 'expo-router';
 
-export default function Settings() {
+export default function PreSetList() {
+
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text>Tab [Home|Settings]</Text>
+      <Text>Pre Set List</Text>
     </View>
   );
 }

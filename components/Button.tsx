@@ -1,12 +1,12 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import { Link } from 'expo-router';
 
-export default function Button({ label, linkTo } : {label:string, linkTo: string}) {
+export default function Button({ label, linkTo, onPress } : {label:string, linkTo: string, onPress?(): void}) {
   
       return (  
         <View style={styles.buttonContainer}>
           <Link href={linkTo} asChild>
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={onPress}>
                 <Text style={{color: 'white'}}>{label}</Text>
             </Pressable>
           </Link>

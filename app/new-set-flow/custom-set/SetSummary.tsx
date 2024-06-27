@@ -2,13 +2,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Button from '@/components/Button';
 
-export default function VerbSelection() {
-
-  const router = useRouter();
+export default function SetSummary() {
 
   return (
     <View style={styles.container}>
-      <Text>Verb  Selection</Text>
+      <Text>Set Summary</Text>
     </View>
   );
 }
