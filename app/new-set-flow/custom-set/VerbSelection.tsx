@@ -1,17 +1,16 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@/types/RootStackParamList';
+import { useNavigationCustom } from '@/hooks/useAppNavigation';
 
 export default function VerbSelection() {
 
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigationCustom();
 
   return (
     <View style={styles.container}>
       <Text>Verb(s)  Selection</Text>
       <Button 
-        title='Next'
+        title='NEXT'
         onPress={() => navigation.navigate('Set summary')}
       />
     </View>
