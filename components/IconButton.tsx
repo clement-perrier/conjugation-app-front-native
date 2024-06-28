@@ -1,9 +1,10 @@
 import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Icon, IconProps } from '@expo/vector-icons/build/createIconSet';
 
 interface IconButtonProps {
-    icon: string | undefined | null,
-    label?: string| null,
+    icon: keyof typeof MaterialIcons.glyphMap
+    label?: string | null,
     onPress(): void,
     style?: ViewStyle | ViewStyle[];
 }
@@ -27,6 +28,5 @@ const styles = StyleSheet.create({
   },
   iconButtonLabel: {
     color: '#fff',
-    // marginTop: 12,
   },
 });

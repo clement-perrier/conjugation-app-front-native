@@ -11,10 +11,6 @@ export default function Home() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home</Text>
-      {/* <Button 
-        title='Custom set'
-        onPress={() => navigation.navigate('Tense(s) selection')}
-      /> */}
       <IconButton icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')}/>
     </View>
   );
