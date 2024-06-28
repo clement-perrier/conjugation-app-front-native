@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
-import { useNavigationCustom } from '@/hooks/useAppNavigation';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export default function VerbSelection() {
 
-  const navigation = useNavigationCustom();
+  const navigation = useAppNavigation();
 
   return (
     <View style={styles.container}>
       <Text>Verb(s)  Selection</Text>
       <Button 
-        title='NEXT'
+        title='ADD TO SET'
         onPress={() => navigation.navigate('Set summary')}
       />
     </View>

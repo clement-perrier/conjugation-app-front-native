@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
-import { useNavigationCustom } from '@/hooks/useAppNavigation';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export default function TenseSelection() {
 
-  const navigation = useNavigationCustom();
+  const navigation = useAppNavigation();
 
   return (
     <View style={styles.container}>

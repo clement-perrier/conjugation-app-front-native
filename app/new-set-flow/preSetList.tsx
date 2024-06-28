@@ -4,8 +4,6 @@ import { useRouter } from 'expo-router';
 
 export default function PreSetList() {
 
-  const router = useRouter();
-
   return (
     <View style={styles.container}>
       <Text>Pre Set List</Text>

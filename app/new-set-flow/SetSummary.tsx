@@ -1,17 +1,17 @@
-import { useNavigationCustom } from '@/hooks/useAppNavigation';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
 
 export default function SetSummary() {
 
-  const navigation = useNavigationCustom();
+  const navigation = useAppNavigation();
 
   return (
     <View style={styles.container}>
       <Text>Set Summary</Text>
       <Button 
-        title='ADD CONJUGATION TABLE(S)'
-        onPress={() => navigation.navigate('Verb(s) selection')}
+        title='ADD MORE'
+        onPress={() => navigation.navigate('Tense(s) selection')}
       />
       <Button 
         title='VALIDATE'
