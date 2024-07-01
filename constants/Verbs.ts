@@ -296,7 +296,7 @@ export const Verbs = [
         id: "74"
     },
     {
-        name: "llamar por teléfono",
+        name: "llamar",
         id: "75"
     },
     {
@@ -472,7 +472,7 @@ export const Verbs = [
         id: "118"
     },
     {
-        name: "llevar puesto",
+        name: "llevar",
         id: "119"
     },
     {

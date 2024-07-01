@@ -8,6 +8,7 @@ import { useAppNavigation } from "@/hooks/useAppNavigation";
 import CancelStackButton from "@/components/CancelStackButton";
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
+import { View } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <View style={{flex: 1}}>
       <Stack.Navigator>
         <Stack.Screen name="Home"component={Home} options={{ headerShown: false }} />
         <Stack.Screen 
@@ -49,6 +51,7 @@ export default function App() {
           }}
         />
     </Stack.Navigator>
+    </View>
   </Provider>
   );
 }

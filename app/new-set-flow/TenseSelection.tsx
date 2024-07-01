@@ -4,6 +4,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { Tenses } from '@/constants/Tenses';
 import { useAppDispatch } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/selectedTenseSlice';
+import { red } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 export default function TenseSelection() {
 
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   button: {
     marginBottom: 20,

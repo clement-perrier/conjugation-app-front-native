@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import IconButton from '@/components/IconButton';
 
