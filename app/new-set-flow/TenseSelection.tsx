@@ -4,7 +4,6 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { Tenses } from '@/constants/Tenses';
 import { useAppDispatch } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/selectedTenseSlice';
-import { red } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 export default function TenseSelection() {
 

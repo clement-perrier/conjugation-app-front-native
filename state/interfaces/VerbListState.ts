@@ -1,9 +1,5 @@
-
-export interface Verb {
-    id: number,
-    name: string
-}
+import { Verb } from "@/types/Verb"
 
 export default interface VerbState {
-    value: Verb[] | null
+    value: Verb[]
 }

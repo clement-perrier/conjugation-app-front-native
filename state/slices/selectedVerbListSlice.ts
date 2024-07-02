@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import VerbListState from '../interfaces/VerbListState'
+import { Verb } from '@/types/Verb'
 
 // Define the initial state using that type
 const initialState: VerbListState = {
-  value: null
+  value: []
 }
 
 export const selectedVerbListSlice = createSlice({
@@ -11,12 +12,15 @@ export const selectedVerbListSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    addVerb: (state, action) => {
-      state.value = { ...state.value } + {...action.payload}
+    addSelectedVerb: (state, action) => {
+      state.value = [...state.value, {...action.payload}]
+    },
+    removeSelectedVerb: (state, action) => {
+      state.value = state.value.filter(verb => verb.id !== action.payload.id)
     }
   }
 })
 
-export const { addVerb } = selectedVerbListSlice.actions
+export const { addSelectedVerb: addSelectedVerb, removeSelectedVerb: removeSelectedVerb } = selectedVerbListSlice.actions
 
 export default selectedVerbListSlice

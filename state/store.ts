@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import selectedTenseSlice from './slices/selectedTenseSlice'
-import selectedVerbListSlice from './slices/selectedVerbSlice'
+import selectedVerbListSlice from './slices/selectedVerbListSlice'
 
 export const store = configureStore({
   reducer: {

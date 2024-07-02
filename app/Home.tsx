@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home</Text>
-      <IconButton icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')}/>
+      <IconButton size={40} color='white' icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')} style={{backgroundColor: 'black', bottom: 40}}/>
     </View>
   );
 }
