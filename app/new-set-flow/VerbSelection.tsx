@@ -21,8 +21,8 @@ export default function VerbSelection() {
   // FUNCTIONS
   const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal))
   
-  const textFilter = (verbList: Verb[], text: string) => {
-    return verbList.filter(verb => verb.name.includes(text))
+  const textFilter = (text: string) => {
+    return unselectedVerbList.filter(verb => verb.name.includes(text))
   }
 
   // UI DATA, STATES
@@ -36,7 +36,7 @@ export default function VerbSelection() {
 
   const unselectedVerbList = verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
 
-  const filteredVerbList = textFilter(unselectedVerbList, searchedText)
+  const filteredVerbList = textFilter(searchedText)
 
   return (
     <View style={styles.container}>
@@ -47,6 +47,12 @@ export default function VerbSelection() {
       {/* SEARCH INPUT */}
       <View>
         <IconButton style={styles.searchButton} size={25} color='black' icon={'search'}/>
+        
+        {searchedText ?
+            <IconButton style={styles.clearButton} size={25} color='black' icon={'clear'} onPress={() => setSearchText('')}/>
+            :
+            <></>
+        }
         <TextInput
           style={styles.input}
           onChangeText={setSearchText}
@@ -151,5 +157,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     left: 20
+  },
+  clearButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20
   }
 });
