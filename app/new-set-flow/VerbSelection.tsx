@@ -4,7 +4,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Verbs } from '@/constants/Verbs';
 import { addSelectedVerb, removeSelectedVerb } from '@/state/slices/selectedVerbListSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '@/components/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -26,6 +26,8 @@ export default function VerbSelection() {
   }
 
   // UI DATA, STATES
+  const [numColumns, setNumColumns] = useState(calcNumColumns());
+
   const selectedTense = useAppSelector(state => state.selectedTense.value)
 
   const [searchedText, setSearchText] = useState('')
@@ -37,6 +39,11 @@ export default function VerbSelection() {
   const unselectedVerbList = verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
 
   const filteredVerbList = textFilter(searchedText)
+
+  // USE EFFECT
+  useEffect(() => {
+    setNumColumns(calcNumColumns());
+  }, [screenWidth]);
 
   return (
     <View style={styles.container}>
@@ -66,25 +73,16 @@ export default function VerbSelection() {
       <View style={{width: '100%', marginBottom: 10}}>
         <FlatList
           data={selectedVerbList}
+          key={numColumns}
           renderItem={({item}) => 
             <View style={{position: 'relative'}}>
               <Button title={item.name + '    '} color='grey' onPress={() => dispatch(removeSelectedVerb(item))}/>
               <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
-              {/* <IconButton 
-                size={20} 
-                color={'black'} 
-                style={[styles.removeButton]} 
-                icon={'remove'} 
-                onPress={() => dispatch(removeSelectedVerb(item))}>
-              </IconButton>
-              <Text style={[styles.selectedVerb, styles.buttonWidth]} key={item.id}>{item.name}</Text> */}
             </View>
           }
-          numColumns={calcNumColumns()}
+          numColumns={numColumns}
           ItemSeparatorComponent={() => <View style={{height: 10}} />}
-          columnWrapperStyle={{
-            justifyContent: 'space-evenly'
-          }}
+          columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
         >
         </FlatList>
       </View>
@@ -94,11 +92,10 @@ export default function VerbSelection() {
         <FlatList 
           style={{height: 10}}
           ItemSeparatorComponent={() => <View style={{height: 15}} />}
-          numColumns={calcNumColumns()}
-          columnWrapperStyle={{
-            justifyContent: 'space-evenly'
-          }}
+          numColumns={numColumns}
+          columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
           data={filteredVerbList}
+          key={numColumns}
           renderItem={({item}) => 
             <View style={styles.buttonWidth}>
               <Button 
@@ -162,5 +159,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20
+  },
+  columnWrapperStyle: {
+    justifyContent: 'space-evenly'
   }
 });

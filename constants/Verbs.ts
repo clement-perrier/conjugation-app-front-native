@@ -196,10 +196,6 @@ export const Verbs = [
         id: 49
     },
     {
-        name: "golpear",
-        id: 50
-    },
-    {
         name: "tener",
         id: 51
     },
@@ -422,10 +418,6 @@ export const Verbs = [
     {
         name: "apestar",
         id: 106
-    },
-    {
-        name: "golpear",
-        id: 107
     },
     {
         name: "jurar",
