@@ -1,11 +1,10 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { removeSelectedConjugationTable } from '@/state/slices/selectedConjugationTableListSlice';
+import { removeSelectedConjugationTable } from '@/state/slices/SelectedConjugationTableListSlice';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native';
-import { shallowEqual } from 'react-redux';
 
 export default function SetSummary() {
 
@@ -16,15 +15,15 @@ export default function SetSummary() {
   const selectedConjugationTableList = useAppSelector(state => state.selectedConjugationTableList.value)
 
   console.log(selectedConjugationTableList)
-  console.log(selectedConjugationTableList[0], selectedConjugationTableList[0].verb)
+  // console.log(selectedConjugationTableList[0], selectedConjugationTableList[0].verb)
 
   useEffect(() => {
   },[])
 
   return (
     <View style={styles.container}>
-      <Text>Set Summary {selectedConjugationTableList[0].tense}</Text>
-      {selectedConjugationTableList && 
+      <Text>Set Summary</Text>
+      {selectedConjugationTableList.length > 0 && 
         <FlatList
         data={selectedConjugationTableList}
         renderItem={({item}) => 

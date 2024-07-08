@@ -2,8 +2,8 @@ import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { Tenses } from '@/constants/Tenses';
-import { useAppDispatch } from '@/state/hooks';
-import { updateSelectedTense } from '@/state/slices/selectedTenseSlice';
+import { useAppDispatch, useAppSelector } from '@/state/hooks';
+import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
 
 export default function TenseSelection() {
 
@@ -11,7 +11,9 @@ export default function TenseSelection() {
 
   const dispatch = useAppDispatch()
 
-  const tenseList = Tenses.map(tense => 
+  const tenseList = useAppSelector(state => state.tenseList.value)
+
+  const tenseListE = tenseList.map(tense => 
     <View key={tense.id} style={styles.button}>
       <Button
         title={tense.name}
@@ -25,7 +27,7 @@ export default function TenseSelection() {
 
   return (
     <View style={styles.container}>
-      {tenseList}
+      {tenseListE}
     </View>
   );
 }

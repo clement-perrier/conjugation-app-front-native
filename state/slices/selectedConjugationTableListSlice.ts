@@ -9,7 +9,7 @@ const initialState: ConjugationListState = {
   value: []
 }
 
-export const selectedConjugationTableListSlice = createSlice({
+export const SelectedConjugationTableListSlice = createSlice({
   name: 'selectedConjugationTableList',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
@@ -18,11 +18,11 @@ export const selectedConjugationTableListSlice = createSlice({
       state.value = [...state.value, ...action.payload]
     },
     remove: (state, action) => {
-      state.value = state.value.filter(table => table.tense !== action.payload.tense && table.verb !== action.payload.verb)
+      state.value = state.value.filter(table => (table.id !== action.payload.id))
     },
   }
 })
 
-export const {add: addSelectedConjugationTable, remove: removeSelectedConjugationTable} = selectedConjugationTableListSlice.actions
+export const {add: addSelectedConjugationTable, remove: removeSelectedConjugationTable} = SelectedConjugationTableListSlice.actions
 
-export default selectedConjugationTableListSlice
+export default SelectedConjugationTableListSlice

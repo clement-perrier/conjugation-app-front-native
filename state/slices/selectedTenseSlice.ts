@@ -7,7 +7,7 @@ const initialState: TenseState = {
   value: null
 }
 
-export const selectedTenseSlice = createSlice({
+export const SelectedTenseSlice = createSlice({
   name: 'selectedTense',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
@@ -18,6 +18,6 @@ export const selectedTenseSlice = createSlice({
   }
 })
 
-export const { updateSelectedTense } = selectedTenseSlice.actions
+export const { updateSelectedTense } = SelectedTenseSlice.actions
 
-export default selectedTenseSlice
+export default SelectedTenseSlice
