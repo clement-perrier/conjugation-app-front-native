@@ -6,7 +6,8 @@ import { StyleSheet } from "react-native"
 export default function CancelStackButton({ navigation } : { navigation: NavigationProp<RootStackParamList> }) {
    return (
     <IconButton 
-        icon={'close'} 
+        icon={'close'}
+        size={30}
         onPress={() => navigation.dispatch(StackActions.popToTop())}
         style={styles.button}
     />
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
     button: {
         height: '100%',
         top: 0,
+        right: 11,
         zIndex: 4
     },
 })

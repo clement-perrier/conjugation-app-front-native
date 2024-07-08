@@ -3,11 +3,12 @@ import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Verbs } from '@/constants/Verbs';
-import { addSelectedVerb, removeSelectedVerb } from '@/state/slices/selectedVerbListSlice';
+import { addSelectedConjugationTable } from '@/state/slices/selectedConjugationTableListSlice';
 import { useEffect, useState } from 'react';
 import IconButton from '@/components/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { ConjugationTable } from '@/types/ConjugationTable';
 
 export default function VerbSelection() {
 
@@ -25,6 +26,29 @@ export default function VerbSelection() {
     return unselectedVerbList.filter(verb => verb.name.includes(text))
   }
 
+  const removeSelectedVerb = (selectedVerb: Verb) => {
+    setSelectedVerbList(selectedVerbList.filter(verb => verb.id !== selectedVerb.id))
+  }
+
+  const addSelectedVerb = (selectedVerb: Verb) => {
+    setSelectedVerbList([
+      ...selectedVerbList,
+      selectedVerb
+    ])
+  }
+
+  const getSelectedConjugationTableList = (): ConjugationTable[] => {
+    let result: ConjugationTable[] = []
+    selectedTense && selectedVerbList.forEach(verb => {
+      result.push({
+        tense: selectedTense.name,
+        verb: verb.name
+      })
+    })
+    console.log(result)
+    return result
+  }
+
   // UI DATA, STATES
   const [numColumns, setNumColumns] = useState(calcNumColumns());
 
@@ -34,7 +58,7 @@ export default function VerbSelection() {
 
   const verbList: Verb[] = Verbs
 
-  const selectedVerbList = useAppSelector(state => state.selectedVerbList.value)
+  const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([])
 
   const unselectedVerbList = verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
 
@@ -76,7 +100,7 @@ export default function VerbSelection() {
           key={numColumns}
           renderItem={({item}) => 
             <View style={{position: 'relative'}}>
-              <Button title={item.name + '    '} color='grey' onPress={() => dispatch(removeSelectedVerb(item))}/>
+              <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
               <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
             </View>
           }
@@ -100,7 +124,7 @@ export default function VerbSelection() {
             <View style={styles.buttonWidth}>
               <Button 
                 title={item.name}
-                onPress={() => dispatch(addSelectedVerb(item))}
+                onPress={() => addSelectedVerb(item)}
               ></Button>
             </View>
             }
@@ -110,9 +134,13 @@ export default function VerbSelection() {
 
       {/* END BUTTON */}
       <View>
-        <Button 
+          <Button 
           title='ADD TO SET'
-          onPress={() => navigation.navigate('Set summary')}
+          onPress={() => {
+            dispatch(addSelectedConjugationTable(getSelectedConjugationTableList()))
+            navigation.navigate('Set summary')}
+          }
+          disabled={selectedVerbList.length === 0}
           />
       </View>
 

@@ -17,7 +17,7 @@ export default function TenseSelection() {
         title={tense.name}
         onPress={() => {
           dispatch(updateSelectedTense(tense));
-          navigation.navigate('Verb(s) selection')}
+          navigation.push('Verb(s) selection')}
         }
       />
     </View>

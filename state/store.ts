@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import selectedTenseSlice from './slices/selectedTenseSlice'
-import selectedVerbListSlice from './slices/selectedVerbListSlice'
+import selectedConjugationTableListSlice from './slices/selectedConjugationTableListSlice'
 
 export const store = configureStore({
   reducer: {
     selectedTense: selectedTenseSlice.reducer,
-    selectedVerbList: selectedVerbListSlice.reducer
-  }
+    selectedConjugationTableList: selectedConjugationTableListSlice.reducer
+  },
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false})
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
