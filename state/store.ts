@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import SelectedConjugationTableListSlice from './slices/SelectedConjugationTableListSlice'
+import SelectedTableListSlice from './slices/SelectedTableListSlice'
 import SelectedTenseSlice from './slices/SelectedTenseSlice'
 import TenseListSlice from './slices/TenseListSlice'
 import VerbListSlice from './slices/VerbListSlice'
@@ -8,7 +8,7 @@ import PronounListSlice from './slices/PronounListSlice'
 export const store = configureStore({
   reducer: {
     selectedTense: SelectedTenseSlice.reducer,
-    selectedConjugationTableList: SelectedConjugationTableListSlice.reducer,
+    selectedTableList: SelectedTableListSlice.reducer,
     tenseList: TenseListSlice.reducer,
     verbList: VerbListSlice.reducer,
     pronounList: PronounListSlice.reducer

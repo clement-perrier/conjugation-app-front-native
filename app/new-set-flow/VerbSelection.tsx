@@ -57,7 +57,7 @@ export default function VerbSelection() {
 
   const [searchedText, setSearchText] = useState('')
 
-  const selectedConjugationTableList = useAppSelector(state => state.selectedConjugationTableList.value)
+  const selectedConjugationTableList = useAppSelector(state => state.selectedTableList.value)
 
   const verbList = useAppSelector(state => state.verbList.value)
 

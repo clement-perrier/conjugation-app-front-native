@@ -1,7 +1,7 @@
 import { Tense } from "./Tense";
 import { Verb } from "./Verb";
 
-export interface ConjugationTable {
+export interface Table {
     tense: Tense;
     verb: Verb;
 }

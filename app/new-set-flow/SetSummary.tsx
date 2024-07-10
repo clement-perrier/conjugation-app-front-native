@@ -13,7 +13,7 @@ export default function SetSummary() {
 
   const dispatch = useAppDispatch();
 
-  const selectedConjugationTableList = useAppSelector(state => state.selectedConjugationTableList.value)
+  const selectedConjugationTableList = useAppSelector(state => state.selectedTableList.value)
 
   useEffect(() => {
   },[])
