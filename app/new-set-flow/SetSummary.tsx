@@ -1,6 +1,7 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { removeSelectedConjugationTable } from '@/state/slices/SelectedConjugationTableListSlice';
+import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
@@ -14,9 +15,6 @@ export default function SetSummary() {
 
   const selectedConjugationTableList = useAppSelector(state => state.selectedConjugationTableList.value)
 
-  console.log(selectedConjugationTableList)
-  // console.log(selectedConjugationTableList[0], selectedConjugationTableList[0].verb)
-
   useEffect(() => {
   },[])
 
@@ -28,7 +26,13 @@ export default function SetSummary() {
         data={selectedConjugationTableList}
         renderItem={({item}) => 
           <View style={{position: 'relative'}}>
-            <Button title={item.verb + ' - ' + item.tense + '      '} onPress={() => dispatch(removeSelectedConjugationTable(item))}/>
+            <Button 
+              title={item.verb.name + ' - ' + item.tense.name + '      '} 
+              onPress={() => {
+                dispatch(removeSelectedConjugationTable(item))
+                dispatch(updateVerbList(item.verb))
+              }}
+            />
             <MaterialIcons name='close' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
           </View>
         }

@@ -2,14 +2,13 @@ import { View, Text, StyleSheet, FlatList, useWindowDimensions, TextInput } from
 import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { Verbs } from '@/constants/Verbs';
 import { addSelectedConjugationTable } from '@/state/slices/SelectedConjugationTableListSlice';
 import { useEffect, useState } from 'react';
 import IconButton from '@/components/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ConjugationTable } from '@/types/ConjugationTable';
-import { ConjugationTables } from '@/constants/ConjugationTables';
+import { updateVerbList } from '@/state/slices/VerbListSlice';
 
 export default function VerbSelection() {
 
@@ -39,15 +38,12 @@ export default function VerbSelection() {
     ])
   }
 
-  const getSelectedConjugationTableList = (): ConjugationTable[] => {
+  const getSelectedConjugationTableList = () : ConjugationTable[] => {
     let result: ConjugationTable[] = []
     selectedTense && selectedVerbList.forEach(verb => {
-      const conjugationTable = ConjugationTables.find(table => table.tenseId === selectedTense.id && table.verbId === verb.id)
-      conjugationTable &&
       result.push({
-        id: conjugationTable.id,
-        tense: selectedTense.name,
-        verb: verb.name
+        tense: selectedTense,
+        verb: verb
       })
     })
     console.log(result)
@@ -61,20 +57,29 @@ export default function VerbSelection() {
 
   const [searchedText, setSearchText] = useState('')
 
-  const verbList: Verb[] = Verbs
+  const selectedConjugationTableList = useAppSelector(state => state.selectedConjugationTableList.value)
+
+  const verbList = useAppSelector(state => state.verbList.value)
 
   const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([])
 
-  const unselectedVerbList = verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
+  const unselectedVerbList = verbList && verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
 
   const filteredVerbList = textFilter(searchedText)
-
- 
 
   // USE EFFECT
   useEffect(() => {
     setNumColumns(calcNumColumns());
   }, [screenWidth]);
+
+ /*  useEffect(() => {
+    selectedTense &&
+    verbList.forEach(verb => {
+      if(selectedConjugationTableList.some(table => table.tense.id === selectedTense.id && table.verb.id === verb.id)){
+        dispatch(updateVerbList(verb))
+      }
+    })
+  }, []) */
 
   return (
     <View style={styles.container}>
@@ -132,6 +137,7 @@ export default function VerbSelection() {
               <Button 
                 title={item.name}
                 onPress={() => addSelectedVerb(item)}
+                disabled={item.selected}
               ></Button>
             </View>
             }
@@ -144,6 +150,7 @@ export default function VerbSelection() {
           <Button 
           title='ADD TO SET'
           onPress={() => {
+            selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
             dispatch(addSelectedConjugationTable(getSelectedConjugationTableList()))
             navigation.navigate('Set summary')}
           }

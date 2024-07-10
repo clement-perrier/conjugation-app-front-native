@@ -1,10 +1,9 @@
 import { View, Text } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import IconButton from '@/components/IconButton';
-import { useAppDispatch, useAppSelector } from '@/state/hooks';
+import { useAppDispatch } from '@/state/hooks';
 import { useEffect } from 'react';
-import { FetchTenseList } from '@/services/ApiService';
-import { store } from '@/state/store';
+import { FetchPronounList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 
 export default function Home() {
 
@@ -13,8 +12,10 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // TENSE LIST DISPATCHED TO STORE 
+    // TENSES, VERBS AND PRONOUNS DISPATCHED TO STORE 
     dispatch(FetchTenseList())
+    dispatch(FetchVerbList())
+    dispatch(FetchPronounList())
   }, [])
 
   return (

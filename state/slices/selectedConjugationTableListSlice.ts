@@ -18,7 +18,7 @@ export const SelectedConjugationTableListSlice = createSlice({
       state.value = [...state.value, ...action.payload]
     },
     remove: (state, action) => {
-      state.value = state.value.filter(table => (table.id !== action.payload.id))
+      state.value = state.value.filter(table => table.tense.id !== action.payload.tense.id || table.verb.id !== action.payload.verb.id)
     },
   }
 })

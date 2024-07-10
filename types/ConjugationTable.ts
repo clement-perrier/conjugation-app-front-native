@@ -1,5 +1,7 @@
+import { Tense } from "./Tense";
+import { Verb } from "./Verb";
+
 export interface ConjugationTable {
-    id: number;
-    tense: string;
-    verb: string;
+    tense: Tense;
+    verb: Verb;
 }

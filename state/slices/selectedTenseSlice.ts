@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TenseState } from '../interfaces/TenseState'
 
+interface TenseState {
+  value: {
+      id: number,
+      name: string
+  } | null
+}
 
 // Define the initial state using that type
 const initialState: TenseState = {
