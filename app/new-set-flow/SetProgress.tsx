@@ -1,35 +1,33 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { removeSelectedConjugationTable } from '@/state/slices/SelectedConjugationTableListSlice';
+import { updateSelectedSet } from '@/state/slices/SelectedSetSlice';
+import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
+import { addSet } from '@/state/slices/SetListSlice';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native';
 
-export default function SetSummary() {
+export default function SetProgress() {
 
   const navigation = useAppNavigation();
 
   const dispatch = useAppDispatch();
 
-  const selectedConjugationTableList = useAppSelector(state => state.selectedTableList.value)
-
-  useEffect(() => {
-  },[])
+  const selectedTableList = useAppSelector(state => state.selectedTableList.value)
 
   return (
     <View style={styles.container}>
-      <Text>Set Summary</Text>
-      {selectedConjugationTableList.length > 0 && 
+      <Text>Set progress</Text>
+      {selectedTableList.length > 0 && 
         <FlatList
-        data={selectedConjugationTableList}
+        data={selectedTableList}
         renderItem={({item}) => 
           <View style={{position: 'relative'}}>
             <Button 
               title={item.verb.name + ' - ' + item.tense.name + '      '} 
               onPress={() => {
-                dispatch(removeSelectedConjugationTable(item))
+                dispatch(removeSelectedTable(item))
                 dispatch(updateVerbList(item.verb))
               }}
             />
@@ -46,7 +44,15 @@ export default function SetSummary() {
       />
       <Button 
         title='CREATE SET'
-        onPress={() => navigation.navigate('Verb(s) selection')}
+        onPress={() => {
+          dispatch(updateSelectedSet({
+            day: 0,
+            // dueDate: '45',
+            tableList: selectedTableList
+          }))
+          dispatch(clearSelectedTableList())
+          navigation.navigate('Set summary')}
+        }
       />
     </View>
   );

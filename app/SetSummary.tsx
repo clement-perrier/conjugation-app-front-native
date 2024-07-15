@@ -1,0 +1,53 @@
+import { useAppSelector } from "@/state/hooks";
+import { useEffect } from "react";
+import { View, Text, FlatList, Button } from "react-native";
+import { StyleSheet } from "react-native";
+
+export default function SetSummary() {
+
+  const selectedSet = useAppSelector(state => state.SelectedSet.value);
+
+  useEffect(() => {
+    console.log(selectedSet)
+  },[selectedSet])
+
+  return (
+    <View style={styles.container}>
+
+      <Text>Start learning when you're ready</Text>
+
+      <FlatList
+        data={selectedSet?.tableList}
+        renderItem={({item}) => 
+          <View key={item.tense.id + item.verb.id} style={styles.table}>
+            <Text>{item.tense.name} - {item.verb.name}</Text>
+            <ul>
+              {item.conjugationList?.map(conjugation => <li key={conjugation.id}>{conjugation.pronounName + ' ' + conjugation.name}</li>)}
+            </ul>
+          </View>
+        }
+        ItemSeparatorComponent={() => <View style={{height: 10}} />}
+      >
+      </FlatList>
+
+      <Button 
+        title='START'
+        onPress={() => console.log()}
+      />
+      
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  table: {
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 5
+  }
+});

@@ -3,7 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import IconButton from '@/components/IconButton';
 import { useAppDispatch } from '@/state/hooks';
 import { useEffect } from 'react';
-import { FetchPronounList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
+import { FetchPronounList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 
 export default function Home() {
 
@@ -16,6 +16,7 @@ export default function Home() {
     dispatch(FetchTenseList())
     dispatch(FetchVerbList())
     dispatch(FetchPronounList())
+    dispatch(FetchTableList())
   }, [])
 
   return (

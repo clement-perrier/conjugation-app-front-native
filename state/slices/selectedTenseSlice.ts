@@ -1,10 +1,8 @@
+import { Tense } from '@/types/Tense'
 import { createSlice } from '@reduxjs/toolkit'
 
 interface TenseState {
-  value: {
-      id: number,
-      name: string
-  } | null
+  value: Tense | null
 }
 
 // Define the initial state using that type

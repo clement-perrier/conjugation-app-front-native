@@ -31,3 +31,11 @@ export const FetchPronounList = createAsyncThunk(
         return response.data;
     }
 )
+
+export const FetchTableList = createAsyncThunk(
+    'fetchTableList',
+    async () => {
+        const response = await apiService.get('tables?languageId=1');
+        return response.data;
+    }
+)

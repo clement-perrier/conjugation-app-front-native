@@ -20,9 +20,12 @@ export const SelectedTableListSlice = createSlice({
     remove: (state, action) => {
       state.value = state.value.filter(table => table.tense.id !== action.payload.tense.id || table.verb.id !== action.payload.verb.id)
     },
+    clear: (state) => {
+        state.value = []
+    }
   }
 })
 
-export const {add: addSelectedConjugationTable, remove: removeSelectedConjugationTable} = SelectedTableListSlice.actions
+export const {add: addSelectedTable, remove: removeSelectedTable, clear: clearSelectedTableList} = SelectedTableListSlice.actions
 
 export default SelectedTableListSlice
