@@ -2,9 +2,9 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedSet } from '@/state/slices/SelectedSetSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
-import { addSet } from '@/state/slices/SetListSlice';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native';
 
@@ -15,6 +15,10 @@ export default function SetProgress() {
   const dispatch = useAppDispatch();
 
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
+
+  useEffect(() => {
+    console.log(selectedTableList)
+  },[selectedTableList])
 
   return (
     <View style={styles.container}>

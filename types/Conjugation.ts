@@ -5,5 +5,7 @@ import { Verb } from "./Verb";
 export interface Conjugation {
     id: number
     name: string
-    pronounName: Pronoun
+    pronounName: string
+    verbName: string
+    tenseName: string
 }

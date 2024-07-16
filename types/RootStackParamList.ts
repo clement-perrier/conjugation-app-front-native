@@ -1,6 +1,7 @@
 export type RootStackParamList = {
     'Home': undefined,
     'Set summary': undefined
+    'Question': undefined
     'New set': undefined,
     'Pre-set list': undefined,
     'Tense(s) selection': undefined,

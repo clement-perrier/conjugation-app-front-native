@@ -1,9 +1,12 @@
+import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppSelector } from "@/state/hooks";
 import { useEffect } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import { StyleSheet } from "react-native";
 
 export default function SetSummary() {
+
+  const navigation = useAppNavigation();
 
   const selectedSet = useAppSelector(state => state.SelectedSet.value);
 
@@ -32,7 +35,7 @@ export default function SetSummary() {
 
       <Button 
         title='START'
-        onPress={() => console.log()}
+        onPress={() => navigation.navigate('Question')}
       />
       
     </View>

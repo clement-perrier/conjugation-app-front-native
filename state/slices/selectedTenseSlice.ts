@@ -16,7 +16,7 @@ export const SelectedTenseSlice = createSlice({
   initialState,
   reducers: {
     updateSelectedTense: (state, action) => {
-      state.value = { ...action.payload }
+      state.value = action.payload
     }
   }
 })

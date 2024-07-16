@@ -16,7 +16,7 @@ export const SelectedSetSlice = createSlice({
   initialState,
   reducers: {
     update: (state, action: PayloadAction<Set>) => {
-      state.value = {...action.payload}
+      state.value = action.payload
     }
   }
 })

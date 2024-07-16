@@ -1,5 +1,4 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import PreSetList from "./new-set-flow/PreSetList";
 import TenseSelection from "./new-set-flow/TenseSelection";
 import VerbSelection from "./new-set-flow/VerbSelection";
 import SetSummary from "./SetSummary";
@@ -10,6 +9,7 @@ import { store } from "@/state/store";
 import { Provider } from "react-redux";
 import { View } from "react-native";
 import SetProgress from "./new-set-flow/SetProgress";
+import Question from "./training/Question";
 
 const Stack = createStackNavigator();
 
@@ -20,20 +20,21 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={{flex: 1}}>
-      <Stack.Navigator>
-        <Stack.Screen name="Home"component={Home} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
         <Stack.Screen 
           name="Set summary"
           component={SetSummary} 
-          options={{ 
+          options={{   
             headerLeft: () => null,
             headerRight: () => <CancelStackButton navigation={navigation}/>
           }}
         />
         <Stack.Screen 
-          name="Pre-set list" 
-          component={PreSetList}
+          name="Question" 
+          component={Question}
           options={{ 
+            headerLeft: () => null,
             headerRight: () => <CancelStackButton navigation={navigation}/>
           }}
         />
