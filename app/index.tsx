@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import TenseSelection from "./new-set-flow/TenseSelection";
 import VerbSelection from "./new-set-flow/VerbSelection";
-import SetSummary from "./SetSummary";
+import SetSummary from "./new-set-flow/SetCreated";
 import Home from "./Home";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import CancelStackButton from "@/components/CancelStackButton";
@@ -23,7 +23,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
         <Stack.Screen 
-          name="Set summary"
+          name="Set created"
           component={SetSummary} 
           options={{   
             headerLeft: () => null,

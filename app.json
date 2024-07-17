@@ -19,6 +19,7 @@
     },
     "android": {
       "permissions": ["CAMERA_ROLL", "READ_EXTERNAL_STORAGE"],
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

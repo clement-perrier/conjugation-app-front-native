@@ -23,10 +23,12 @@ export default function SetSummary() {
         data={selectedSet?.tableList}
         renderItem={({item}) => 
           <View key={item.tense.id + item.verb.id} style={styles.table}>
-            <Text>{item.tense.name} - {item.verb.name}</Text>
-            <ul>
-              {item.conjugationList?.map(conjugation => <li key={conjugation.id}>{conjugation.pronounName + ' ' + conjugation.name}</li>)}
-            </ul>
+            <Text style={styles.uppercase}>{item.tense.name} - {item.verb.name}</Text>
+              {
+                item.conjugationList?.map(conjugation => 
+                  <Text key={conjugation.id}>{conjugation.pronounName + ' ' + conjugation.name}</Text>
+                )
+              }
           </View>
         }
         ItemSeparatorComponent={() => <View style={{height: 10}} />}
@@ -52,5 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     padding: 10,
     borderRadius: 5
+  },
+  uppercase: {
+    textTransform: 'uppercase'
   }
 });

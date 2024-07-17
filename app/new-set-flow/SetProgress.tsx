@@ -55,7 +55,7 @@ export default function SetProgress() {
             tableList: selectedTableList
           }))
           dispatch(clearSelectedTableList())
-          navigation.navigate('Set summary')}
+          navigation.navigate('Set created')}
         }
       />
     </View>

@@ -12,12 +12,14 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // TENSES, VERBS AND PRONOUNS DISPATCHED TO STORE 
+    // TENSES, VERBS, PRONOUNS and CONJUGATIONS(table shaped) dispatched to the store
     dispatch(FetchTenseList())
     dispatch(FetchVerbList())
     dispatch(FetchPronounList())
     dispatch(FetchTableList())
   }, [])
+
+  
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

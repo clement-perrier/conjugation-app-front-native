@@ -1,9 +1,11 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { Tenses } from '@/constants/Tenses';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
+import { useEffect } from 'react';
+import { FetchTenseList } from '@/services/ApiService';
 
 export default function TenseSelection() {
 
