@@ -2,7 +2,8 @@ import { View, Text, TextInput, StyleSheet, Button, Animated } from 'react-nativ
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Question() {
 
@@ -18,6 +19,7 @@ export default function Question() {
   const [answer, setanswer] = useState('')
   const [answerStatus, setAnswerStatus] = useState<String | null>(null)
   const slideAnimation = useRef(new Animated.Value(0)).current;
+  const inputRef = useRef<TextInput>(null)
 
   //  Derived data
   const currentConjugation = conjugationList[currentConjugationIndex] ?? null
@@ -39,6 +41,12 @@ export default function Question() {
   useEffect(() => {
     selectedSet && setConjugationList(getConjugationList())
   }, [selectedSet])
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [currentConjugationIndex])
 
   // Handlers
   const handleAnswer = () => {
@@ -92,11 +100,13 @@ export default function Question() {
             <View style={styles.flexRow}>
               <Text>{currentConjugation.pronounName}</Text>
               <TextInput
-                  style={styles.input}
-                  onChangeText={setanswer}
-                  value={answer}
-                  inlineImageLeft='react-logo'
-                  />
+                ref={inputRef}
+                autoFocus
+                style={styles.input}
+                onChangeText={setanswer}
+                value={answer}
+                inlineImageLeft='react-logo'
+              />
             </View>
             <Button 
               title='check' 
