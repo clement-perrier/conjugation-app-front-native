@@ -28,7 +28,6 @@ export default function VerbSelection() {
   const removeSelectedVerb = (selectedVerb: Verb) => {
     setSelectedVerbList(selectedVerbList.filter(verb => verb.id !== selectedVerb.id))
   }
-  
 
   const addSelectedVerb = (selectedVerb: Verb) => {
     setSelectedVerbList([

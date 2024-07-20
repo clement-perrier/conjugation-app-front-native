@@ -2,8 +2,8 @@ import { View, Text, TextInput, StyleSheet, Button, Animated } from 'react-nativ
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { useEffect, useState, useRef } from 'react';
+import { updateWithResult } from '@/state/slices/SelectedSetSlice';
 
 export default function Question() {
 
@@ -22,7 +22,7 @@ export default function Question() {
   const inputRef = useRef<TextInput>(null)
 
   //  Derived data
-  const currentConjugation = conjugationList[currentConjugationIndex] ?? null
+  const currentConjugation: Conjugation = conjugationList[currentConjugationIndex] ?? null
 
   // Functions
   const shuffleArray = (array: Conjugation[]) : Conjugation[] => {
@@ -40,7 +40,7 @@ export default function Question() {
   // Effects
   useEffect(() => {
     selectedSet && setConjugationList(getConjugationList())
-  }, [selectedSet])
+  }, [])
 
   useEffect(() => {
     if (inputRef.current) {
@@ -49,12 +49,16 @@ export default function Question() {
   }, [currentConjugationIndex])
 
   // Handlers
-  const handleAnswer = () => {
-    if(answer === currentConjugation.name) {
+  const handleCheck = () => {
+    let correct: boolean | null = null
+    if(answer.toLowerCase() === currentConjugation.name) {
       setAnswerStatus('correct')
+       correct = true
     } else {
       setAnswerStatus('incorrect')
+      correct = false
     }
+    dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
     slideIn()
   }
 
@@ -64,7 +68,7 @@ export default function Question() {
       setanswer('')
       setAnswerStatus(null);
     } else {
-      navigation.navigate('Home')
+      navigation.navigate('Results')
     }
     slideOut()
   }
@@ -88,15 +92,18 @@ export default function Question() {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={styles.container}>
       {
         currentConjugation ? (
           <>
+            {/*  Title */}
             <View style={styles.flexRow}>
               <Text style={styles.uppercase}>{currentConjugation.verbName}</Text>
               <Text>in</Text> 
               <Text style={styles.uppercase}>{currentConjugation.tenseName}</Text>
             </View>
+
+            {/*  Input */}
             <View style={styles.flexRow}>
               <Text>{currentConjugation.pronounName}</Text>
               <TextInput
@@ -108,42 +115,56 @@ export default function Question() {
                 inlineImageLeft='react-logo'
               />
             </View>
-            <Button 
-              title='check' 
-              onPress={() => handleAnswer()}
-              disabled={answer.length === 0}
-            ></Button>
+
+            {/* Footer */}
+            <View style={styles.footer}>
+              {
+                // Answer checked
+                answerStatus ?
+                  <Animated.View style={[styles.result, answerStatus === 'correct' ? styles.correct : styles.incorrect, {
+                    transform: [{
+                      translateY: slideAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [100, 0],
+                      }),
+                    }],
+                  },]}>
+                    <View style={styles.resultContent}>
+                      <View style={answerStatus === 'correct' ? styles.correct : styles.incorrect}>
+                        {answerStatus === 'correct' ? <Text style={styles.correct}>Correct!</Text> : <Text style={styles.incorrect}>Incorrect! Correct answer: {currentConjugation.name}</Text>}
+                      </View>
+                        <Button
+                          title='continue' 
+                          onPress={() => handleContinue()}
+                        ></Button>
+                      </View>
+                  </Animated.View>
+                // Answer not checked yet
+                :
+                <View style={styles.checkButton}>
+                  <Button 
+                    title='check' 
+                    onPress={() => handleCheck()}
+                    disabled={answer.length === 0}
+                  ></Button>
+                </View>
+              }
+            </View>
           </>
         ) : (
       <Text>Loading...</Text>
         )
-      }
-      {
-        answerStatus &&
-          <Animated.View style={[styles.footer, answerStatus === 'correct' ? styles.correct : styles.incorrect, {
-            transform: [{
-              translateY: slideAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [100, 0],
-              }),
-            }],
-          },]}>
-            <View>
-              <View style={answerStatus === 'correct' ? styles.correct : styles.incorrect}>
-                {answerStatus === 'correct' ? <Text style={styles.correct}>Correct!</Text> : <Text style={styles.incorrect}>Incorrect! Correct answer: {currentConjugation.name}</Text>}
-              </View>
-              <Button 
-                title='continue' 
-                onPress={() => handleContinue()}
-              ></Button>
-            </View>
-          </Animated.View>
       }
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   flexRow: {
     flexDirection: 'row',
     alignItems:'center',
@@ -164,10 +185,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    alignItems: 'center'
+  },
+  result: {
     padding: 20,
     backgroundColor: '#222',
-    alignItems: 'center',
     borderWidth: 5,
+    width: '100%',
+    alignItems: 'center'
+
+  },
+  resultContent: {
+    width: '40%',
+  },
+  checkButton: {
+    width: '20%'
   },
   correct: {
     borderColor: 'green',

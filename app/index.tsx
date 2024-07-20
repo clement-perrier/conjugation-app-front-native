@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { View } from "react-native";
 import SetProgress from "./new-set-flow/SetProgress";
 import Question from "./training/Question";
+import Results from "./training/Results";
 
 const Stack = createStackNavigator();
 
@@ -22,22 +23,6 @@ export default function App() {
       <View style={{flex: 1}}>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="Set created"
-          component={SetSummary} 
-          options={{   
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Question" 
-          component={Question}
-          options={{ 
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
         <Stack.Screen 
           name="Tense(s) selection"
           component={TenseSelection}
@@ -55,6 +40,30 @@ export default function App() {
         <Stack.Screen 
           name="Set progress"  
           component={SetProgress}
+          options={{ 
+            headerLeft: () => null,
+            headerRight: () => <CancelStackButton navigation={navigation}/>
+          }}
+        />
+        <Stack.Screen 
+          name="Set created"
+          component={SetSummary} 
+          options={{   
+            headerLeft: () => null,
+            headerRight: () => <CancelStackButton navigation={navigation}/>
+          }}
+        />
+        <Stack.Screen 
+          name="Question" 
+          component={Question}
+          options={{ 
+            headerLeft: () => null,
+            headerRight: () => <CancelStackButton navigation={navigation}/>
+          }}
+        />
+        <Stack.Screen 
+          name="Results" 
+          component={Results}
           options={{ 
             headerLeft: () => null,
             headerRight: () => <CancelStackButton navigation={navigation}/>
