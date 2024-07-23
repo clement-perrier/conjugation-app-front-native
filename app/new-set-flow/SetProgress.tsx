@@ -50,8 +50,8 @@ export default function SetProgress() {
         title='CREATE SET'
         onPress={() => {
           dispatch(updateSelectedSet({
-            day: 0,
-            // dueDate: '45',
+            dayNumber: 0,
+            reviewingDate: new Date(),
             tableList: selectedTableList
           }))
           dispatch(clearSelectedTableList())

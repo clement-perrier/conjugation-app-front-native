@@ -39,3 +39,11 @@ export const FetchTableList = createAsyncThunk(
         return response.data;
     }
 )
+
+export const FetchBatchList = createAsyncThunk(
+    'fetchBatchList',
+    async () => {
+        const response = await apiService.get('batchs/byUserAndLanguage?languageId=1');
+        return response.data;
+    }
+)

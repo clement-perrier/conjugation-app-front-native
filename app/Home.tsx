@@ -1,28 +1,62 @@
-import { View, Text } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import IconButton from '@/components/IconButton';
-import { useAppDispatch } from '@/state/hooks';
+import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { useEffect } from 'react';
-import { FetchPronounList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
+import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
+import { MaterialIcons } from '@expo/vector-icons';
+import formatDate from '@/utils/formatDate';
 
 export default function Home() {
 
   const navigation = useAppNavigation()
-
   const dispatch = useAppDispatch();
 
+  // Selectors
+  const setList = useAppSelector(state => state.BatchList.value)
+
   useEffect(() => {
-    // TENSES, VERBS, PRONOUNS and CONJUGATIONS(table shaped) dispatched to the store
+    // TENSES, VERBS, PRONOUNS, CONJUGATIONS(table shaped) and SETS dispatched to the store
     dispatch(FetchTenseList())
     dispatch(FetchVerbList())
     dispatch(FetchPronounList())
     dispatch(FetchTableList())
+    dispatch(FetchBatchList())
   }, [])
 
+  useEffect(()=> {
+    console.log(setList)
+  }, [setList])
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home</Text>
+    <View style={styles.container}>
+      <View style={{justifyContent: 'center'}}>
+      <FlatList
+        data={setList}
+        renderItem={({item}) => 
+          <View style={styles.button}>
+            <Button 
+              title={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+            />
+            <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
+          </View>
+        }
+        ItemSeparatorComponent={() => <View style={{height: 10}} />}
+        >
+        </FlatList>
+        </View>
       <IconButton size={40} color='white' icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')} style={{backgroundColor: 'black', bottom: 40}}/>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    width: '100%'
+  }
+});

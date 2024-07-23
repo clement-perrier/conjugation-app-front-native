@@ -1,10 +1,6 @@
 import { useAppSelector } from "@/state/hooks";
-import { Table } from "@/types/Table";
 import { Feather } from "@expo/vector-icons";
-import iconSet from "@expo/vector-icons/build/Fontisto";
 import { FlatList, View, Text, StyleSheet } from "react-native";
-import { FlipInEasyX } from "react-native-reanimated";
-import { rgbaArrayToRGBAColor, rgbaColor } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 export default function TableList({results} : {results: boolean}){
 

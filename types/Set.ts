@@ -2,7 +2,7 @@ import { Table } from "./Table"
 
 export type Set = {
     id?: number,
-    day: number,
-    // dueDate: Date,
+    dayNumber: number,
+    reviewingDate: Date,
     tableList: Table[]
 }

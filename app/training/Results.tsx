@@ -1,6 +1,5 @@
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import TableList from '@/components/TableList';
 
 export default function Results() {

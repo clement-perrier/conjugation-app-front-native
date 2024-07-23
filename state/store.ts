@@ -5,7 +5,7 @@ import TenseListSlice from './slices/TenseListSlice'
 import VerbListSlice from './slices/VerbListSlice'
 import PronounListSlice from './slices/PronounListSlice'
 import SelectedSetSlice from './slices/SelectedSetSlice'
-import SetListSlice from './slices/SetListSlice'
+import BatchListSlice from './slices/SetListSlice'
 import TableListSlice from './slices/TableListSlice'
 
 export const store = configureStore({
@@ -17,7 +17,7 @@ export const store = configureStore({
     verbList: VerbListSlice.reducer,
     pronounList: PronounListSlice.reducer,
     TableList: TableListSlice.reducer,
-    setList: SetListSlice.reducer
+    BatchList: BatchListSlice.reducer
   }
 })
 
