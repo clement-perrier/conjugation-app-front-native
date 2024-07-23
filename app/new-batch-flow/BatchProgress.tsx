@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { updateSelectedSet } from '@/state/slices/SelectedSetSlice';
+import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native';
 
-export default function SetProgress() {
+export default function BatchProgress() {
 
   const navigation = useAppNavigation();
 
@@ -22,7 +22,7 @@ export default function SetProgress() {
 
   return (
     <View style={styles.container}>
-      <Text>Set progress</Text>
+      <Text>Batch progress</Text>
       {selectedTableList.length > 0 && 
         <FlatList
         data={selectedTableList}
@@ -49,13 +49,13 @@ export default function SetProgress() {
       <Button 
         title='CREATE SET'
         onPress={() => {
-          dispatch(updateSelectedSet({
+          dispatch(updateSelectedBatch({
             dayNumber: 0,
             reviewingDate: new Date(),
             tableList: selectedTableList
           }))
           dispatch(clearSelectedTableList())
-          navigation.navigate('Set created')}
+          navigation.navigate('Batch created')}
         }
       />
     </View>

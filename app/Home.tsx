@@ -5,7 +5,8 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { useEffect } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { MaterialIcons } from '@expo/vector-icons';
-import formatDate from '@/utils/formatDate';
+import formatDate from '@/utils/FormatDate';
+import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 
 export default function Home() {
 
@@ -30,22 +31,28 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
+      <View style={{justifyContent: 'center', flex: 1}}>
       <View style={{justifyContent: 'center'}}>
-      <FlatList
-        data={setList}
-        renderItem={({item}) => 
-          <View style={styles.button}>
-            <Button 
-              title={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
-            />
-            <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
-          </View>
-        }
-        ItemSeparatorComponent={() => <View style={{height: 10}} />}
-        >
+        <FlatList
+          data={setList}
+          renderItem={({item}) => 
+            <View style={styles.button}>
+              <Button 
+                title={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                onPress={() =>{
+                  dispatch(updateSelectedBatch(item))
+                  navigation.navigate('Start')
+                }}
+              />
+              <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
+            </View>
+          }
+          ItemSeparatorComponent={() => <View style={{height: 10}} />}
+          >
         </FlatList>
         </View>
-      <IconButton size={40} color='white' icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')} style={{backgroundColor: 'black', bottom: 40}}/>
+      </View>
+      <IconButton size={40} color='white' icon={'add'} onPress={() => navigation.navigate('Tense(s) selection')} style={{backgroundColor: 'black'}}/>
     </View>
   );
 }

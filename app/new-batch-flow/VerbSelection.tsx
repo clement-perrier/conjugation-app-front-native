@@ -147,7 +147,7 @@ export default function VerbSelection() {
           onPress={() => {
             selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
             dispatch(addSelectedTable(getSelectedConjugationTableList()))
-            navigation.navigate('Set progress')}
+            navigation.navigate('Batch progress')}
           }
           disabled={selectedVerbList.length === 0}
           />

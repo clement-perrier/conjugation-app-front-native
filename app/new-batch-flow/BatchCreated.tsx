@@ -5,15 +5,15 @@ import { useEffect } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import { StyleSheet } from "react-native";
 
-export default function SetSummary() {
+export default function BatchCreated() {
 
   const navigation = useAppNavigation();
 
-  const selectedSet = useAppSelector(state => state.SelectedSet.value);
+  const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
 
   useEffect(() => {
-    console.log(selectedSet)
-  },[selectedSet])
+    console.log(selectedBatch)
+  },[selectedBatch])
 
   return (
     <View style={styles.container}>

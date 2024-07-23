@@ -3,7 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
 import { useEffect, useState, useRef } from 'react';
-import { updateWithResult } from '@/state/slices/SelectedSetSlice';
+import { updateWithResult } from '@/state/slices/SelectedBatchSlice';
 
 export default function Question() {
 
@@ -11,7 +11,7 @@ export default function Question() {
   const dispatch = useAppDispatch();
 
   // Selectors
-  const selectedSet = useAppSelector(state => state.SelectedSet.value);
+  const selectedSet = useAppSelector(state => state.SelectedBatch.value);
 
   // States
   const [currentConjugationIndex, setCurrentConjugationIndex] = useState<number>(0)

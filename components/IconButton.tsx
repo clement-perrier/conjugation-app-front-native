@@ -21,9 +21,6 @@ export default function IconButton({ icon, label, onPress, style, color, size }:
 
 const styles = StyleSheet.create({
   iconButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
   },
   iconButtonLabel: {
     color: '#fff',

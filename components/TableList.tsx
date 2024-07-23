@@ -4,7 +4,7 @@ import { FlatList, View, Text, StyleSheet } from "react-native";
 
 export default function TableList({results} : {results: boolean}){
 
-  const selectedSet = useAppSelector(state => state.SelectedSet.value);
+  const selectedSet = useAppSelector(state => state.SelectedBatch.value);
 
     return(
         <FlatList
@@ -33,7 +33,7 @@ export default function TableList({results} : {results: boolean}){
                                 )
                             }
                         </View>
-                        {correct ? <Feather name="check" size={20} color="green" /> : <Feather name="x" size={20} color="red" />}
+                        {results && (correct ? <Feather name="check" size={20} color="green" /> : <Feather name="x" size={20} color="red" />)}
                     </View>
                     )
             }}

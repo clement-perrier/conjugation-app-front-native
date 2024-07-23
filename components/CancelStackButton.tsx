@@ -17,7 +17,7 @@ export default function CancelStackButton({ navigation } : { navigation: Navigat
 const styles = StyleSheet.create({
     button: {
         height: '100%',
-        top: 0,
+        top: 15,
         right: 11,
         zIndex: 4
     },

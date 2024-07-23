@@ -1,6 +1,6 @@
 import { Table } from "./Table"
 
-export type Set = {
+export type Batch = {
     id?: number,
     dayNumber: number,
     reviewingDate: Date,

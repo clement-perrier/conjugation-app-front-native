@@ -4,15 +4,15 @@ import SelectedTenseSlice from './slices/SelectedTenseSlice'
 import TenseListSlice from './slices/TenseListSlice'
 import VerbListSlice from './slices/VerbListSlice'
 import PronounListSlice from './slices/PronounListSlice'
-import SelectedSetSlice from './slices/SelectedSetSlice'
-import BatchListSlice from './slices/SetListSlice'
+import SelectedBatchSlice from './slices/SelectedBatchSlice'
+import BatchListSlice from './slices/BatchListSlice'
 import TableListSlice from './slices/TableListSlice'
 
 export const store = configureStore({
   reducer: {
     selectedTense: SelectedTenseSlice.reducer,
     selectedTableList: SelectedTableListSlice.reducer,
-    SelectedSet: SelectedSetSlice.reducer,
+    SelectedBatch: SelectedBatchSlice.reducer,
     tenseList: TenseListSlice.reducer,
     verbList: VerbListSlice.reducer,
     pronounList: PronounListSlice.reducer,

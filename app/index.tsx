@@ -1,16 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import TenseSelection from "./new-set-flow/TenseSelection";
-import VerbSelection from "./new-set-flow/VerbSelection";
-import SetSummary from "./new-set-flow/SetCreated";
+import TenseSelection from "./new-batch-flow/TenseSelection";
+import VerbSelection from "./new-batch-flow/VerbSelection";
+import BatchCreated from "./new-batch-flow/BatchCreated";
 import Home from "./Home";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import CancelStackButton from "@/components/CancelStackButton";
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
 import { View } from "react-native";
-import SetProgress from "./new-set-flow/SetProgress";
+import BatchProgress from "./new-batch-flow/BatchProgress";
 import Question from "./training/Question";
 import Results from "./training/Results";
+import Start from "./training/Start";
 
 const Stack = createStackNavigator();
 
@@ -38,16 +39,24 @@ export default function App() {
           }}
         />
         <Stack.Screen 
-          name="Set progress"  
-          component={SetProgress}
+          name="Batch progress"  
+          component={BatchProgress}
           options={{ 
             headerLeft: () => null,
             headerRight: () => <CancelStackButton navigation={navigation}/>
           }}
         />
         <Stack.Screen 
-          name="Set created"
-          component={SetSummary} 
+          name="Batch created"
+          component={BatchCreated} 
+          options={{   
+            headerLeft: () => null,
+            headerRight: () => <CancelStackButton navigation={navigation}/>
+          }}
+        />
+        <Stack.Screen 
+          name="Start"
+          component={Start} 
           options={{   
             headerLeft: () => null,
             headerRight: () => <CancelStackButton navigation={navigation}/>

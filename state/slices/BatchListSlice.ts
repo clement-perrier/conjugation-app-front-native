@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AsyncListState } from '../interfaces/AsyncListState'
-import { Set } from '@/types/Set'
+import { Batch } from '@/types/Batch'
 import { FetchBatchList } from '@/services/ApiService'
 
 // Define the initial state using that type
-const initialState: AsyncListState<Set> = {
+const initialState: AsyncListState<Batch> = {
   value: [],
   loading: false,
   error: null
@@ -15,7 +15,7 @@ export const BatchListSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<Set>) => {
+    add: (state, action: PayloadAction<Batch>) => {
       state.value = [ ...state.value, action.payload ]
     }
   },

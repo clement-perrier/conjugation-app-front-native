@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Set } from '@/types/Set'
-import { Conjugation } from '@/types/Conjugation'
+import { Batch } from '@/types/Batch'
 
 interface SetState {
-  value: Set | null
+  value: Batch | null
 }
 
 // Define the initial state using that type
@@ -11,12 +10,12 @@ const initialState: SetState = {
   value: null
 }
 
-export const SelectedSetSlice = createSlice({
-  name: 'selectedSet',
+export const SelectedBatchSlice = createSlice({
+  name: 'selectedBatch',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Set>) => {
+    update: (state, action: PayloadAction<Batch>) => {
       state.value = action.payload
     },
     updateWithResult: (state, action: PayloadAction<{id: number, correct: boolean}>) => {
@@ -38,6 +37,6 @@ export const SelectedSetSlice = createSlice({
   }
 })
 
-export const { update: updateSelectedSet, updateWithResult } = SelectedSetSlice.actions
+export const { update: updateSelectedBatch, updateWithResult } = SelectedBatchSlice.actions
 
-export default SelectedSetSlice
+export default SelectedBatchSlice
