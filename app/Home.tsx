@@ -9,6 +9,7 @@ import formatDate from '@/utils/FormatDate';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
+import ListButton from '@/components/buttons/ListButton';
 
 export default function Home() {
 
@@ -35,7 +36,8 @@ export default function Home() {
   const buttons: LayoutButton[] = [
     {
       onPress: () => navigation.navigate('Tense(s) selection'),
-      icon: 'add'
+      icon: 'add',
+      iconOnly: true
     }
   ]
 
@@ -43,20 +45,21 @@ export default function Home() {
 
     <MainLayout buttons={buttons}>
       <FlatList
+            style={{height: 10, width: '100%'}}
+            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
             data={setList}
             renderItem={({item}) => 
-              <View style={styles.button}>
-                <Button 
-                  title={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                <ListButton 
+                  label={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
                   onPress={() =>{
                     dispatch(updateSelectedBatch(item))
                     navigation.navigate('Start')
                   }}
+                  icon='chevron-right'
                 />
-                <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
-              </View>
+                // <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
             }
-            ItemSeparatorComponent={() => <View style={{height: 10}} />}
+            ItemSeparatorComponent={() => <View style={{height: 20}} />}
             >
           </FlatList>
     </MainLayout>
@@ -65,7 +68,5 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    width: '100%'
-  }
+
 });

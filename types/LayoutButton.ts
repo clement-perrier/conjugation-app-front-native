@@ -7,4 +7,5 @@ export type LayoutButton = {
     iconSize?: number
     color?: string
     disabled?: boolean
+    iconOnly?: boolean
 }

@@ -1,6 +1,5 @@
-import { View, StyleSheet, Text, Button, FlatList } from 'react-native';
+import { View, StyleSheet, Text, FlatList } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import TableList from '@/components/TableList';
 import { useAppSelector } from '@/state/hooks';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
@@ -30,18 +29,18 @@ export default function Start() {
 
   return (
     <MainLayout buttons={buttons}>
-      <>
-        <FlatList
-            data={selectedBatch?.tableList}
-            renderItem={({item}) => 
-              <View>
-                <Text style={styles.table}>{item.verb.name + ' - ' + item.tense.name}</Text>
-              </View>
-            }
-            ItemSeparatorComponent={() => <View style={{height: 20}} />}
-            >
-        </FlatList>
-      </>
+      <FlatList
+          style={{height: 10, width: '100%'}}
+          contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+          data={selectedBatch?.tableList}
+          renderItem={({item}) => 
+            <View>
+              <Text style={styles.table}>{item.verb.name + ' - ' + item.tense.name}</Text>
+            </View>
+          }
+          ItemSeparatorComponent={() => <View style={{height: 20}} />}
+          >
+      </FlatList>
     </MainLayout>
   );
 }

@@ -4,25 +4,27 @@ import { LayoutButton } from '@/types/LayoutButton';
 import BottomButton from '../buttons/BottomButton';
 
 
-export default function MainLayout({children, contentCentered, buttons} : {children: ReactElement, contentCentered: boolean, buttons?: LayoutButton[]}){
+export default function MainLayout({children, buttons} : {children: ReactElement, contentCentered: boolean, buttons?: LayoutButton[]}){
     
     return (
         <View style={[styles.container, styles.padding20]}>
 
-            <View style={styles.container}>
-                <View style={contentCentered ? styles.content : styles.container}>{children}</View>
+            <View style={styles.content}>
+               {children}
             </View>
 
-            <View style={styles.buttonsContainer}>
+            <View style={[styles.buttonsContainer]}>
                 {buttons?.map((button, index) => 
-                    <BottomButton key={index} button={{
-                        label: button.label,
-                        onPress: button.onPress,
-                        icon: button.icon,
-                        iconSize: button.iconSize,
-                        color: button.color,
-                        disabled: button.disabled
-                    }}/>
+                    <BottomButton 
+                        key={index}
+                        label={button.label}
+                        onPress={button.onPress}
+                        icon={button.icon}
+                        iconSize={button.iconSize}
+                        color={button.color}
+                        disabled={button.disabled}
+                        iconOnly={button.iconOnly}
+                    />
                 )}
             </View>
 
@@ -41,15 +43,24 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      width: '100%'
+    },
+    width100: {
+        width: '100%'
     },
     content: {
         justifyContent: 'center',
+        width: '100%',
+        flex: 1
     },
     buttonsContainer: {
         display: 'flex', 
-        rowGap: 5
+        rowGap: 15,
+        justifyContent: 'center',
+        paddingTop: 20,
+        width: '100%'
     },
     padding20: {
-        padding: 20
+        padding: 25
     }
   });

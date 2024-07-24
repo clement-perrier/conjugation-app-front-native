@@ -2,18 +2,23 @@ import { LayoutButton } from "@/types/LayoutButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text, Pressable, StyleSheet } from "react-native";
 
-export default function BottomButton({button} : {button: LayoutButton}){
+export default function BottomButton({label, onPress, icon, disabled, iconOnly } : LayoutButton){
     return (
-        <Pressable onPress={button.onPress} style={[styles.button, button.disabled ? styles.disabled : styles.active]} disabled={button.disabled}>
-            <MaterialIcons name={button.icon} size={40} color={'white'}/>
-            <Text style={styles.text}>{button.label}</Text>
+        <Pressable onPress={onPress} style={[styles.button, disabled ? styles.disabled : styles.active ]} disabled={disabled}>
+            <MaterialIcons name={icon} size={40} color={'white'}/>
+            <Text style={styles.text}>{label}</Text>
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     button: {
-        padding: 10
+        height: 45,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    widthFitContent: {
+        width: 50
     },
     active: {
         backgroundColor: 'black',
@@ -23,6 +28,7 @@ const styles = StyleSheet.create({
         opacity: 0.3
     },
     text: {
-        color: 'white'
+        color: 'white',
+        justifyContent: 'center'
     }
 })

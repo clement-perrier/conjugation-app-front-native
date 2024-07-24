@@ -1,6 +1,5 @@
-import { View, StyleSheet, Text, Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import TableList from '@/components/TableList';
+import TableList from '@/components/layout/TableList';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 

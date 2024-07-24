@@ -8,6 +8,8 @@ export default function TableList({results} : {results: boolean}){
 
     return(
         <FlatList
+            style={{ height: 10, width: '100%'}}
+            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
             data={selectedSet?.tableList}
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)

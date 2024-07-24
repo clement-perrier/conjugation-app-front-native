@@ -10,6 +10,7 @@ import { Table } from '@/types/Table';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
+import ListButton from '@/components/buttons/ListButton';
 
 export default function VerbSelection() {
 
@@ -21,7 +22,7 @@ export default function VerbSelection() {
   const screenWidth = useWindowDimensions().width;
 
   // FUNCTIONS
-  const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal))
+  const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10))
   
   const textFilter = (text: string) => {
     return unselectedVerbList.filter(verb => verb.name.includes(text))
@@ -135,9 +136,9 @@ export default function VerbSelection() {
         </View>
 
         {/* VERB LIST */}
-        <View style={{flex: 1, width: '100%', marginBottom: 10}}>
+        <View style={{flex: 1, marginBottom: 10}}>
           <FlatList 
-            style={{height: 10, columnGap: 10}}
+            style={{height: 10}}
             ItemSeparatorComponent={() => <View style={{height: 15}} />}
             numColumns={numColumns}
             columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
@@ -145,11 +146,11 @@ export default function VerbSelection() {
             key={numColumns}
             renderItem={({item}) => 
               <View style={styles.buttonWidth}>
-                <Button 
-                  title={item.name}
+                <ListButton
+                  label={item.name}
                   onPress={() => addSelectedVerb(item)}
                   disabled={item.selected}
-                ></Button>
+                />
               </View>
               }
             >

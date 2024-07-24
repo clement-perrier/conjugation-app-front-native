@@ -1,12 +1,11 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { Tenses } from '@/constants/Tenses';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
-import { useEffect } from 'react';
-import { FetchTenseList } from '@/services/ApiService';
 import MainLayout from '@/components/layout/MainLayout';
+import ListButton from '@/components/buttons/ListButton';
+import { createEntityAdapter } from '@reduxjs/toolkit';
 
 export default function TenseSelection() {
 
@@ -16,32 +15,34 @@ export default function TenseSelection() {
 
   const tenseList = useAppSelector(state => state.tenseList.value)
 
-  const tenseListE = tenseList.map(tense => 
-    <View key={tense.id} style={styles.button}>
-      <Button
-        title={tense.name}
-        onPress={() => {
-          dispatch(updateSelectedTense(tense));
-          navigation.push('Verb(s) selection')}
-        }
-      />
-    </View>
-  )
-
   return (
     <MainLayout>
 
-      <View>
-        {tenseListE}
-      </View>
+      {/* <View style={{flex: 1, padding: 10}}> */}
 
-    </MainLayout>
+        <FlatList 
+            style={{ height: 10, width: '100%'}}
+            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            data={tenseList}
+            renderItem={({item}) => 
+                <ListButton
+                  label={item.name}
+                  onPress={() => {
+                    dispatch(updateSelectedTense(item));
+                    navigation.push('Verb(s) selection')
+                  }}
+                />
+              }
+            ItemSeparatorComponent={() => <View style={{height: 15}} />}
+            >
+          </FlatList>
+
+        {/* </View> */}
+
+     </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    marginBottom: 20,
-    width: 250
-  }
+
 });
