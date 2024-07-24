@@ -1,6 +1,8 @@
+import MainLayout from "@/components/layout/MainLayout";
 import TableList from "@/components/TableList";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppSelector } from "@/state/hooks";
+import { LayoutButton } from "@/types/LayoutButton";
 import { useEffect } from "react";
 import { View, Text, FlatList, Button } from "react-native";
 import { StyleSheet } from "react-native";
@@ -15,34 +17,17 @@ export default function BatchCreated() {
     console.log(selectedBatch)
   },[selectedBatch])
 
+  //  Buttons
+  const buttons: LayoutButton[] = [
+    {
+      label:'START',
+      onPress:() => navigation.navigate('Question')
+    }
+  ]
+
   return (
-    <View style={styles.container}>
-
-      <Text>Start learning when you're ready</Text>
-
-      <TableList results={false}/>
-
-      <Button 
-        title='START'
-        onPress={() => navigation.navigate('Question')}
-      />
-      
-    </View>
+    <MainLayout buttons={buttons}>
+        <TableList results={false}/>
+    </MainLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  table: {
-    backgroundColor: 'gray',
-    padding: 10,
-    borderRadius: 5
-  },
-  uppercase: {
-    textTransform: 'uppercase'
-  }
-});

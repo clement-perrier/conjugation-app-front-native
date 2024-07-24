@@ -4,7 +4,7 @@ import VerbSelection from "./new-batch-flow/VerbSelection";
 import BatchCreated from "./new-batch-flow/BatchCreated";
 import Home from "./Home";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
-import CancelStackButton from "@/components/CancelStackButton";
+import CancelStackButton from "@/components/navigation/CancelStackButton";
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
 import { View } from "react-native";

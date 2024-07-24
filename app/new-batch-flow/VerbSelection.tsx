@@ -3,11 +3,13 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { useEffect, useState } from 'react';
-import IconButton from '@/components/IconButton';
+import IconButton from '@/components/buttons/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Table } from '@/types/Table';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
+import MainLayout from '@/components/layout/MainLayout';
+import { LayoutButton } from '@/types/LayoutButton';
 
 export default function VerbSelection() {
 
@@ -76,95 +78,106 @@ export default function VerbSelection() {
     setNumColumns(calcNumColumns());
   }, [screenWidth]);
 
+  // Buttons
+  const buttons: LayoutButton[] = [
+    {
+      label: 'ADD TO SET',
+      onPress: () => {
+        selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
+        dispatch(addSelectedTable(getSelectedConjugationTableList()))
+        navigation.navigate('Batch progress')
+      },
+      disabled: selectedVerbList.length === 0
+    }
+  ]
+
   return (
-    <View style={styles.container}>
+    <MainLayout buttons={buttons} contentCentered={false}>
+      <>
 
-      {/* SELECTED TENSE */}
-      { selectedTense && <Text>{selectedTense.name}</Text> }
+        {/* SELECTED TENSE */}
+        { selectedTense && <Text>{selectedTense.name}</Text> }
 
-      {/* SEARCH INPUT */}
-      <View>
-        <IconButton style={styles.searchButton} size={25} color='black' icon={'search'}/>
-        
-        {searchedText ?
-            <IconButton style={styles.clearButton} size={25} color='black' icon={'clear'} onPress={() => setSearchText('')}/>
-            :
-            <></>
-        }
-        <TextInput
-          style={styles.input}
-          onChangeText={setSearchText}
-          value={searchedText}
-          placeholder="search verb"
-          inlineImageLeft='react-logo'
-          />
+        {/* SEARCH INPUT */}
+        <View>
+          <IconButton style={styles.searchButton} size={25} color='black' icon={'search'}/>
+          
+          {searchedText ?
+              <IconButton style={styles.clearButton} size={25} color='black' icon={'clear'} onPress={() => setSearchText('')}/>
+              :
+              <></>
+          }
+          <TextInput
+            style={styles.input}
+            onChangeText={setSearchText}
+            value={searchedText}
+            placeholder="search verb"
+            inlineImageLeft='react-logo'
+            />
         </View>
 
-      {/* SELECTED VERB LIST */}  
-      <View style={{width: '100%', marginBottom: 10}}>
-        <FlatList
-          data={selectedVerbList}
-          key={numColumns}
-          renderItem={({item}) => 
-            <View style={{position: 'relative'}}>
-              <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
-              <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
-            </View>
-          }
-          numColumns={numColumns}
-          ItemSeparatorComponent={() => <View style={{height: 10}} />}
-          columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-        >
-        </FlatList>
-      </View>
-
-      {/* VERB LIST */}
-      <View style={{flex: 1, width: '100%', marginBottom: 10}}>
-        <FlatList 
-          style={{height: 10}}
-          ItemSeparatorComponent={() => <View style={{height: 15}} />}
-          numColumns={numColumns}
-          columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-          data={filteredVerbList}
-          key={numColumns}
-          renderItem={({item}) => 
-            <View style={styles.buttonWidth}>
-              <Button 
-                title={item.name}
-                onPress={() => addSelectedVerb(item)}
-                disabled={item.selected}
-              ></Button>
-            </View>
+        {/* SELECTED VERB LIST */}  
+        <View style={{width: '100%', marginBottom: 10}}>
+          <FlatList
+            data={selectedVerbList}
+            key={numColumns}
+            renderItem={({item}) => 
+              <View style={{position: 'relative'}}>
+                <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
+                <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
+              </View>
             }
+            numColumns={numColumns}
+            ItemSeparatorComponent={() => <View style={{height: 10}} />}
+            columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
           >
-        </FlatList>
-      </View>
+          </FlatList>
+        </View>
 
-      {/* END BUTTON */}
-      <View>
-          <Button 
-          title='ADD TO SET'
-          onPress={() => {
-            selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
-            dispatch(addSelectedTable(getSelectedConjugationTableList()))
-            navigation.navigate('Batch progress')}
-          }
-          disabled={selectedVerbList.length === 0}
-          />
-      </View>
+        {/* VERB LIST */}
+        <View style={{flex: 1, width: '100%', marginBottom: 10}}>
+          <FlatList 
+            style={{height: 10, columnGap: 10}}
+            ItemSeparatorComponent={() => <View style={{height: 15}} />}
+            numColumns={numColumns}
+            columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+            data={filteredVerbList}
+            key={numColumns}
+            renderItem={({item}) => 
+              <View style={styles.buttonWidth}>
+                <Button 
+                  title={item.name}
+                  onPress={() => addSelectedVerb(item)}
+                  disabled={item.selected}
+                ></Button>
+              </View>
+              }
+            >
+          </FlatList>
+        </View>
 
-    </View>
+        {/* END BUTTON */}
+        {/* <View>
+            <Button 
+            title='ADD TO SET'
+            onPress={() => {
+              selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
+              dispatch(addSelectedTable(getSelectedConjugationTableList()))
+              navigation.navigate('Batch progress')}
+            }
+            disabled={selectedVerbList.length === 0}
+            />
+        </View> */}
+        </>
+    </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   buttonWidth: {
     width: 120,
+    marginLeft: 3,
+    marginRight: 3
   },
   selectedVerb: {
     backgroundColor: 'gray',

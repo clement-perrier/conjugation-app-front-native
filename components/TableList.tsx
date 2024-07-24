@@ -12,7 +12,7 @@ export default function TableList({results} : {results: boolean}){
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)
                 return (
-                    <View style={styles.flexRow}>
+                    <View>
                         <View 
                             key={item.tense.id + item.verb.id} 
                             style={[styles.table, 
@@ -37,7 +37,7 @@ export default function TableList({results} : {results: boolean}){
                     </View>
                     )
             }}
-            ItemSeparatorComponent={() => <View style={{height: 10}} />}
+            ItemSeparatorComponent={() => <View style={{height: 20}} />}
         >
       </FlatList>
     )

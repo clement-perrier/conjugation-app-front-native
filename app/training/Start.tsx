@@ -2,6 +2,8 @@ import { View, StyleSheet, Text, Button, FlatList } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import TableList from '@/components/TableList';
 import { useAppSelector } from '@/state/hooks';
+import MainLayout from '@/components/layout/MainLayout';
+import { LayoutButton } from '@/types/LayoutButton';
 
 export default function Start() {
 
@@ -18,11 +20,17 @@ export default function Start() {
 
   // Handlers
 
-  return (
-    <View style={styles.container}>
+  // Buttons
+  const buttons: LayoutButton[] = [
+    {
+      label: 'START',
+      onPress: () => navigation.navigate('Question')
+    }
+  ]
 
-      <View style={{justifyContent: 'center', flex: 1}}>
-      <View style={{justifyContent: 'center'}}>
+  return (
+    <MainLayout buttons={buttons}>
+      <>
         <FlatList
             data={selectedBatch?.tableList}
             renderItem={({item}) => 
@@ -33,24 +41,12 @@ export default function Start() {
             ItemSeparatorComponent={() => <View style={{height: 20}} />}
             >
         </FlatList>
-      </View>
-      </View>
-
-      <Button 
-          title='START'
-          onPress={() => navigation.navigate('Question')}
-        />
-
-    </View>
+      </>
+    </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   table: {
     backgroundColor: 'gray',
     padding: 15

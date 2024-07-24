@@ -1,6 +1,8 @@
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import TableList from '@/components/TableList';
+import MainLayout from '@/components/layout/MainLayout';
+import { LayoutButton } from '@/types/LayoutButton';
 
 export default function Results() {
 
@@ -16,23 +18,19 @@ export default function Results() {
 
   // Handlers
 
-  return (
-    <View style={styles.container}>
+  // Button
+  const buttons: LayoutButton[] = [
+    {
+      label: 'OK',
+      onPress: () => navigation.navigate('Home')
+    }
+  ]
 
-      <Text>Results</Text>
+  return (
+    <MainLayout buttons={buttons}>
 
       <TableList results={true}/>
 
-      <Button title='ok' onPress={() => navigation.navigate('Home')}/>
-
-    </View>
+    </MainLayout>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-});

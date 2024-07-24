@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 20
   },
   result: {
     padding: 20,

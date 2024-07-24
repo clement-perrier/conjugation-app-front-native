@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
 import { useEffect } from 'react';
 import { FetchTenseList } from '@/services/ApiService';
+import MainLayout from '@/components/layout/MainLayout';
 
 export default function TenseSelection() {
 
@@ -28,18 +29,17 @@ export default function TenseSelection() {
   )
 
   return (
-    <View style={styles.container}>
-      {tenseListE}
-    </View>
+    <MainLayout>
+
+      <View>
+        {tenseListE}
+      </View>
+
+    </MainLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   button: {
     marginBottom: 20,
     width: 250

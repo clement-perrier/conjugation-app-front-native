@@ -1,6 +1,6 @@
 import { NavigationProp, StackActions } from "@react-navigation/native"
 import { RootStackParamList } from "@/types/RootStackParamList"
-import IconButton from "./IconButton"
+import IconButton from "../buttons/IconButton"
 import { StyleSheet } from "react-native"
 
 export default function CancelStackButton({ navigation } : { navigation: NavigationProp<RootStackParamList> }) {
