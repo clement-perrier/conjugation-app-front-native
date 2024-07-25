@@ -1,14 +1,14 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import TenseSelection from "./new-batch-flow/TenseSelection";
-import VerbSelection from "./new-batch-flow/VerbSelection";
-import BatchCreated from "./new-batch-flow/BatchCreated";
+import TenseSelection from "./new-batch/TenseSelection";
+import VerbSelection from "./new-batch/VerbSelection";
+import BatchProgress from "./new-batch/BatchProgress";
+import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import CancelStackButton from "@/components/navigation/CancelStackButton";
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
 import { View } from "react-native";
-import BatchProgress from "./new-batch-flow/BatchProgress";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";

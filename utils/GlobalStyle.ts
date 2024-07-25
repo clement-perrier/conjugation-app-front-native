@@ -12,5 +12,10 @@ export const globalstyles = StyleSheet.create({
     text: {
         justifyContent: 'center',
         display: 'flex'
-      }
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 });

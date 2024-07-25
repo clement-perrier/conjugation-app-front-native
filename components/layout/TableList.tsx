@@ -15,7 +15,7 @@ export default function TableList({results} : {results: boolean}){
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)
                 return (
-                    <View>
+                    <View style={globalstyles.flexRow}>
                         <View 
                             key={item.tense.id + item.verb.id} 
                             style={[styles.table, 
@@ -36,7 +36,8 @@ export default function TableList({results} : {results: boolean}){
                                 )
                             }
                         </View>
-                        {results && (correct ? <Feather name="check" size={20} color="green" /> : <Feather name="x" size={20} color="red" />)}
+                        {/* {results && (correct ? <Feather name="check" size={20} color="green" /> : <Feather name="x" size={20} color="red" />)} */}
+                        {results && <Feather name={correct ? "check" : 'x'} size={30} color={correct ? "green" : 'red'} />}
                     </View>
                     )
             }}
