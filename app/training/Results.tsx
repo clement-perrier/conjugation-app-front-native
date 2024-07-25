@@ -17,7 +17,7 @@ export default function Results() {
 
   // Handlers
 
-  // Button
+  // Buttons
   const buttons: LayoutButton[] = [
     {
       label: 'OK',

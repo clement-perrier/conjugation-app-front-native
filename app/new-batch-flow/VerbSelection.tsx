@@ -11,6 +11,7 @@ import { updateVerbList } from '@/state/slices/VerbListSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
+import { globalstyles } from '@/utils/GlobalStyle';
 
 export default function VerbSelection() {
 
@@ -138,7 +139,8 @@ export default function VerbSelection() {
         {/* VERB LIST */}
         <View style={{flex: 1, marginBottom: 10}}>
           <FlatList 
-            style={{height: 10}}
+            style={globalstyles.flatList}
+            contentContainerStyle={globalstyles.flatListContent}
             ItemSeparatorComponent={() => <View style={{height: 15}} />}
             numColumns={numColumns}
             columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}

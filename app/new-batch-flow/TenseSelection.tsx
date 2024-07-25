@@ -1,11 +1,10 @@
 import { View, StyleSheet, FlatList } from 'react-native';
-import { Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import ListButton from '@/components/buttons/ListButton';
-import { createEntityAdapter } from '@reduxjs/toolkit';
+import { globalstyles } from '@/utils/GlobalStyle';
 
 export default function TenseSelection() {
 
@@ -18,11 +17,9 @@ export default function TenseSelection() {
   return (
     <MainLayout>
 
-      {/* <View style={{flex: 1, padding: 10}}> */}
-
         <FlatList 
-            style={{ height: 10, width: '100%'}}
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            style={globalstyles.flatList}
+            contentContainerStyle={globalstyles.flatListContent}
             data={tenseList}
             renderItem={({item}) => 
                 <ListButton
@@ -36,8 +33,6 @@ export default function TenseSelection() {
             ItemSeparatorComponent={() => <View style={{height: 15}} />}
             >
           </FlatList>
-
-        {/* </View> */}
 
      </MainLayout>
   );

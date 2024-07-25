@@ -6,10 +6,9 @@ import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { LayoutButton } from '@/types/LayoutButton';
-import { MaterialIcons } from '@expo/vector-icons';
+import { globalstyles } from '@/utils/GlobalStyle';
 import { useEffect } from 'react';
-import { View, FlatList } from 'react-native';
-import { Button } from 'react-native';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 
 export default function BatchProgress() {
 
@@ -31,6 +30,7 @@ export default function BatchProgress() {
     },
     {
       label: 'CREATE SET',
+      disabled: selectedTableList.length < 1,
       onPress: () => {
         dispatch(updateSelectedBatch({
           dayNumber: 0,
@@ -45,13 +45,12 @@ export default function BatchProgress() {
   return (
     <MainLayout buttons={buttons}>
       <>
-        {selectedTableList.length > 0 && 
+        {selectedTableList.length > 0 ? 
           <FlatList
-            style={{ height: 10, width: '100%'}}
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            style={globalstyles.flatList}
+            contentContainerStyle={globalstyles.flatListContent}
             data={selectedTableList}
             renderItem={({item}) => 
-              <View style={{position: 'relative'}}>
                 <ListButton
                   label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
                   onPress={() => {
@@ -60,15 +59,17 @@ export default function BatchProgress() {
                   }}
                   icon='close'
                 />
-                {/* <MaterialIcons name='close' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/> */}
-              </View>
             }
             ItemSeparatorComponent={() => <View style={{height: 10}} />}
             >
           </FlatList>
+          : <Text style={globalstyles.text}>The current set is empy</Text>
         }
       </>
     </MainLayout>
   );
 }
 
+const styles = StyleSheet.create({
+  
+})

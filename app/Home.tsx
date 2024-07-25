@@ -1,15 +1,14 @@
-import { View, Text, FlatList, Button, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import IconButton from '@/components/buttons/IconButton';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { useEffect } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
-import { MaterialIcons } from '@expo/vector-icons';
 import formatDate from '@/utils/FormatDate';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
+import { globalstyles } from '@/utils/GlobalStyle';
 
 export default function Home() {
 
@@ -45,8 +44,8 @@ export default function Home() {
 
     <MainLayout buttons={buttons}>
       <FlatList
-            style={{height: 10, width: '100%'}}
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            style={globalstyles.flatList}
+            contentContainerStyle={globalstyles.flatListContent}
             data={setList}
             renderItem={({item}) => 
                 <ListButton 

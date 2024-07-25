@@ -1,4 +1,5 @@
 import { useAppSelector } from "@/state/hooks";
+import { globalstyles } from "@/utils/GlobalStyle";
 import { Feather } from "@expo/vector-icons";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 
@@ -8,8 +9,8 @@ export default function TableList({results} : {results: boolean}){
 
     return(
         <FlatList
-            style={{ height: 10, width: '100%'}}
-            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            style={globalstyles.flatList}
+            contentContainerStyle={globalstyles.flatListContent}
             data={selectedSet?.tableList}
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)

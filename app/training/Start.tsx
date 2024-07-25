@@ -3,6 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppSelector } from '@/state/hooks';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
+import { globalstyles } from '@/utils/GlobalStyle';
 
 export default function Start() {
 
@@ -30,13 +31,11 @@ export default function Start() {
   return (
     <MainLayout buttons={buttons}>
       <FlatList
-          style={{height: 10, width: '100%'}}
-          contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+          style={globalstyles.flatList}
+          contentContainerStyle={globalstyles.flatListContent}
           data={selectedBatch?.tableList}
           renderItem={({item}) => 
-            <View>
-              <Text style={styles.table}>{item.verb.name + ' - ' + item.tense.name}</Text>
-            </View>
+              <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
           }
           ItemSeparatorComponent={() => <View style={{height: 20}} />}
           >
