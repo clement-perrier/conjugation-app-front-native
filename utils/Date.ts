@@ -10,7 +10,7 @@ function getDaySuffix(day: number) {
   }
 }
 
-export default function formatDate(dateStr: Date) {
+export function formatDateAsLong(dateStr: string) {
   const date = new Date(dateStr);
 
   if (isNaN(date.getTime())) {
@@ -27,4 +27,14 @@ export default function formatDate(dateStr: Date) {
   const daySuffix = getDaySuffix(day); // Get the appropriate suffix for the day
 
   return `${monthName} ${day}${daySuffix}`;
+}
+
+export function formatDateAsISO(date: Date): string {
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+  
 }

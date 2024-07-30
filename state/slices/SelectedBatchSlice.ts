@@ -15,7 +15,7 @@ export const SelectedBatchSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    update: (state, action: PayloadAction<Batch>) => {
+    updateSelectedBatch: (state, action: PayloadAction<Batch>) => {
       state.value = action.payload
     },
     updateWithResult: (state, action: PayloadAction<{id: number, correct: boolean}>) => {
@@ -26,17 +26,15 @@ export const SelectedBatchSlice = createSlice({
             tableList: state.value.tableList.map(tableItem => ({
                 ...tableItem,
                 conjugationList: tableItem.conjugationList?.map(conjugationItem =>
-                    conjugationItem.id === id
-                        ? { ...conjugationItem, correct }
-                        : conjugationItem
+                    conjugationItem.id === id ? { ...conjugationItem, correct } : conjugationItem
                 )
             }))
         };
-    }
+      }
     }
   }
 })
 
-export const { update: updateSelectedBatch, updateWithResult } = SelectedBatchSlice.actions
+export const { updateSelectedBatch, updateWithResult } = SelectedBatchSlice.actions
 
 export default SelectedBatchSlice

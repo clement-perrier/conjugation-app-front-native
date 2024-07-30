@@ -9,12 +9,6 @@ export default function BatchCreated() {
 
   const navigation = useAppNavigation();
 
-  const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
-
-  useEffect(() => {
-    console.log(selectedBatch)
-  },[selectedBatch])
-
   //  Buttons
   const buttons: LayoutButton[] = [
     {
@@ -25,7 +19,9 @@ export default function BatchCreated() {
 
   return (
     <MainLayout buttons={buttons}>
+
         <TableList results={false}/>
+        
     </MainLayout>
   );
 }

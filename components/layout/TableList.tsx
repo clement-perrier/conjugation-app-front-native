@@ -5,13 +5,13 @@ import { FlatList, View, Text, StyleSheet } from "react-native";
 
 export default function TableList({results} : {results: boolean}){
 
-  const selectedSet = useAppSelector(state => state.SelectedBatch.value);
+  const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
 
     return(
         <FlatList
             style={globalstyles.flatList}
             contentContainerStyle={globalstyles.flatListContent}
-            data={selectedSet?.tableList}
+            data={selectedBatch?.tableList}
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)
                 return (

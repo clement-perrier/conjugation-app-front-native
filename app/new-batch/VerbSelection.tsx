@@ -94,7 +94,9 @@ export default function VerbSelection() {
   ]
 
   return (
+    
     <MainLayout buttons={buttons} contentCentered={false}>
+
       <>
 
         {/* SELECTED TENSE */}
@@ -159,20 +161,10 @@ export default function VerbSelection() {
           </FlatList>
         </View>
 
-        {/* END BUTTON */}
-        {/* <View>
-            <Button 
-            title='ADD TO SET'
-            onPress={() => {
-              selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
-              dispatch(addSelectedTable(getSelectedConjugationTableList()))
-              navigation.navigate('Batch progress')}
-            }
-            disabled={selectedVerbList.length === 0}
-            />
-        </View> */}
-        </>
+      </>
+
     </MainLayout>
+
   );
 }
 

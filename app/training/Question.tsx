@@ -11,7 +11,7 @@ export default function Question() {
   const dispatch = useAppDispatch();
 
   // Selectors
-  const selectedSet = useAppSelector(state => state.SelectedBatch.value);
+  const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
 
   // States
   const [currentConjugationIndex, setCurrentConjugationIndex] = useState<number>(0)
@@ -34,12 +34,12 @@ export default function Question() {
   }
 
   const getConjugationList = () : Conjugation[] => {
-      return shuffleArray(selectedSet?.tableList.flatMap(table => table.conjugationList ?? []) ?? [])
+      return shuffleArray(selectedBatch?.tableList.flatMap(table => table.conjugationList ?? []) ?? [])
   };
 
   // Effects
   useEffect(() => {
-    selectedSet && setConjugationList(getConjugationList())
+    selectedBatch && setConjugationList(getConjugationList())
   }, [])
 
   useEffect(() => {

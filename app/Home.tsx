@@ -1,14 +1,15 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
-import formatDate from '@/utils/FormatDate';
+import { formatDateAsLong } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
+import { sortBatchListByDate, updateBatchInfo } from '@/state/slices/BatchListSlice';
 
 export default function Home() {
 
@@ -16,7 +17,9 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   // Selectors
-  const setList = useAppSelector(state => state.BatchList.value)
+  const batchList = useAppSelector(state => state.BatchList.value)
+
+  const sortedBatchList = batchList.slice().sort((a, b) => new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf())
 
   useEffect(() => {
     // TENSES, VERBS, PRONOUNS, CONJUGATIONS(table shaped) and SETS dispatched to the store
@@ -26,10 +29,6 @@ export default function Home() {
     dispatch(FetchTableList())
     dispatch(FetchBatchList())
   }, [])
-
-  useEffect(()=> {
-    console.log(setList)
-  }, [setList])
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -46,17 +45,16 @@ export default function Home() {
       <FlatList
             style={globalstyles.flatList}
             contentContainerStyle={globalstyles.flatListContent}
-            data={setList}
+            data={sortedBatchList}
             renderItem={({item}) => 
                 <ListButton 
-                  label={formatDate(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                  label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
                   onPress={() =>{
                     dispatch(updateSelectedBatch(item))
                     navigation.navigate('Start')
                   }}
                   icon='chevron-right'
                 />
-                // <MaterialIcons name='chevron-right' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 2, pointerEvents: 'none'}}/>
             }
             ItemSeparatorComponent={() => <View style={{height: 20}} />}
             >
