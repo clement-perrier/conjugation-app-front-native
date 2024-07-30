@@ -4,11 +4,8 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import { globalstyles } from '@/utils/GlobalStyle';
-import { useEffect } from 'react';
-import addDays from '@/utils/AddDays';
-import { addBatch } from '@/state/slices/BatchListSlice';
-import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { Batch } from '@/types/Batch';
+import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 
 export default function Start() {
 
@@ -40,14 +37,13 @@ export default function Start() {
   // Handlers
 
   // Buttons
-  let altBool = false
+  // let altBool = true
   const buttons: LayoutButton[] = [
     {
       label: 'START',
       onPress: () => {
         // const newSelectedBatch: Batch = JSON.parse(JSON.stringify(selectedBatch));
         // newSelectedBatch.tableList?.map(table => {
-        //       altBool = !altBool
         //       table.conjugationList?.map(conjugation => {
         //         conjugation.correct = altBool
         //       })})

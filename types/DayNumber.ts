@@ -6,5 +6,40 @@ export enum DayNumber {
     SEVEN = 7,
     FIFTEEN = 15,
     THIRTY = 30,
-    SIXTY = 60
+    SIXTY = 60,
+    HUNDREDTWENTY = 120
 }
+
+// Define an array that holds the intervals
+const dayNumberList = [
+    DayNumber.ZERO,
+    DayNumber.ONE,
+    DayNumber.TWO,
+    DayNumber.FOUR,
+    DayNumber.SEVEN,
+    DayNumber.FIFTEEN,
+    DayNumber.THIRTY,
+    DayNumber.SIXTY,
+    DayNumber.HUNDREDTWENTY
+  ];
+  
+// Function to get the next day number on the current day number
+export const getNextDayNumber = (currentDayNumber: DayNumber): DayNumber => {
+
+    const currentIndex = dayNumberList.indexOf(currentDayNumber);
+
+    return currentIndex !== -1 && currentIndex < dayNumberList.length - 1
+        ? dayNumberList[currentIndex + 1]
+        : DayNumber.ONE; // Return DayNumber.ONE if not found
+        
+};
+
+export const getIncrement = (currentDayNumber: DayNumber): DayNumber => {
+
+    const currentIndex = dayNumberList.indexOf(currentDayNumber);
+
+    return currentIndex !== -1 && currentIndex < dayNumberList.length - 1
+        ? dayNumberList[currentIndex + 1] - dayNumberList[currentIndex]
+        : DayNumber.ONE; // Return DayNumber.ONE if not found
+        
+};

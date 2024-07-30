@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AsyncListState } from '../interfaces/AsyncListState'
 import { Batch } from '@/types/Batch'
 import { FetchBatchList } from '@/services/ApiService'
-import { hasMistake, Table } from '@/types/Table'
-import TableList from '@/components/layout/TableList'
+import { Table } from '@/types/Table'
 import addDays from '@/utils/AddDays'
+import { getIncrement, getNextDayNumber } from '@/types/DayNumber'
 
 // Define the initial state using that type
 const initialState: AsyncListState<Batch> = {
@@ -21,14 +21,14 @@ export const BatchListSlice = createSlice({
     add: (state, action: PayloadAction<Batch>) => {
       state.value = [ ...state.value, action.payload ]
     },
-    updateBatchInfo: (state, action: PayloadAction<{ batchId: number, isCorrect?: boolean, increment?: number, newTableList?: Table[]}>) => {
-      const { batchId, isCorrect, increment, newTableList } = action.payload
+    updateBatchInfo: (state, action: PayloadAction<{ batchId: number, isCorrect?: boolean, newTableList?: Table[]}>) => {
+      const { batchId, isCorrect, newTableList } = action.payload
       state.value = state.value.map(batch => 
         batch.id === batchId
           ? {
               ...batch, 
-              dayNumber: isCorrect && increment ? batch.dayNumber + increment : batch.dayNumber, 
-              reviewingDate: increment ? addDays(batch.reviewingDate, increment) : batch.reviewingDate,
+              dayNumber: isCorrect ? getNextDayNumber(batch.dayNumber) : batch.dayNumber, 
+              reviewingDate: addDays(batch.reviewingDate, isCorrect ? getIncrement(batch.dayNumber) : 1),
               tableList: newTableList ? newTableList : batch.tableList
             } 
           : batch
