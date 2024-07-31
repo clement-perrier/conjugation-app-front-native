@@ -105,7 +105,7 @@ export default function Question() {
 
             {/*  Input */}
             <View style={styles.flexRow}>
-              <Text>{currentConjugation.pronounName}</Text>
+              <Text>{currentConjugation.pronoun.name}</Text>
               <TextInput
                 ref={inputRef}
                 autoFocus

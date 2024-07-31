@@ -9,7 +9,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
-import { sortBatchListByDate, updateBatchInfo } from '@/state/slices/BatchListSlice';
+import { updateBatchInfo } from '@/state/slices/BatchListSlice';
 
 export default function Home() {
 

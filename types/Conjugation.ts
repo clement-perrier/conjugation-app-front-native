@@ -1,8 +1,10 @@
+import { Pronoun } from "./Pronoun"
+
 export interface Conjugation {
     id: number
     name: string
-    pronounName: string
+    pronoun: Pronoun
     verbName: string
-    tenseName: string,
+    tenseName: string
     correct: boolean
 }

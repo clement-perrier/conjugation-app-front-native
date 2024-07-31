@@ -34,8 +34,12 @@ export default function BatchProgress() {
       onPress: () => {
         dispatch(updateSelectedBatch({
           dayNumber: 0,
-          reviewingDate: new Date(),
-          tableList: selectedTableList
+          reviewingDate: new Date().toISOString(),
+          tableList: selectedTableList,
+          language: {
+            id: 1,
+            name: 'Spanish'
+          }
         }))
         dispatch(clearSelectedTableList())
         navigation.navigate('Batch created')},
