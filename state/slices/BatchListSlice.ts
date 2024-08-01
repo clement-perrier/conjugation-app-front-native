@@ -21,15 +21,15 @@ export const BatchListSlice = createSlice({
     add: (state, action: PayloadAction<Batch>) => {
       state.value = [ ...state.value, action.payload ]
     },
-    updateBatchInfo: (state, action: PayloadAction<{ batchId: number, isCorrect?: boolean, newTableList?: Table[]}>) => {
-      const { batchId, isCorrect, newTableList } = action.payload
+    updateBatchInfo: (state, action: PayloadAction<Batch>) => {
+      const { id, dayNumber, reviewingDate, tableList } = action.payload
       state.value = state.value.map(batch => 
-        batch.id === batchId
+        batch.id === id
           ? {
               ...batch, 
-              dayNumber: isCorrect ? getNextDayNumber(batch.dayNumber) : batch.dayNumber, 
-              reviewingDate: addDays(batch.reviewingDate, isCorrect ? getIncrement(batch.dayNumber) : 1),
-              tableList: newTableList ? newTableList : batch.tableList
+              dayNumber: dayNumber, 
+              reviewingDate: reviewingDate,
+              tableList: tableList ? tableList : batch.tableList
             } 
           : batch
       )

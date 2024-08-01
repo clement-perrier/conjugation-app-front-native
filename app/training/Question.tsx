@@ -4,6 +4,12 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
 import { useEffect, useState, useRef } from 'react';
 import { updateWithResult } from '@/state/slices/SelectedBatchSlice';
+import { addBatch, updateBatchInfo } from '@/state/slices/BatchListSlice';
+import addDays from '@/utils/AddDays';
+import { hasCorrect, hasMistake } from '@/types/Table';
+import { getIncrement, getNextDayNumber } from '@/types/DayNumber';
+import { Batch } from '@/types/Batch';
+import { SaveBatch, UpdateBatch } from '@/services/ApiService';
 
 export default function Question() {
 
@@ -12,6 +18,7 @@ export default function Question() {
 
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
+  const bathcList = useAppSelector(state => state.BatchList.value);
 
   // States
   const [currentConjugationIndex, setCurrentConjugationIndex] = useState<number>(0)
@@ -36,6 +43,30 @@ export default function Question() {
   const getConjugationList = () : Conjugation[] => {
       return shuffleArray(selectedBatch?.tableList.flatMap(table => table.conjugationList ?? []) ?? [])
   };
+
+  const slideIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(slideAnimation, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const slideOut = () => {
+    // Will change fadeAnim value to 0 in 3 seconds
+    Animated.timing(slideAnimation, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const checkAllResult = (bool : boolean) => {
+    return selectedBatch.tableList.every(table => 
+      table.conjugationList?.some(conjugation => 
+          conjugation.correct = bool));
+  }
 
   // Effects
   useEffect(() => {
@@ -67,29 +98,77 @@ export default function Question() {
       setCurrentConjugationIndex(currentConjugationIndex + 1) 
       setanswer('')
       setAnswerStatus(null);
-    } else {
+    } 
+    // Training is finished
+    else {
+      handleResults()
       navigation.navigate('Results')
     }
     slideOut()
   }
 
-  const slideIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(slideAnimation, {
-      toValue: 1,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
+  const handleResults = () => {
 
-  const slideOut = () => {
-    // Will change fadeAnim value to 0 in 3 seconds
-    Animated.timing(slideAnimation, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
+    const updatedBatch: Batch = {...selectedBatch}
+
+    const allCorrect = selectedBatch.tableList.every(table => 
+                          table.conjugationList?.every(conjugation => 
+                              conjugation.correct === true));
+                              
+    const allMistake = selectedBatch.tableList.every(table => 
+                          table.conjugationList?.some(conjugation => 
+                              conjugation.correct === false));
+
+    if(allCorrect || allMistake){
+
+      // All correct => next day number - All mistake => day number unchanged and reviewing date +1 day
+      updatedBatch.dayNumber = allCorrect ? getNextDayNumber(selectedBatch.dayNumber) : selectedBatch.dayNumber
+      updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, allCorrect ? getIncrement(selectedBatch.dayNumber) : 1)  
+
+    } else {
+
+      // Some table correct some table mistake
+
+      // Filtering correct table(s)
+      updatedBatch.tableList = selectedBatch.tableList.filter(table => !hasMistake(table))
+      // All correct table => next day number
+      updatedBatch.dayNumber = getNextDayNumber(selectedBatch.dayNumber)
+      updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, getIncrement(selectedBatch.dayNumber))
+
+      // New batch with mistaken table(s)
+      const newBatch: Batch = {
+        ...selectedBatch,
+        id: bathcList.length,
+        tableList: selectedBatch.tableList.filter(table => hasMistake(table)),
+        reviewingDate: addDays(selectedBatch.reviewingDate, 1),
+        userLearningLanguage: {
+          id: 1,
+          user: {
+            id: 1,
+            firstname: 'clement',
+            lastsname: 'perrier'
+          },
+          learningLanguage: {
+            id: 1,
+            name: 'Spanish'
+          }
+        }
+      }
+
+      // Dispatch add new batch to BatchList
+      dispatch(addBatch(newBatch))
+
+      // Save new Batch to DB
+      SaveBatch(newBatch)
+      
+    }
+
+    // Dispatch updated batch to batch list
+    dispatch(updateBatchInfo(updatedBatch))
+
+    // Update batch in DB
+    UpdateBatch(updatedBatch)
+  }
 
   return (
     <View style={styles.container}>

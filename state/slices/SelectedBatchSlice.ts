@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Batch } from '@/types/Batch'
 
-interface SetState {
-  value: Batch | null
+interface BatchState {
+  value: Batch
 }
 
 // Define the initial state using that type
-const initialState: SetState = {
-  value: null
+const initialState: BatchState = {
+  value: {
+    id: 0,
+    dayNumber: 0,
+    reviewingDate: '',
+    tableList: []
+  }
 }
 
 export const SelectedBatchSlice = createSlice({

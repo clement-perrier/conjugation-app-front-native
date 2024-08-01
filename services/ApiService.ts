@@ -53,3 +53,9 @@ export const SaveBatch = async (batch: Batch) => {
     const response = await apiService.post('newBatch', batch);
     return response.data;
 }
+
+export const UpdateBatch = async (batch: Batch) => {
+    const response = await apiService.put('updateBatch', batch);
+    return response.data;
+}
+
