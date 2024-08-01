@@ -12,6 +12,7 @@ import { View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
+import { ConnectivityProvider } from "@/utils/ConnectivityProvider";
 
 const Stack = createStackNavigator();
 
@@ -21,66 +22,68 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <View style={{flex: 1}}>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="Tense(s) selection"
-          component={TenseSelection}
-          options={{ 
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Verb(s) selection" 
-          component={VerbSelection}
-          options={{ 
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Batch progress"  
-          component={BatchProgress}
-          options={{ 
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Batch created"
-          component={BatchCreated} 
-          options={{   
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Start"
-          component={Start} 
-          options={{   
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Question" 
-          component={Question}
-          options={{ 
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-        <Stack.Screen 
-          name="Results" 
-          component={Results}
-          options={{ 
-            headerLeft: () => null,
-            headerRight: () => <CancelStackButton navigation={navigation}/>
-          }}
-        />
-    </Stack.Navigator>
-    </View>
-  </Provider>
+      {/* <ConnectivityProvider> */}
+        <View style={{flex: 1}}>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
+            <Stack.Screen 
+              name="Tense(s) selection"
+              component={TenseSelection}
+              options={{ 
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Verb(s) selection" 
+              component={VerbSelection}
+              options={{ 
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Batch progress"  
+              component={BatchProgress}
+              options={{ 
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Batch created"
+              component={BatchCreated} 
+              options={{   
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Start"
+              component={Start} 
+              options={{   
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Question" 
+              component={Question}
+              options={{ 
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Results" 
+              component={Results}
+              options={{ 
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+          </Stack.Navigator>
+        </View>
+      {/* </ConnectivityProvider> */}
+    </Provider>
   );
 }
 

@@ -95,7 +95,7 @@ export default function VerbSelection() {
 
   return (
     
-    <MainLayout buttons={buttons} contentCentered={false}>
+    <MainLayout buttons={buttons}>
 
       <>
 
@@ -116,7 +116,7 @@ export default function VerbSelection() {
             onChangeText={setSearchText}
             value={searchedText}
             placeholder="search verb"
-            inlineImageLeft='react-logo'
+            inlineImageLeft='react_logo'
             />
         </View>
 

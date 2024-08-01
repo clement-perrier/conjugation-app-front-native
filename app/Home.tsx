@@ -42,6 +42,7 @@ export default function Home() {
   return (
 
     <MainLayout buttons={buttons}>
+      
       <FlatList
             style={globalstyles.flatList}
             contentContainerStyle={globalstyles.flatListContent}

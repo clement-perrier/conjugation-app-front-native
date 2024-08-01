@@ -4,7 +4,7 @@ import { LayoutButton } from '@/types/LayoutButton';
 import BottomButton from '../buttons/BottomButton';
 
 
-export default function MainLayout({children, buttons} : {children: ReactElement, contentCentered: boolean, buttons?: LayoutButton[]}){
+export default function MainLayout({children, buttons} : {children: ReactElement, buttons?: LayoutButton[]}){
     
     return (
         <View style={[styles.container, styles.padding20]}>
@@ -34,9 +34,9 @@ export default function MainLayout({children, buttons} : {children: ReactElement
     
 }
 
-MainLayout.defaultProps = {
-    contentCentered: true,
-};
+// MainLayout.defaultProps = {
+//     contentCentered: true,
+// };
 
 const styles = StyleSheet.create({
     container: {
