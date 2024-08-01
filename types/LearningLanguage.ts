@@ -1,6 +1,6 @@
 
 
-export interface Language {
+export interface LearningLanguage {
     id: number
     name: string
 }

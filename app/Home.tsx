@@ -9,7 +9,6 @@ import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
-import { updateBatchInfo } from '@/state/slices/BatchListSlice';
 
 export default function Home() {
 
@@ -49,6 +48,7 @@ export default function Home() {
             data={sortedBatchList}
             renderItem={({item}) => 
                 <ListButton 
+                  key={item.id}
                   label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
                   onPress={() =>{
                     dispatch(updateSelectedBatch(item))

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Verb } from '@/types/Verb';
+import { Batch } from '@/types/Batch';
 
 const API_BASE_URL = 'http://192.168.1.181:8080';
 
@@ -43,7 +44,12 @@ export const FetchTableList = createAsyncThunk(
 export const FetchBatchList = createAsyncThunk(
     'fetchBatchList',
     async () => {
-        const response = await apiService.get('batchs/byUserAndLanguage?languageId=1');
+        const response = await apiService.get('batchesByUserAndLanguage?languageId=1');
         return response.data;
     }
 )
+
+export const SaveBatch = async (batch: Batch) => {
+    const response = await apiService.post('newBatch', batch);
+    return response.data;
+}

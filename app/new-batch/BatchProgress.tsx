@@ -1,10 +1,13 @@
 import ListButton from '@/components/buttons/ListButton';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { SaveBatch } from '@/services/ApiService';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
+import { addBatch } from '@/state/slices/BatchListSlice';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { updateVerbList } from '@/state/slices/VerbListSlice';
+import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useEffect } from 'react';
@@ -17,6 +20,7 @@ export default function BatchProgress() {
   const dispatch = useAppDispatch();
 
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
+  const batchList = useAppSelector(state => state.BatchList.value)
 
   useEffect(() => {
     console.log(selectedTableList)
@@ -32,16 +36,40 @@ export default function BatchProgress() {
       label: 'CREATE SET',
       disabled: selectedTableList.length < 1,
       onPress: () => {
-        dispatch(updateSelectedBatch({
+
+        // New batch object
+        const newBatch: Batch = {
           dayNumber: 0,
           reviewingDate: new Date().toISOString(),
           tableList: selectedTableList,
-          language: {
+          userLearningLanguage: {
             id: 1,
-            name: 'Spanish'
+            user: {
+              id: 1,
+              firstname: 'clement',
+              lastsname: 'perrier'
+            },
+            learningLanguage: {
+              id: 1,
+              name: 'Spanish'
+            }
           }
-        }))
+        }
+
+        // Save new Batch in database
+        SaveBatch(newBatch)
+
+        // Optimistics update => redux add new batch to batch list
+        newBatch.id = batchList.length
+        dispatch(addBatch(newBatch))
+
+        // Update selected batch with this one
+        dispatch(updateSelectedBatch(newBatch))
+
+        // Selection ended, clearing the selection
         dispatch(clearSelectedTableList())
+
+        // Navigation to next page
         navigation.navigate('Batch created')},
     }
   ]

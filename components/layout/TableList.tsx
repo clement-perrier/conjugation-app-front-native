@@ -31,7 +31,7 @@ export default function TableList({results} : {results: boolean}){
                                         results ? 
                                                 (conjugation.correct ? styles.conjugationCorrect : styles.conjugationIncorrect) 
                                                 : styles.conjugationNormal]}>
-                                    {conjugation.pronoun + ' ' + conjugation.name}
+                                    {conjugation.pronoun.name + ' ' + conjugation.name}
                                 </Text>
                                 )
                             }
