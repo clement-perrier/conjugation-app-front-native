@@ -9,42 +9,50 @@ const apiService = axios.create({
     baseURL: API_BASE_URL,
   });
 
+export const FetchUser = createAsyncThunk(
+    'fetchUser',
+    async () => {
+        const response = await apiService.get('user?userId=1');
+        return response.data;
+    }
+);
+
 export const FetchTenseList = createAsyncThunk(
     'fetchTenseList',
-    async () => {
-        const response = await apiService.get('tenses?languageId=1');
+    async (languageId: number) => {
+        const response = await apiService.get(`tenses?languageId=${languageId}`);
         return response.data;
     }
 );
 
 export const FetchVerbList = createAsyncThunk(
     'fetchVerbList',
-    async () : Promise<Verb[]> => {
-        const response = await apiService.get('verbs?languageId=1');
+    async (languageId: number) : Promise<Verb[]> => {
+        const response = await apiService.get(`verbs?languageId=${languageId}`);
         return response.data;
     }
 )
 
 export const FetchPronounList = createAsyncThunk(
     'fetchPronounList',
-    async () => {
-        const response = await apiService.get('pronouns?languageId=1');
+    async (languageId: number) => {
+        const response = await apiService.get(`pronouns?languageId=${languageId}`);
         return response.data;
     }
 )
 
 export const FetchTableList = createAsyncThunk(
     'fetchTableList',
-    async () => {
-        const response = await apiService.get('tables?languageId=1');
+    async (languageId: number) => {
+        const response = await apiService.get(`tables?languageId=${languageId}`);
         return response.data;
     }
 )
 
 export const FetchBatchList = createAsyncThunk(
     'fetchBatchList',
-    async () => {
-        const response = await apiService.get('batchesByUserAndLanguage?languageId=1');
+    async ({userId, languageId} : {userId: number, languageId: number}) => {
+        const response = await apiService.get(`batchesByUserAndLanguage?userId=${userId}&languageId=${languageId}`);
         return response.data;
     }
 )
@@ -58,4 +66,3 @@ export const UpdateBatch = async (batch: Batch) => {
     const response = await apiService.put('updateBatch', batch);
     return response.data;
 }
-

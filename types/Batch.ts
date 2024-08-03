@@ -8,5 +8,4 @@ export type Batch = {
     dayNumber: DayNumber,
     reviewingDate: string,
     tableList: Table[]
-    userLearningLanguage?: UserLearningLanguage
 }

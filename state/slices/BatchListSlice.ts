@@ -48,7 +48,7 @@ export const BatchListSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
     });
-    }
+  }
 })
 
 export const { add: addBatch, updateBatchInfo } = BatchListSlice.actions
