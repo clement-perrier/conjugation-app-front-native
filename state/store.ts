@@ -7,9 +7,13 @@ import PronounListSlice from './slices/PronounListSlice'
 import SelectedBatchSlice from './slices/SelectedBatchSlice'
 import BatchListSlice from './slices/BatchListSlice'
 import TableListSlice from './slices/TableListSlice'
+import UserSlice from './slices/UserSlice'
+import LearningLanguageListSlice from './slices/LearningLanguageListSlice'
 
 export const store = configureStore({
   reducer: {
+    User: UserSlice.reducer,
+    LearningLanguageList: LearningLanguageListSlice.reducer,
     selectedTense: SelectedTenseSlice.reducer,
     selectedTableList: SelectedTableListSlice.reducer,
     SelectedBatch: SelectedBatchSlice.reducer,

@@ -22,18 +22,18 @@ export const UserSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-  .addCase(FetchUser.pending, (state) => {
-      state.loading = true;
-  })
-  .addCase(FetchUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.value = action.payload;
-  })
-  .addCase(FetchUser.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-  });
-}
+      .addCase(FetchUser.pending, (state) => {
+          state.loading = true;
+      })
+      .addCase(FetchUser.fulfilled, (state, action) => {
+          state.loading = false;
+          state.value = action.payload;
+      })
+      .addCase(FetchUser.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message;
+      });
+  }
 })
 
 export default UserSlice

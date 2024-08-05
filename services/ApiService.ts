@@ -17,6 +17,14 @@ export const FetchUser = createAsyncThunk(
     }
 );
 
+export const FetchLearningLanguageList = createAsyncThunk(
+    'fetchLearningLanguageList',
+    async () => {
+        const response = await apiService.get('learningLanguages');
+        return response.data;
+    }
+);
+
 export const FetchTenseList = createAsyncThunk(
     'fetchTenseList',
     async (languageId: number) => {
