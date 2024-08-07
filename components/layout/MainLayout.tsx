@@ -1,13 +1,15 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import type { ReactElement } from 'react';
 import { LayoutButton } from '@/types/LayoutButton';
 import BottomButton from '../buttons/BottomButton';
 
 
-export default function MainLayout({children, buttons} : {children: ReactElement, buttons?: LayoutButton[]}){
+export default function MainLayout({children, buttons, title} : {children: ReactElement, buttons?: LayoutButton[], title?: string}){
     
     return (
         <View style={[styles.container, styles.padding20]}>
+
+            <Text>{title}</Text>
 
             <View style={styles.content}>
                {children}

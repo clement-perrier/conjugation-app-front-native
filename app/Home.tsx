@@ -81,42 +81,43 @@ export default function Home() {
         <IconButton icon='settings' size={40}/>
 
         <Pressable 
-              style={({ pressed }) => [
-                styles.flagButton,
-                pressed && styles.buttonPressed
-              ]}
-              onPress={()=>{}}>
-              <Image style={[styles.flagImage]} 
-                     source={flags[user.defaultLearningLanguage.imageName]}/>
+          style={({ pressed }) => [
+            styles.flagButton,
+            pressed && styles.buttonPressed
+          ]}
+          onPress={() => navigation.navigate('Learning language list')}>
+          <Image style={[styles.flagImage]} 
+                  source={flags[user.defaultLearningLanguage.imageName]}/>
         </Pressable>
 
       </View>
 
-    <MainLayout buttons={buttons}>
-      <>
-        {sortedBatchList && sortedBatchList.length > 0 
-          ? (<FlatList
-                style={globalstyles.flatList}
-                contentContainerStyle={globalstyles.flatListContent}
-                data={sortedBatchList}
-                renderItem={({item}) => 
-                    <ListButton 
-                      key={item.id}
-                      label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
-                      onPress={() =>{
-                        dispatch(updateSelectedBatch(item))
-                        navigation.navigate('Start')
-                      }}
-                      icon='chevron-right'
-                    />
-                }
-                ItemSeparatorComponent={() => <View style={{height: 20}} />}
-                >
-            </FlatList>) 
-          : (<Text>No sets available</Text>)
-        }
-      </>
-    </MainLayout>
+      <MainLayout buttons={buttons}>
+        <>
+          {sortedBatchList && sortedBatchList.length > 0 
+            ? (<FlatList
+                  style={globalstyles.flatList}
+                  contentContainerStyle={globalstyles.flatListContent}
+                  data={sortedBatchList}
+                  renderItem={({item}) => 
+                      <ListButton 
+                        key={item.id}
+                        label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                        onPress={() =>{
+                          dispatch(updateSelectedBatch(item))
+                          navigation.navigate('Start')
+                        }}
+                        icon='chevron-right'
+                      />
+                  }
+                  ItemSeparatorComponent={() => <View style={{height: 20}} />}
+                  >
+              </FlatList>) 
+            : (<Text>No sets available</Text>)
+          }
+        </>
+      </MainLayout>
+      
     </>
   );
 }

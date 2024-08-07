@@ -1,6 +1,7 @@
 import { FetchUser } from '@/services/ApiService'
+import { LearningLanguage } from '@/types/LearningLanguage'
 import { defaultUser, User } from '@/types/User'
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface UserState {
   value: User,
@@ -19,7 +20,14 @@ export const UserSlice = createSlice({
   name: 'user',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  reducers: {},
+  reducers: {
+    updateDefaultLearningLanguage: (state, action: PayloadAction<LearningLanguage>) => {
+      state.value.defaultLearningLanguage = {...action.payload}
+    },
+    addLearningLanguage: (state, action: PayloadAction<LearningLanguage>) => {
+      state.value.learningLanguageList = [...state.value.learningLanguageList, action.payload]
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(FetchUser.pending, (state) => {
@@ -36,4 +44,5 @@ export const UserSlice = createSlice({
   }
 })
 
+export const { updateDefaultLearningLanguage, addLearningLanguage } = UserSlice.actions
 export default UserSlice

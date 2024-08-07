@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Verb } from '@/types/Verb';
 import { Batch } from '@/types/Batch';
+import { User } from '@/types/User';
 
 const API_BASE_URL = 'http://192.168.1.181:8080';
 
@@ -72,5 +73,15 @@ export const SaveBatch = async (batch: Batch) => {
 
 export const UpdateBatch = async (batch: Batch) => {
     const response = await apiService.put('updateBatch', batch);
+    return response.data;
+}
+
+export const UpdateUserLearningLanguageList = async (userId: number, languageId: number) => {
+    const response = await apiService.put(`updateUserLearningLanguageList?userId=${userId}&learningLanguageId=${languageId}`);
+    return response.data;
+}
+
+export const UpdateUserDefaultLearningLanguage = async (userId: number, languageId: number) => {
+    const response = await apiService.put(`updateUserDefaultLearningLanguage?userId=${userId}&learningLanguageId=${languageId}`);
     return response.data;
 }

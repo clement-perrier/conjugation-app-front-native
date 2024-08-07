@@ -13,6 +13,8 @@ import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
 import { ConnectivityProvider } from "@/utils/ConnectivityProvider";
+import LearningLanguageList from "./learning-language-settings/LearningLanguageList";
+import AddLearningLanguage from "./learning-language-settings/AddLearningLanguage";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +28,21 @@ export default function App() {
         <View style={{flex: 1}}>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
+            <Stack.Screen 
+              name="Learning language list"
+              component={LearningLanguageList}
+              options={{ 
+                headerLeft: () => null,
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
+            <Stack.Screen 
+              name="Add learning language"
+              component={AddLearningLanguage}
+              options={{ 
+                headerRight: () => <CancelStackButton navigation={navigation}/>
+              }}
+            />
             <Stack.Screen 
               name="Tense(s) selection"
               component={TenseSelection}
