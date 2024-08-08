@@ -2,13 +2,14 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Verb } from '@/types/Verb';
 import { Batch } from '@/types/Batch';
-import { User } from '@/types/User';
 
 const API_BASE_URL = 'http://192.168.1.181:8080';
 
 const apiService = axios.create({
     baseURL: API_BASE_URL,
   });
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const FetchUser = createAsyncThunk(
     'fetchUser',

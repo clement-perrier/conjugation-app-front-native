@@ -1,4 +1,4 @@
-import { View, FlatList, StyleSheet, Text, Image, Pressable } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { useEffect, useMemo } from 'react';
@@ -22,6 +22,7 @@ export default function Home() {
   // Selectors
   const user = useAppSelector(state => state.User.value)
   const batchList = useAppSelector(state => state.BatchList.value)
+  const batchListLoading = useAppSelector(state => state.BatchList.loading)
 
   // Derived data
 
@@ -58,11 +59,6 @@ export default function Home() {
     }
   }, [user])
 
-  // Functions
-  const fetchDataByLanguage = async (languageId: number) => {
-    
-  }
-
   // Buttons
   const buttons: LayoutButton[] = [
     {
@@ -94,27 +90,31 @@ export default function Home() {
 
       <MainLayout buttons={buttons}>
         <>
-          {sortedBatchList && sortedBatchList.length > 0 
-            ? (<FlatList
-                  style={globalstyles.flatList}
-                  contentContainerStyle={globalstyles.flatListContent}
-                  data={sortedBatchList}
-                  renderItem={({item}) => 
-                      <ListButton 
-                        key={item.id}
-                        label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
-                        onPress={() =>{
-                          dispatch(updateSelectedBatch(item))
-                          navigation.navigate('Start')
-                        }}
-                        icon='chevron-right'
-                      />
-                  }
-                  ItemSeparatorComponent={() => <View style={{height: 20}} />}
-                  >
-              </FlatList>) 
-            : (<Text>No sets available</Text>)
+          {
+            batchListLoading
+            ? <ActivityIndicator size="large" color="#0000ff" />
+            : (sortedBatchList && sortedBatchList.length > 0 
+              ? (<FlatList
+                    style={globalstyles.flatList}
+                    contentContainerStyle={globalstyles.flatListContent}
+                    data={sortedBatchList}
+                    renderItem={({item}) => 
+                        <ListButton 
+                          key={item.id}
+                          label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                          onPress={() =>{
+                            dispatch(updateSelectedBatch(item))
+                            navigation.navigate('Start')
+                          }}
+                          icon='chevron-right'
+                        />
+                    }
+                    ItemSeparatorComponent={() => <View style={{height: 20}} />}
+                    >
+                </FlatList>) 
+              : (<Text>No sets available</Text>))
           }
+          
         </>
       </MainLayout>
       
