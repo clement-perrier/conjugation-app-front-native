@@ -33,28 +33,28 @@ export default function App() {
               component={LearningLanguageList}
               options={{ 
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
             <Stack.Screen 
               name="Add learning language"
               component={AddLearningLanguage}
               options={{ 
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
             <Stack.Screen 
               name="Tense(s) selection"
               component={TenseSelection}
               options={{ 
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
               }}
             />
             <Stack.Screen 
               name="Verb(s) selection" 
               component={VerbSelection}
               options={{ 
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
               }}
             />
             <Stack.Screen 
@@ -62,7 +62,7 @@ export default function App() {
               component={BatchProgress}
               options={{ 
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
               }}
             />
             <Stack.Screen 
@@ -70,7 +70,7 @@ export default function App() {
               component={BatchCreated} 
               options={{   
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
             <Stack.Screen 
@@ -78,7 +78,7 @@ export default function App() {
               component={Start} 
               options={{   
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
             <Stack.Screen 
@@ -86,7 +86,7 @@ export default function App() {
               component={Question}
               options={{ 
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
             <Stack.Screen 
@@ -94,7 +94,7 @@ export default function App() {
               component={Results}
               options={{ 
                 headerLeft: () => null,
-                headerRight: () => <CancelStackButton navigation={navigation}/>
+                headerRight: () => <CancelStackButton/>
               }}
             />
           </Stack.Navigator>

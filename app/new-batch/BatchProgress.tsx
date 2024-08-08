@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addBatch } from '@/state/slices/BatchListSlice';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
-import { updateVerbList } from '@/state/slices/VerbListSlice';
 import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
 import { globalstyles } from '@/utils/GlobalStyle';
@@ -41,19 +40,7 @@ export default function BatchProgress() {
         const newBatch: Batch = {
           dayNumber: 0,
           reviewingDate: new Date().toISOString(),
-          tableList: selectedTableList,
-          userLearningLanguage: {
-            id: 1,
-            user: {
-              id: 1,
-              firstname: 'clement',
-              lastsname: 'perrier'
-            },
-            learningLanguage: {
-              id: 1,
-              name: 'Spanish'
-            }
-          }
+          tableList: selectedTableList
         }
 
         // Save new Batch in database
@@ -87,7 +74,6 @@ export default function BatchProgress() {
                   label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
                   onPress={() => {
                     dispatch(removeSelectedTable(item))
-                    dispatch(updateVerbList(item.verb))
                   }}
                   icon='close'
                 />

@@ -1,17 +1,29 @@
-import { NavigationProp, StackActions } from "@react-navigation/native"
-import { RootStackParamList } from "@/types/RootStackParamList"
+import { StackActions } from "@react-navigation/native"
 import IconButton from "../buttons/IconButton"
 import { StyleSheet } from "react-native"
+import { useAppNavigation } from "@/hooks/useAppNavigation";
+import { useAppDispatch } from "@/state/hooks";
+import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
 
-export default function CancelStackButton({ navigation } : { navigation: NavigationProp<RootStackParamList> }) {
-   return (
-    <IconButton 
-        icon={'close'}
-        size={30}
-        onPress={() => navigation.dispatch(StackActions.popToTop())}
-        style={styles.button}
-    />
-   )
+export default function CancelStackButton({selectionToBeCleared} : {selectionToBeCleared?: boolean}) {
+
+    const dispatch = useAppDispatch()
+    const navigation = useAppNavigation();
+
+    const handlePress = () => {
+        selectionToBeCleared && dispatch(clearSelectedTableList())
+        navigation.dispatch(StackActions.popToTop())
+    }
+
+    return (
+        <IconButton 
+            icon={'close'}
+            size={30}
+            onPress={handlePress}
+            style={styles.button}
+        />
+    )
+    
 }
 
 const styles = StyleSheet.create({

@@ -7,7 +7,6 @@ import IconButton from '@/components/buttons/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Table } from '@/types/Table';
-import { updateVerbList } from '@/state/slices/VerbListSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
@@ -22,7 +21,13 @@ export default function VerbSelection() {
 
   const screenWidth = useWindowDimensions().width;
 
-  // FUNCTIONS
+  // Selectors
+  const selectedTableList = useAppSelector(state => state.selectedTableList.value)
+  const selectedTense = useAppSelector(state => state.selectedTense.value)
+  const tableList: Table[] = useAppSelector(state => state.TableList.value)
+  const verbList = useAppSelector(state => state.verbList.value)
+
+  // Functions
   const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10))
   
   const textFilter = (text: string) => {
@@ -58,24 +63,14 @@ export default function VerbSelection() {
     return result
   }
 
-  // UI DATA, STATES
+  // States
   const [numColumns, setNumColumns] = useState(calcNumColumns());
-
-  const selectedTense = useAppSelector(state => state.selectedTense.value)
-
   const [searchedText, setSearchText] = useState('')
-
-  const verbList = useAppSelector(state => state.verbList.value)
-
   const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([])
-
   const unselectedVerbList = verbList && verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
-
   const filteredVerbList = textFilter(searchedText)
 
-  const tableList: Table[] = useAppSelector(state => state.TableList.value)
-
-  // USE EFFECT
+  // Effects
   useEffect(() => {
     setNumColumns(calcNumColumns());
   }, [screenWidth]);
@@ -85,7 +80,6 @@ export default function VerbSelection() {
     {
       label: 'ADD TO SET',
       onPress: () => {
-        selectedVerbList.forEach(verb => dispatch(updateVerbList(verb)))
         dispatch(addSelectedTable(getSelectedConjugationTableList()))
         navigation.navigate('Batch progress')
       },
@@ -153,7 +147,7 @@ export default function VerbSelection() {
                 <ListButton
                   label={item.name}
                   onPress={() => addSelectedVerb(item)}
-                  disabled={item.selected}
+                  disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
                 />
               </View>
               }
