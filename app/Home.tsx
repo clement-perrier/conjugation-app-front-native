@@ -34,18 +34,6 @@ export default function Home() {
   useEffect(() => {
     dispatch(FetchUser())
     dispatch(FetchLearningLanguageList())
-    // TENSES, VERBS, PRONOUNS, CONJUGATIONS(table shaped) and SETS dispatched to the store
-    /* const fetchData = async () => {
-      const user: User = await dispatch(FetchUser()).unwrap();
-      const languageId = user.defaultLearningLanguageId
-      // In ApiService put all the following dispatch in one function name like fetchLanguageData()
-      await dispatch(FetchTenseList(languageId))
-      await dispatch(FetchVerbList(languageId))
-      await dispatch(FetchPronounList(languageId))
-      await dispatch(FetchTableList(languageId))
-      await dispatch(FetchBatchList({userId: user.id, languageId}))
-    };
-    fetchData() */
   },[])
 
   useEffect(() => {

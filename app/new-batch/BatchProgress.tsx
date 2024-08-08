@@ -8,6 +8,7 @@ import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
+import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useEffect } from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
@@ -20,6 +21,7 @@ export default function BatchProgress() {
 
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
   const batchList = useAppSelector(state => state.BatchList.value)
+  const user = useAppSelector(state => state.User.value)
 
   useEffect(() => {
     console.log(selectedTableList)
@@ -36,11 +38,17 @@ export default function BatchProgress() {
       disabled: selectedTableList.length < 1,
       onPress: () => {
 
+        const userLearningLanguage: UserLearningLanguage = {
+          userId: user.id, 
+          learningLanguageId: user.defaultLearningLanguage.id
+        }
+
         // New batch object
         const newBatch: Batch = {
           dayNumber: 0,
           reviewingDate: new Date().toISOString(),
-          tableList: selectedTableList
+          tableList: selectedTableList,
+          userLearningLanguage
         }
 
         // Save new Batch in database

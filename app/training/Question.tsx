@@ -10,6 +10,7 @@ import { hasCorrect, hasMistake } from '@/types/Table';
 import { getIncrement, getNextDayNumber } from '@/types/DayNumber';
 import { Batch } from '@/types/Batch';
 import { SaveBatch, UpdateBatch } from '@/services/ApiService';
+import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 
 export default function Question() {
 
@@ -19,6 +20,7 @@ export default function Question() {
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
   const bathcList = useAppSelector(state => state.BatchList.value);
+  const user = useAppSelector(state => state.User.value);
 
   // States
   const [currentConjugationIndex, setCurrentConjugationIndex] = useState<number>(0)
@@ -135,24 +137,18 @@ export default function Question() {
       updatedBatch.dayNumber = getNextDayNumber(selectedBatch.dayNumber)
       updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, getIncrement(selectedBatch.dayNumber))
 
+      const userLearningLanguage: UserLearningLanguage = {
+        userId: user.id, 
+        learningLanguageId: user.defaultLearningLanguage.id
+      }
+
       // New batch with mistaken table(s)
       const newBatch: Batch = {
         ...selectedBatch,
         id: bathcList.length,
         tableList: selectedBatch.tableList.filter(table => hasMistake(table)),
         reviewingDate: addDays(selectedBatch.reviewingDate, 1),
-        userLearningLanguage: {
-          id: 1,
-          user: {
-            id: 1,
-            firstname: 'clement',
-            lastsname: 'perrier'
-          },
-          learningLanguage: {
-            id: 1,
-            name: 'Spanish'
-          }
-        }
+        userLearningLanguage
       }
 
       // Dispatch add new batch to BatchList

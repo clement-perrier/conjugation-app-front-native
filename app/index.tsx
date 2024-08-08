@@ -28,75 +28,72 @@ export default function App() {
         <View style={{flex: 1}}>
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen  name="Home"component={Home} options={{ headerShown: false }} />
-            <Stack.Screen 
-              name="Learning language list"
-              component={LearningLanguageList}
-              options={{ 
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton/>
+            {/* No header style neither title */}
+            <Stack.Group
+              screenOptions={{
+                headerRight: () => <CancelStackButton/>,
+                headerBackground: () => <View></View>,
+                headerTitle: ''
               }}
-            />
-            <Stack.Screen 
-              name="Add learning language"
-              component={AddLearningLanguage}
-              options={{ 
-                headerRight: () => <CancelStackButton/>
-              }}
-            />
-            <Stack.Screen 
-              name="Tense(s) selection"
-              component={TenseSelection}
-              options={{ 
-                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
-              }}
-            />
-            <Stack.Screen 
-              name="Verb(s) selection" 
-              component={VerbSelection}
-              options={{ 
-                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
-              }}
-            />
-            <Stack.Screen 
-              name="Batch progress"  
-              component={BatchProgress}
-              options={{ 
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
-              }}
-            />
-            <Stack.Screen 
-              name="Batch created"
-              component={BatchCreated} 
-              options={{   
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton/>
-              }}
-            />
-            <Stack.Screen 
-              name="Start"
-              component={Start} 
-              options={{   
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton/>
-              }}
-            />
-            <Stack.Screen 
-              name="Question" 
-              component={Question}
-              options={{ 
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton/>
-              }}
-            />
-            <Stack.Screen 
-              name="Results" 
-              component={Results}
-              options={{ 
-                headerLeft: () => null,
-                headerRight: () => <CancelStackButton/>
-              }}
-            />
+            >
+              {/* With back button */}
+              <Stack.Screen 
+                name="Add learning language"
+                component={AddLearningLanguage}
+              />
+              <Stack.Screen 
+                name="Tense(s) selection"
+                component={TenseSelection}
+                options={{ 
+                  headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
+                }}
+              />
+              <Stack.Screen 
+                name="Verb(s) selection" 
+                component={VerbSelection}
+                options={{ 
+                  headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
+                }}
+              />
+
+              <Stack.Group
+                screenOptions={{
+                  headerLeft: () => null
+                }}
+              >
+                {/* No back button */}
+                <Stack.Screen 
+                  name="Learning language list"
+                  component={LearningLanguageList}
+                />
+                <Stack.Screen 
+                  name="Batch created"
+                  component={BatchCreated}
+                />
+                <Stack.Screen 
+                  name="Start"
+                  component={Start}
+                />
+                <Stack.Screen 
+                  name="Question" 
+                  component={Question}
+                />
+                <Stack.Screen 
+                  name="Results" 
+                  component={Results}
+                />
+                <Stack.Screen 
+                  name="Batch progress"  
+                  component={BatchProgress}
+                  options={{ 
+                    headerRight: () => <CancelStackButton selectionToBeCleared={true}/>
+                  }}
+                />
+
+              </Stack.Group>
+              
+            </Stack.Group>
+
           </Stack.Navigator>
         </View>
       {/* </ConnectivityProvider> */}

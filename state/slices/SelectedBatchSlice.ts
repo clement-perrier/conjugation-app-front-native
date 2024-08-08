@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Batch } from '@/types/Batch'
+import { defaultLearningLanguage } from '@/types/LearningLanguage'
+import { defaultUserLearningLanguage } from '@/types/UserLearningLanguage'
 
 interface BatchState {
   value: Batch
@@ -11,7 +13,8 @@ const initialState: BatchState = {
     id: 0,
     dayNumber: 0,
     reviewingDate: '',
-    tableList: []
+    tableList: [],
+    userLearningLanguage: defaultUserLearningLanguage
   }
 }
 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Verb } from '@/types/Verb';
 import { Batch } from '@/types/Batch';
+import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 
 const API_BASE_URL = 'http://192.168.1.181:8080';
 

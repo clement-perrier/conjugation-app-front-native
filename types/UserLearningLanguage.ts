@@ -1,8 +1,10 @@
-import { LearningLanguage } from "./LearningLanguage"
-import { User } from "./User"
 
 export interface UserLearningLanguage {
-    id: number
-    user: User
-    learningLanguage: LearningLanguage
+    userId: number
+    learningLanguageId: number
+}
+
+export const defaultUserLearningLanguage = {
+    userId: 0,
+    learningLanguageId: 0
 }
