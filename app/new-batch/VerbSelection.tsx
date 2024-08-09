@@ -11,6 +11,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function VerbSelection() {
 
@@ -26,6 +27,7 @@ export default function VerbSelection() {
   const selectedTense = useAppSelector(state => state.selectedTense.value)
   const tableList: Table[] = useAppSelector(state => state.TableList.value)
   const verbList = useAppSelector(state => state.verbList.value)
+  const verbListLoading = useAppSelector(state => state.verbList.loading)
 
   // Functions
   const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10))
@@ -98,6 +100,7 @@ export default function VerbSelection() {
 
         {/* SEARCH INPUT */}
         <View>
+
           <IconButton style={styles.searchButton} size={25} color='black' icon={'search'}/>
           
           {searchedText ?
@@ -112,49 +115,92 @@ export default function VerbSelection() {
             placeholder="search verb"
             inlineImageLeft='react_logo'
             />
+            
         </View>
 
-        {/* SELECTED VERB LIST */}  
-        <View style={{width: '100%', marginBottom: 10}}>
-          <FlatList
-            data={selectedVerbList}
-            key={numColumns}
-            renderItem={({item}) => 
-              <View style={{position: 'relative'}}>
-                <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
-                <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
-              </View>
-            }
-            numColumns={numColumns}
-            ItemSeparatorComponent={() => <View style={{height: 10}} />}
-            columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-          >
-          </FlatList>
-        </View>
+        <View style={{flex: 1}}>
 
-        {/* VERB LIST */}
-        <View style={{flex: 1, marginBottom: 10}}>
-          <FlatList 
-            style={globalstyles.flatList}
-            contentContainerStyle={globalstyles.flatListContent}
-            ItemSeparatorComponent={() => <View style={{height: 15}} />}
-            numColumns={numColumns}
-            columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-            data={filteredVerbList}
-            key={numColumns}
-            renderItem={({item}) => 
-              <View style={styles.buttonWidth}>
-                <ListButton
-                  label={item.name}
-                  onPress={() => addSelectedVerb(item)}
-                  disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
-                />
-              </View>
+          {/* SELECTED VERB LIST */}  
+          <View style={{width: '100%', marginBottom: 10, height: 'auto'}}>
+            <CustomFlatList
+              data={selectedVerbList}
+              isLoading={false}
+              emptyMessage='No verb selected yets'
+              // key={numColumns}
+              renderItem={({item}) => 
+                <View style={{position: 'relative'}}>
+                  <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
+                  <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
+                </View>
               }
+              numColumns={numColumns}
+              itemSeparatorHeight={10}
+              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+              style={{height: 'auto'}}
             >
-          </FlatList>
-        </View>
 
+            </CustomFlatList>
+            {/* <FlatList
+              data={selectedVerbList}
+              // key={numColumns}
+              renderItem={({item}) => 
+                <View style={{position: 'relative'}}>
+                  <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
+                  <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
+                </View>
+              }
+              numColumns={numColumns}
+              ItemSeparatorComponent={() => <View style={{height: 10}} />}
+              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+            >
+            </FlatList> */}
+          </View>
+
+          {/* VERB LIST */}
+          <View style={{flex: 1, marginBottom: 10}}>
+
+            <CustomFlatList
+              data={filteredVerbList}
+              isLoading={verbListLoading}
+              emptyMessage='No verbs found'
+              numColumns={numColumns}
+              key={numColumns}
+              itemSeparatorHeight={15}
+              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+              // style={[{flex: 1}, globalstyles.flatList]}
+              renderItem={({item}) => 
+                <View style={styles.buttonWidth}>
+                  <ListButton
+                    label={item.name}
+                    onPress={() => addSelectedVerb(item)}
+                    disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
+                  />
+                </View>
+                }
+            >
+            </CustomFlatList>
+            {/* <FlatList 
+              style={globalstyles.flatList}
+              contentContainerStyle={globalstyles.flatListContent}
+              ItemSeparatorComponent={() => <View style={{height: 15}} />}
+              numColumns={numColumns}
+              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+              data={filteredVerbList}
+              key={numColumns}
+              renderItem={({item}) => 
+                <View style={styles.buttonWidth}>
+                  <ListButton
+                    label={item.name}
+                    onPress={() => addSelectedVerb(item)}
+                    disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
+                  />
+                </View>
+                }
+              >
+            </FlatList> */}
+          </View>
+
+        </View>
       </>
 
     </MainLayout>

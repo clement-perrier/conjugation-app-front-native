@@ -2,18 +2,21 @@ import { useAppSelector } from "@/state/hooks";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { Feather } from "@expo/vector-icons";
 import { FlatList, View, Text, StyleSheet } from "react-native";
+import CustomFlatList from "./CustomFlatList";
+import { Conjugation } from "@/types/Conjugation";
 
 export default function TableList({results} : {results: boolean}){
 
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
 
     return(
-        <FlatList
-            style={globalstyles.flatList}
-            contentContainerStyle={globalstyles.flatListContent}
-            data={selectedBatch?.tableList}
+
+        <CustomFlatList
+            data={selectedBatch.tableList}
+            isLoading={false}
+            emptyMessage=""
             renderItem={({item}) => {
-                const correct = !item.conjugationList?.some(conjugation => conjugation.correct === false)
+                const correct = !item.conjugationList?.some((conjugation: Conjugation) => conjugation.correct === false)
                 return (
                     <View style={globalstyles.flexRow}>
                         <View 
@@ -24,7 +27,7 @@ export default function TableList({results} : {results: boolean}){
                                             : styles.tableNormal]}>
                             <Text style={styles.uppercase}>{item.tense.name} - {item.verb.name}</Text>
                             {
-                                item.conjugationList?.map(conjugation => 
+                                item.conjugationList?.map((conjugation: Conjugation) => 
                                 <Text 
                                     key={conjugation.id}
                                     style={[styles.conjugation, 
@@ -41,9 +44,9 @@ export default function TableList({results} : {results: boolean}){
                     </View>
                     )
             }}
-            ItemSeparatorComponent={() => <View style={{height: 20}} />}
+            itemSeparatorHeight={20}
         >
-      </FlatList>
+        </CustomFlatList>
     )
 }
 

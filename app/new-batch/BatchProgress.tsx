@@ -1,4 +1,5 @@
 import ListButton from '@/components/buttons/ListButton';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { SaveBatch } from '@/services/ApiService';
@@ -71,27 +72,24 @@ export default function BatchProgress() {
 
   return (
     <MainLayout buttons={buttons}>
-      <>
-        {selectedTableList.length > 0 ? 
-          <FlatList
-            style={globalstyles.flatList}
-            contentContainerStyle={globalstyles.flatListContent}
-            data={selectedTableList}
-            renderItem={({item}) => 
-                <ListButton
-                  label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
-                  onPress={() => {
-                    dispatch(removeSelectedTable(item))
-                  }}
-                  icon='close'
-                />
-            }
-            ItemSeparatorComponent={() => <View style={{height: 10}} />}
-            >
-          </FlatList>
-          : <Text style={globalstyles.text}>The current set is empy</Text>
+      
+      <CustomFlatList
+        isLoading={false}
+        emptyMessage='Selection is empty'
+        data={selectedTableList}
+        renderItem={({item}) => 
+            <ListButton
+              label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
+              onPress={() => {
+                dispatch(removeSelectedTable(item))
+              }}
+              icon='close'
+            />
         }
-      </>
+        itemSeparatorHeight={10}
+      >
+      </CustomFlatList>
+
     </MainLayout>
   );
 }

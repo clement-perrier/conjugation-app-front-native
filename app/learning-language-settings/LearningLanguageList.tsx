@@ -9,6 +9,7 @@ import ListButton from '@/components/buttons/ListButton';
 import { updateDefaultLearningLanguage } from '@/state/slices/UserSlice';
 import { LayoutButton } from '@/types/LayoutButton';
 import { UpdateUserDefaultLearningLanguage } from '@/services/ApiService';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function LearningLanguageList() {
 
@@ -44,29 +45,24 @@ export default function LearningLanguageList() {
     
     <MainLayout buttons={buttons} title='Languages that you are currenlty learning'>
 
-      {learningLanguageList && learningLanguageList.length > 0 
-        ? (<FlatList
-              style={globalstyles.flatList}
-              contentContainerStyle={globalstyles.flatListContent}
-              data={learningLanguageList}
-              renderItem={({item}) => 
-                  <ListButton 
-                    key={item.id}
-                    label={item.name}
-                    disabled={user.defaultLearningLanguage.id === item.id}
-                    onPress={() =>{
-                      dispatch(updateDefaultLearningLanguage(item))
-                      UpdateUserDefaultLearningLanguage(user.id, item.id)
-                      navigation.navigate('Home')
-                    }}
-                    icon='chevron-right'
-                  />
-              }
-              ItemSeparatorComponent={() => <View style={{height: 20}} />}
-              >
-          </FlatList>) 
-        : (<Text>No languages available for this user.</Text>)
-      }
+      <CustomFlatList
+        data={learningLanguageList}
+        renderItem={({item}) => 
+            <ListButton 
+              key={item.id}
+              label={item.name}
+              disabled={user.defaultLearningLanguage.id === item.id}
+              onPress={() =>{
+                dispatch(updateDefaultLearningLanguage(item))
+                UpdateUserDefaultLearningLanguage(user.id, item.id)
+                navigation.navigate('Home')
+              }}
+              icon='chevron-right'
+            />
+        }
+      >
+
+      </CustomFlatList>
 
     </MainLayout>
     </>

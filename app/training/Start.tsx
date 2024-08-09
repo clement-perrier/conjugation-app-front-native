@@ -6,6 +6,7 @@ import { LayoutButton } from '@/types/LayoutButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { Batch } from '@/types/Batch';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function Start() {
 
@@ -42,13 +43,6 @@ export default function Start() {
     {
       label: 'START',
       onPress: () => {
-        // const newSelectedBatch: Batch = JSON.parse(JSON.stringify(selectedBatch));
-        // newSelectedBatch.tableList?.map(table => {
-        //       table.conjugationList?.map(conjugation => {
-        //         conjugation.correct = altBool
-        //       })})
-        // dispatch(updateSelectedBatch(newSelectedBatch))
-        // navigation.navigate('Results')
         navigation.navigate('Question')
       }
     }
@@ -56,16 +50,16 @@ export default function Start() {
 
   return (
     <MainLayout buttons={buttons}>
-      <FlatList
-          style={globalstyles.flatList}
-          contentContainerStyle={globalstyles.flatListContent}
-          data={selectedBatch?.tableList}
-          renderItem={({item}) => 
-              <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
-          }
-          ItemSeparatorComponent={() => <View style={{height: 20}} />}
-          >
-      </FlatList>
+
+      <CustomFlatList
+        data={selectedBatch?.tableList}
+        renderItem={({item}) => 
+            <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
+        }
+        itemSeparatorHeight={20}
+      >
+      </CustomFlatList>
+
     </MainLayout>
   );
 }

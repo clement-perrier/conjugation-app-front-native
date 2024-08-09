@@ -8,6 +8,7 @@ import { LearningLanguage } from '@/types/LearningLanguage';
 import { useMemo } from 'react';
 import { addLearningLanguage } from '@/state/slices/UserSlice';
 import { UpdateUserLearningLanguageList } from '@/services/ApiService';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function AddLearningLanguage() {
 
@@ -35,30 +36,24 @@ export default function AddLearningLanguage() {
   return (
     <MainLayout title='Available languages'>
 
-      {learningLanguageList && learningLanguageList.length > 0 
-        ? (<FlatList
-              style={globalstyles.flatList}
-              contentContainerStyle={globalstyles.flatListContent}
-              data={learningLanguageList}
-              renderItem={({item}) => 
-                  <ListButton 
-                    key={item.id}
-                    label={item.name}
-                    disabled={user.learningLanguageList.some(language => language.id === item.id)}
-                    onPress={() =>{
-                      dispatch(addLearningLanguage(item))
-                      const updatedUser = {...user, learningLanguageList: [...learningLanguageList, item]}
-                      UpdateUserLearningLanguageList(user.id, item.id)
-                      navigation.navigate('Learning language list')
-                    }}
-                    icon='chevron-right'
-                  />
-              }
-              ItemSeparatorComponent={() => <View style={{height: 20}} />}
-              >
-          </FlatList>) 
-        : (<Text>No languages available for this user.</Text>)
-      }
+      <CustomFlatList
+        data={learningLanguageList}
+        emptyMessage='No languages available for this user.'
+        renderItem={({item}) => 
+            <ListButton 
+              key={item.id}
+              label={item.name}
+              disabled={user.learningLanguageList.some(language => language.id === item.id)}
+              onPress={() =>{
+                dispatch(addLearningLanguage(item))
+                UpdateUserLearningLanguageList(user.id, item.id)
+                navigation.navigate('Learning language list')
+              }}
+              icon='chevron-right'
+          />}
+      >
+
+      </CustomFlatList>
 
     </MainLayout>
   );

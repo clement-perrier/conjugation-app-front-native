@@ -5,6 +5,7 @@ import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function TenseSelection() {
 
@@ -12,12 +13,31 @@ export default function TenseSelection() {
 
   const dispatch = useAppDispatch()
 
+  // Selectors
   const tenseList = useAppSelector(state => state.tenseList.value)
+  const tenseListLoading = useAppSelector(state => state.tenseList.loading)
 
   return (
     <MainLayout>
+      
 
-        <FlatList 
+      <CustomFlatList
+        data={tenseList}
+        isLoading={tenseListLoading}
+        emptyMessage='No verbs found for this language'
+        renderItem={({ item }) => (
+          <ListButton
+            label={item.name}
+            onPress={() => {
+              dispatch(updateSelectedTense(item));
+              navigation.push('Verb(s) selection');
+            }}
+          />
+        )}
+        itemSeparatorHeight={15}
+      />
+
+        {/* <FlatList 
             style={globalstyles.flatList}
             contentContainerStyle={globalstyles.flatListContent}
             data={tenseList}
@@ -32,7 +52,7 @@ export default function TenseSelection() {
               }
             ItemSeparatorComponent={() => <View style={{height: 15}} />}
             >
-          </FlatList>
+          </FlatList> */}
 
      </MainLayout>
   );

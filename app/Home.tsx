@@ -13,6 +13,7 @@ import { User } from '@/types/User';
 import { Batch } from '@/types/Batch';
 import IconButton from '@/components/buttons/IconButton';
 import flags from '@/utils/flags';
+import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function Home() {
 
@@ -77,7 +78,24 @@ export default function Home() {
       </View>
 
       <MainLayout buttons={buttons}>
-        <>
+        <CustomFlatList
+            data={sortedBatchList}
+            isLoading={batchListLoading}
+            emptyMessage="No sets available"
+            renderItem={({ item }) => (
+              <ListButton 
+                key={item.id}
+                label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                onPress={() => {
+                  dispatch(updateSelectedBatch(item));
+                  navigation.navigate('Start');
+                }}
+                icon='chevron-right'
+              />
+            )}
+            itemSeparatorHeight={20}
+          />
+        {/* <>
           {
             batchListLoading
             ? <ActivityIndicator size="large" color="#0000ff" />
@@ -103,7 +121,7 @@ export default function Home() {
               : (<Text>No sets available</Text>))
           }
           
-        </>
+        </> */}
       </MainLayout>
       
     </>
