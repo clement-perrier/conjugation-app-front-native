@@ -12,15 +12,14 @@ import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import { updateSelectableVerbs } from '@/state/slices/VerbListSlice';
 
 export default function VerbSelection() {
 
-  // HOOKS
   const navigation = useAppNavigation();
-
   const dispatch = useAppDispatch();
-
   const screenWidth = useWindowDimensions().width;
+
 
   // Selectors
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
@@ -28,6 +27,7 @@ export default function VerbSelection() {
   const tableList: Table[] = useAppSelector(state => state.TableList.value)
   const verbList = useAppSelector(state => state.verbList.value)
   const verbListLoading = useAppSelector(state => state.verbList.loading)
+  const batchList = useAppSelector(state => state.BatchList.value)
 
   // Functions
   const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10))
@@ -69,13 +69,39 @@ export default function VerbSelection() {
   const [numColumns, setNumColumns] = useState(calcNumColumns());
   const [searchedText, setSearchText] = useState('')
   const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([])
+  
+  // Derived data
   const unselectedVerbList = verbList && verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
   const filteredVerbList = textFilter(searchedText)
+  const allTableList = batchList.flatMap(batch => batch.tableList).concat(selectedTableList)
+  console.log(allTableList)
 
   // Effects
   useEffect(() => {
     setNumColumns(calcNumColumns());
   }, [screenWidth]);
+
+  /* useEffect(() => {
+    const selectedVerbIds = new Set(batchList.flatMap(batch => 
+      batch.tableList
+        .filter(table => table.tense.id === selectedTense?.id)
+        .map(table => table.verb.id)
+    ));
+    console.log(selectedVerbIds)
+    console.log(verbList)
+    
+    const updatedVerbList = verbList.map(verb => {
+      if (selectedVerbIds.has(verb.id)) {
+        return { ...verb, selected: true };
+      }
+      return verb;
+    });
+
+    console.log(updatedVerbList)
+
+    dispatch(updateSelectableVerbs(updatedVerbList))
+    
+  }, [selectedTense]) */
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -173,31 +199,12 @@ export default function VerbSelection() {
                   <ListButton
                     label={item.name}
                     onPress={() => addSelectedVerb(item)}
-                    disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
+                    disabled={allTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
                   />
                 </View>
                 }
             >
             </CustomFlatList>
-            {/* <FlatList 
-              style={globalstyles.flatList}
-              contentContainerStyle={globalstyles.flatListContent}
-              ItemSeparatorComponent={() => <View style={{height: 15}} />}
-              numColumns={numColumns}
-              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-              data={filteredVerbList}
-              key={numColumns}
-              renderItem={({item}) => 
-                <View style={styles.buttonWidth}>
-                  <ListButton
-                    label={item.name}
-                    onPress={() => addSelectedVerb(item)}
-                    disabled={selectedTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
-                  />
-                </View>
-                }
-              >
-            </FlatList> */}
           </View>
 
         </View>

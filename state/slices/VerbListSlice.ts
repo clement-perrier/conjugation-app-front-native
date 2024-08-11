@@ -14,7 +14,11 @@ export const VerbListSlice = createSlice({
   name: 'verbList',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-  reducers: {},
+  reducers: {
+    updateSelectableVerbs: (state, action) => {
+        state.value = action.payload
+    }
+  },
   extraReducers(builder) {
       builder
     .addCase(FetchVerbList.pending, (state) => {
@@ -30,5 +34,7 @@ export const VerbListSlice = createSlice({
     });
     }
   })
+
+export const { updateSelectableVerbs } = VerbListSlice.actions
 
 export default VerbListSlice

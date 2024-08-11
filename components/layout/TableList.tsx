@@ -39,12 +39,10 @@ export default function TableList({results} : {results: boolean}){
                                 )
                             }
                         </View>
-                        {/* {results && (correct ? <Feather name="check" size={20} color="green" /> : <Feather name="x" size={20} color="red" />)} */}
                         {results && <Feather name={correct ? "check" : 'x'} size={30} color={correct ? "green" : 'red'} />}
                     </View>
                     )
             }}
-            itemSeparatorHeight={20}
         >
         </CustomFlatList>
     )
