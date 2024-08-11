@@ -32,7 +32,7 @@ export default function CustomFlatList(
   }
 
   if (data?.length === 0) {
-    return <Text>{emptyMessage}</Text>;
+    return <Text style={globalstyles.text}>{emptyMessage}</Text>;
   }
 
   return (

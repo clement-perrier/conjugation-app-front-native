@@ -4,14 +4,14 @@ import { defaultUser, User } from '@/types/User'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface UserState {
-  value: User,
+  value: User | null,
   loading: boolean,
   error: string | undefined
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
-  value: defaultUser,
+  value: null,
   loading: false,
   error: ''
 }
@@ -22,10 +22,10 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
     updateDefaultLearningLanguage: (state, action: PayloadAction<LearningLanguage>) => {
-      state.value.defaultLearningLanguage = {...action.payload}
+      state.value && (state.value.defaultLearningLanguage = {...action.payload})
     },
     addLearningLanguage: (state, action: PayloadAction<LearningLanguage>) => {
-      state.value.learningLanguageList = [...state.value.learningLanguageList, action.payload]
+      state.value && (state.value.learningLanguageList = [...state.value.learningLanguageList, action.payload])
     }
   },
   extraReducers(builder) {

@@ -9,6 +9,7 @@ import BatchListSlice from './slices/BatchListSlice'
 import TableListSlice from './slices/TableListSlice'
 import UserSlice from './slices/UserSlice'
 import LearningLanguageListSlice from './slices/LearningLanguageListSlice'
+import IsOnBoardingSlice from './slices/isOnBoardingSlice'
 
 export const store = configureStore({
   reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
     verbList: VerbListSlice.reducer,
     pronounList: PronounListSlice.reducer,
     TableList: TableListSlice.reducer,
-    BatchList: BatchListSlice.reducer
+    BatchList: BatchListSlice.reducer,
+    IsOnBoarding: IsOnBoardingSlice.reducer
   }
 })
 

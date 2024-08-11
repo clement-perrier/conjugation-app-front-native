@@ -39,34 +39,39 @@ export default function BatchProgress() {
       disabled: selectedTableList.length < 1,
       onPress: () => {
 
-        const userLearningLanguage: UserLearningLanguage = {
-          userId: user.id, 
-          learningLanguageId: user.defaultLearningLanguage.id
+        if (user){
+
+          const userLearningLanguage: UserLearningLanguage = {
+            userId: user.id, 
+            learningLanguageId: user.defaultLearningLanguage.id
+          }
+  
+          // New batch object
+          const newBatch: Batch = {
+            dayNumber: 0,
+            reviewingDate: new Date().toISOString(),
+            tableList: selectedTableList,
+            userLearningLanguage
+          }
+
+          // Save new Batch in database
+          SaveBatch(newBatch)
+
+          // Optimistics update => redux add new batch to batch list
+          newBatch.id = batchList.length
+          dispatch(addBatch(newBatch))
+
+          // Update selected batch with this one
+          dispatch(updateSelectedBatch(newBatch))
+
         }
-
-        // New batch object
-        const newBatch: Batch = {
-          dayNumber: 0,
-          reviewingDate: new Date().toISOString(),
-          tableList: selectedTableList,
-          userLearningLanguage
-        }
-
-        // Save new Batch in database
-        SaveBatch(newBatch)
-
-        // Optimistics update => redux add new batch to batch list
-        newBatch.id = batchList.length
-        dispatch(addBatch(newBatch))
-
-        // Update selected batch with this one
-        dispatch(updateSelectedBatch(newBatch))
 
         // Selection ended, clearing the selection
         dispatch(clearSelectedTableList())
 
         // Navigation to next page
         navigation.navigate('Batch created')},
+        
     }
   ]
 

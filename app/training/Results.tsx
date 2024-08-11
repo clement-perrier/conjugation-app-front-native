@@ -2,7 +2,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import TableList from '@/components/layout/TableList';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
-import { useAppDispatch, useAppSelector } from '@/state/hooks';
+import { useAppDispatch } from '@/state/hooks';
 
 export default function Results() {
 

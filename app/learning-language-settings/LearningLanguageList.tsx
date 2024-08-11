@@ -23,8 +23,8 @@ export default function LearningLanguageList() {
   // States
 
   // Derived data
-  const learningLanguageList: LearningLanguage[] = useMemo(() => {
-    return user.learningLanguageList
+  const learningLanguageList: LearningLanguage[] | undefined = useMemo(() => {
+    return user?.learningLanguageList
   },[user])
 
   // Functions
@@ -51,10 +51,10 @@ export default function LearningLanguageList() {
             <ListButton 
               key={item.id}
               label={item.name}
-              disabled={user.defaultLearningLanguage.id === item.id}
+              disabled={user?.defaultLearningLanguage.id === item.id}
               onPress={() =>{
                 dispatch(updateDefaultLearningLanguage(item))
-                UpdateUserDefaultLearningLanguage(user.id, item.id)
+                user && UpdateUserDefaultLearningLanguage(user.id, item.id)
                 navigation.navigate('Home')
               }}
               icon='chevron-right'

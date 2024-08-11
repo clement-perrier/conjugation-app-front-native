@@ -32,10 +32,10 @@ export default function Home() {
   }, [batchList])
   
   //  Effects
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(FetchUser())
     dispatch(FetchLearningLanguageList())
-  },[])
+  },[]) */
 
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
@@ -58,6 +58,7 @@ export default function Home() {
   ]
 
   return (
+
     <>
 
       {/* Header with Settings and Flags buttons */}
@@ -70,18 +71,23 @@ export default function Home() {
             styles.flagButton,
             pressed && styles.buttonPressed
           ]}
-          onPress={() => navigation.navigate('Learning language list')}>
-          <Image style={[styles.flagImage]} 
-                  source={flags[user.defaultLearningLanguage.imageName]}/>
+          onPress={() => navigation.navigate('Learning language list')}
+        >
+          { user &&
+            <Image style={[styles.flagImage]} 
+            source={flags[user.defaultLearningLanguage.imageName]}/>
+          }
+          
         </Pressable>
 
       </View>
 
       <MainLayout buttons={buttons}>
+
         <CustomFlatList
             data={sortedBatchList}
             isLoading={batchListLoading}
-            emptyMessage="No sets available"
+            emptyMessage="Create a repetition set to start learning"
             renderItem={({ item }) => (
               <ListButton 
                 key={item.id}
@@ -95,36 +101,11 @@ export default function Home() {
             )}
             itemSeparatorHeight={20}
           />
-        {/* <>
-          {
-            batchListLoading
-            ? <ActivityIndicator size="large" color="#0000ff" />
-            : (sortedBatchList && sortedBatchList.length > 0 
-              ? (<FlatList
-                    style={globalstyles.flatList}
-                    contentContainerStyle={globalstyles.flatListContent}
-                    data={sortedBatchList}
-                    renderItem={({item}) => 
-                        <ListButton 
-                          key={item.id}
-                          label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
-                          onPress={() =>{
-                            dispatch(updateSelectedBatch(item))
-                            navigation.navigate('Start')
-                          }}
-                          icon='chevron-right'
-                        />
-                    }
-                    ItemSeparatorComponent={() => <View style={{height: 20}} />}
-                    >
-                </FlatList>) 
-              : (<Text>No sets available</Text>))
-          }
-          
-        </> */}
+        
       </MainLayout>
       
     </>
+    
   );
 }
 

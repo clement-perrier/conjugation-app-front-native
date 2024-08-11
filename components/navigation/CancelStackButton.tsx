@@ -12,7 +12,7 @@ export default function CancelStackButton({selectionToBeCleared} : {selectionToB
 
     const handlePress = () => {
         selectionToBeCleared && dispatch(clearSelectedTableList())
-        navigation.dispatch(StackActions.popToTop())
+        navigation.navigate('Home')
     }
 
     return (

@@ -137,25 +137,29 @@ export default function Question() {
       updatedBatch.dayNumber = getNextDayNumber(selectedBatch.dayNumber)
       updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, getIncrement(selectedBatch.dayNumber))
 
-      const userLearningLanguage: UserLearningLanguage = {
-        userId: user.id, 
-        learningLanguageId: user.defaultLearningLanguage.id
+      if (user){
+
+        const userLearningLanguage: UserLearningLanguage = {
+          userId: user.id, 
+          learningLanguageId: user.defaultLearningLanguage.id
+        }
+  
+        // New batch with mistaken table(s)
+        const newBatch: Batch = {
+          ...selectedBatch,
+          id: bathcList.length,
+          tableList: selectedBatch.tableList.filter(table => hasMistake(table)),
+          reviewingDate: addDays(selectedBatch.reviewingDate, 1),
+          userLearningLanguage
+        }
+  
+        // Dispatch add new batch to BatchList
+        dispatch(addBatch(newBatch))
+  
+        // Save new Batch to DB
+        SaveBatch(newBatch)
+
       }
-
-      // New batch with mistaken table(s)
-      const newBatch: Batch = {
-        ...selectedBatch,
-        id: bathcList.length,
-        tableList: selectedBatch.tableList.filter(table => hasMistake(table)),
-        reviewingDate: addDays(selectedBatch.reviewingDate, 1),
-        userLearningLanguage
-      }
-
-      // Dispatch add new batch to BatchList
-      dispatch(addBatch(newBatch))
-
-      // Save new Batch to DB
-      SaveBatch(newBatch)
       
     }
 

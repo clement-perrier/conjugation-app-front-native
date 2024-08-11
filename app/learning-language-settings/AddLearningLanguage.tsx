@@ -6,8 +6,8 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import ListButton from '@/components/buttons/ListButton';
 import { LearningLanguage } from '@/types/LearningLanguage';
 import { useMemo } from 'react';
-import { addLearningLanguage } from '@/state/slices/UserSlice';
-import { UpdateUserLearningLanguageList } from '@/services/ApiService';
+import { addLearningLanguage, updateDefaultLearningLanguage } from '@/state/slices/UserSlice';
+import { UpdateUserDefaultLearningLanguage, UpdateUserLearningLanguageList } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 
 export default function AddLearningLanguage() {
@@ -19,13 +19,11 @@ export default function AddLearningLanguage() {
   // Selectors
   const user = useAppSelector(state => state.User.value)
   const learningLanguageList: LearningLanguage[] = useAppSelector(state => state.LearningLanguageList.value)
+  const learningLanguageListLoading: boolean = useAppSelector(state => state.LearningLanguageList.loading)
   
   // States
 
   // Derived data
-  const userLearningLanguageList: LearningLanguage[] = useMemo(() => {
-    return user.learningLanguageList
-  },[user])
 
   // Functions
 
@@ -38,16 +36,22 @@ export default function AddLearningLanguage() {
 
       <CustomFlatList
         data={learningLanguageList}
+        isLoading={learningLanguageListLoading}
         emptyMessage='No languages available for this user.'
         renderItem={({item}) => 
             <ListButton 
               key={item.id}
               label={item.name}
-              disabled={user.learningLanguageList.some(language => language.id === item.id)}
+              disabled={user?.learningLanguageList.some(language => language.id === item.id)}
               onPress={() =>{
                 dispatch(addLearningLanguage(item))
-                UpdateUserLearningLanguageList(user.id, item.id)
-                navigation.navigate('Learning language list')
+                dispatch(updateDefaultLearningLanguage(item))
+                user && 
+                  (
+                    UpdateUserLearningLanguageList(user.id, item.id),
+                    UpdateUserDefaultLearningLanguage(user.id, item.id)
+                  )
+                navigation.navigate('Home')
               }}
               icon='chevron-right'
           />}
