@@ -5,11 +5,13 @@ const headerButtonsSideGap = 11
 export const globalstyles = StyleSheet.create({
     flatList: {
         height: 10,
-        width: '100%'
+        width: '100%',
     },
     flatListContent: {
         flexGrow: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingVertical: 10
+
     },
     text: {
         justifyContent: 'center',

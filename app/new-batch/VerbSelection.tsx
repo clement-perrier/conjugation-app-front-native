@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingVertical: 10,
     paddingLeft: 35,
-    paddingRight: 20
+    paddingRight: 100
   },
   searchButton: {
     position: 'absolute',
@@ -226,7 +226,8 @@ const styles = StyleSheet.create({
   clearButton: {
     position: 'absolute',
     top: 20,
-    right: 20
+    right: 20,
+    zIndex: 10
   },
   columnWrapperStyle: {
     justifyContent: 'space-evenly'
