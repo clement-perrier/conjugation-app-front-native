@@ -22,16 +22,6 @@ export default function Start() {
   // Derived data
 
   // Effects
-  // useEffect(() => {
-  //   if(selectedBatch)
-  //   console.log(addDays(selectedBatch.reviewingDate, 1))
-  //   selectedBatch && 
-  //   dispatch(addBatch({
-  //     dayNumber: 7,
-  //     reviewingDate: addDays(selectedBatch.reviewingDate, 1),
-  //     tableList: selectedBatch.tableList
-  //   }))
-  // },[selectedBatch])
 
   // Functions
 

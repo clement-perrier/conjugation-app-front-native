@@ -15,6 +15,8 @@ import { ConnectivityProvider } from "@/utils/ConnectivityProvider";
 import LearningLanguageList from "./learning-language-settings/LearningLanguageList";
 import AddLearningLanguage from "./learning-language-settings/AddLearningLanguage";
 import { useAppSelector } from "@/state/hooks";
+import IconButton from "@/components/buttons/IconButton";
+import RemoveBatchButton from "@/components/buttons/RemoveBatchButton";
 
 const Stack = createStackNavigator();
 
@@ -90,7 +92,7 @@ export default function AppNavigator({ initialRouteName } : {initialRouteName: s
               name="Start"
               component={Start} 
               options={{   
-                headerLeft: () => null,
+                headerLeft: () => <RemoveBatchButton/>,
                 headerRight: () => <CancelStackButton/>,
                 headerBackground: () => <View></View>,
                 headerTitle: ''

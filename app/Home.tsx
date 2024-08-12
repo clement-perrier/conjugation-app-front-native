@@ -1,7 +1,7 @@
 import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, FetchUser, FetchLearningLanguageList } from '@/services/ApiService';
 import { formatDateAsLong } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -9,11 +9,10 @@ import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
-import { User } from '@/types/User';
 import { Batch } from '@/types/Batch';
 import IconButton from '@/components/buttons/IconButton';
-import flags from '@/utils/flags';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import Flag from '@/components/Flag';
 
 export default function Home() {
 
@@ -74,14 +73,17 @@ export default function Home() {
           onPress={() => navigation.navigate('Learning language list')}
         >
           { user &&
-            <Image style={[styles.flagImage]} 
-            source={flags[user.defaultLearningLanguage.imageName]}/>
+           <View style={[styles.flagImage]}>
+            <Flag country={user.defaultLearningLanguage.imageName}/>
+          </View>
+          
           }
           
         </Pressable>
 
       </View>
 
+      {/* Batches list */}
       <MainLayout buttons={buttons}>
 
         <CustomFlatList
@@ -108,6 +110,8 @@ export default function Home() {
     
   );
 }
+
+
 
 const styles = StyleSheet.create({
   flagButton: {

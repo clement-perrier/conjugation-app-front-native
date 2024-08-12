@@ -4,6 +4,7 @@ import { StyleSheet } from "react-native"
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppDispatch } from "@/state/hooks";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
+import { globalstyles } from "@/utils/GlobalStyle";
 
 export default function CancelStackButton({selectionToBeCleared} : {selectionToBeCleared?: boolean}) {
 
@@ -20,17 +21,8 @@ export default function CancelStackButton({selectionToBeCleared} : {selectionToB
             icon={'close'}
             size={30}
             onPress={handlePress}
-            style={styles.button}
+            style={[globalstyles.headerButton, globalstyles.headerRightButton]}
         />
     )
     
 }
-
-const styles = StyleSheet.create({
-    button: {
-        height: '100%',
-        top: 15,
-        right: 11,
-        zIndex: 4
-    },
-})

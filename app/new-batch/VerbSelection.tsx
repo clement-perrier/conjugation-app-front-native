@@ -61,7 +61,6 @@ export default function VerbSelection() {
     } else {
       console.error('selectedTense, selectedVerbList, or tableList is undefined or null');
     }
-    console.log(result)
     return result
   }
 
@@ -72,36 +71,13 @@ export default function VerbSelection() {
   
   // Derived data
   const unselectedVerbList = verbList && verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
-  const filteredVerbList = textFilter(searchedText)
+  const filteredVerbList = textFilter(searchedText.toLowerCase())
   const allTableList = batchList.flatMap(batch => batch.tableList).concat(selectedTableList)
-  console.log(allTableList)
 
   // Effects
   useEffect(() => {
     setNumColumns(calcNumColumns());
   }, [screenWidth]);
-
-  /* useEffect(() => {
-    const selectedVerbIds = new Set(batchList.flatMap(batch => 
-      batch.tableList
-        .filter(table => table.tense.id === selectedTense?.id)
-        .map(table => table.verb.id)
-    ));
-    console.log(selectedVerbIds)
-    console.log(verbList)
-    
-    const updatedVerbList = verbList.map(verb => {
-      if (selectedVerbIds.has(verb.id)) {
-        return { ...verb, selected: true };
-      }
-      return verb;
-    });
-
-    console.log(updatedVerbList)
-
-    dispatch(updateSelectableVerbs(updatedVerbList))
-    
-  }, [selectedTense]) */
 
   // Buttons
   const buttons: LayoutButton[] = [

@@ -21,6 +21,9 @@ export const BatchListSlice = createSlice({
     add: (state, action: PayloadAction<Batch>) => {
       state.value = [ ...state.value, action.payload ]
     },
+    remove: (state, action: PayloadAction<number>) => {
+      state.value = state.value.filter(batch => batch.id !== action.payload)
+    },
     updateBatchInfo: (state, action: PayloadAction<Batch>) => {
       const { id, dayNumber, reviewingDate, tableList } = action.payload
       state.value = state.value.map(batch => 
@@ -51,6 +54,6 @@ export const BatchListSlice = createSlice({
   }
 })
 
-export const { add: addBatch, updateBatchInfo } = BatchListSlice.actions
+export const { add: addBatch, remove: removeBatch, updateBatchInfo } = BatchListSlice.actions
 
 export default BatchListSlice
