@@ -14,7 +14,7 @@ export default function IconButton({ icon, label, onPress, style, color, size }:
   return (
     <Pressable style={[styles.iconButton, style]} onPress={onPress}>
       <MaterialIcons name={icon} size={size} color={color}/>
-      <Text style={styles.iconButtonLabel}>{label}</Text>
+      {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
     </Pressable>
   );
 }

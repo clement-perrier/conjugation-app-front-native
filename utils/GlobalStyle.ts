@@ -11,7 +11,6 @@ export const globalstyles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         paddingVertical: 10
-
     },
     text: {
         justifyContent: 'center',
@@ -20,17 +19,21 @@ export const globalstyles = StyleSheet.create({
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        alignContent: 'center'
     },
     headerButton: {
-        height: '100%',
-        top: 15,
-        zIndex: 4
+        // height: '100%',
+        // top: 15,
+        // zIndex: 4
     },
     headerRightButton: {
-        right: headerButtonsSideGap
+        // right: headerButtonsSideGap
     },
     headerLefttButton: {
-        left: headerButtonsSideGap
+        // left: headerButtonsSideGap
+    },
+    test: {
+        height: 20
     }
 });

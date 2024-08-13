@@ -1,6 +1,6 @@
 import { StackActions } from "@react-navigation/native"
 import IconButton from "../buttons/IconButton"
-import { StyleSheet } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppDispatch } from "@/state/hooks";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
@@ -17,12 +17,27 @@ export default function CancelStackButton({selectionToBeCleared} : {selectionToB
     }
 
     return (
-        <IconButton 
-            icon={'close'}
-            size={30}
-            onPress={handlePress}
-            style={[globalstyles.headerButton, globalstyles.headerRightButton]}
-        />
+        <View style={styles.buttonContainer}>
+            <IconButton 
+                icon='close'
+                size={26} // Adjust size to match default button icon size
+                onPress={handlePress}
+                style={styles.iconButton}
+            />
+        </View>
     )
     
 }
+
+const styles = StyleSheet.create({
+    buttonContainer: {
+        marginRight: 15,
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        height: 26
+    },
+    iconButton: {
+        // padding: 5,  
+    },
+});

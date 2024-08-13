@@ -14,7 +14,7 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly }
 const styles = StyleSheet.create({
     button: {
         height: 45,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         alignItems: 'center'
     },
     widthFitContent: {

@@ -1,4 +1,4 @@
-import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator, StatusBar } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo } from 'react';
@@ -59,11 +59,10 @@ export default function Home() {
   return (
 
     <>
-
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
           
-        <IconButton icon='settings' size={40}/>
+        <IconButton style={{alignItems: 'center', alignContent: 'center'}} icon='settings' size={40}/>
 
         <Pressable 
           style={({ pressed }) => [
@@ -118,6 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#black',
+    // marginTop: -15
     // padding: 4,
     // elevation: 5, // Shadow for Android
     // shadowColor: '#000', // Shadow for iOS
@@ -131,7 +131,9 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 15,
-    paddingTop: 15,
-    justifyContent: 'space-between'
+    // paddingTop: 15,
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    height: 'auto'
   }
 });
