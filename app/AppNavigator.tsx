@@ -33,7 +33,7 @@ export default function AppNavigator({ initialRouteName } : {initialRouteName: s
     return {
       header: () => <CustomHeader 
                       previousButton={previousButton}
-                      cancelButton={cancelButton}
+                      cancelButton={!isOnboarding && cancelButton}
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
                     />
