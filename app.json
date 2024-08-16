@@ -14,17 +14,22 @@
     },
     "ios": {
       "supportsTablet": true,
-      "permissions": ["CAMERA_ROLL", "PHOTO_LIBRARY_ADD_ONLY"]
-
+      "infoPlist": {
+        "NSCameraUsageDescription": "Your message here",
+        "NSPhotoLibraryUsageDescription": "Your message here",
+        "NSPhotoLibraryAddUsageDescription": "Your message here"
+      }
     },
     "android": {
-      "permissions": ["CAMERA_ROLL", "READ_EXTERNAL_STORAGE"],
-      "usesCleartextTraffic": true,
+      "permissions": [
+        "CAMERA_ROLL",
+        "READ_EXTERNAL_STORAGE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.anonymous.conjugationappfrontnative"
+      }
+      
     },
     "web": {
       "bundler": "metro",

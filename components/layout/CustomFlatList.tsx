@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
+import { Verb } from '@/types/Verb';
 
 export default function CustomFlatList(
     { 
@@ -12,7 +13,8 @@ export default function CustomFlatList(
         itemSeparatorHeight = 20,
         numColumns,
         columnWrapperStyle,
-        style
+        style,
+        keyExtractor
     } : 
     {
         data: any[]| null | undefined,
@@ -24,6 +26,7 @@ export default function CustomFlatList(
         numColumns?: number,
         columnWrapperStyle?: StyleProp<ViewStyle>,
         style?: StyleProp<ViewStyle>
+        keyExtractor?: ((item: Verb, index: number) => string) | undefined
     }
 ){
 
@@ -44,6 +47,9 @@ export default function CustomFlatList(
       ItemSeparatorComponent={() => <View style={{ height: itemSeparatorHeight }} />}
       numColumns={numColumns}
       columnWrapperStyle={columnWrapperStyle}
+      removeClippedSubviews={true}
+      keyExtractor={keyExtractor}
+      windowSize={10} 
     />
   );
 };

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, FlatList, useWindowDimensions, TextInput, Butto
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addSelectedTable } from '@/state/slices/SelectedTableListSlice';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import IconButton from '@/components/buttons/IconButton';
 import { Verb } from '@/types/Verb';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -13,71 +13,78 @@ import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import { updateSelectableVerbs } from '@/state/slices/VerbListSlice';
+import TextIconButton from '@/components/buttons/TextIconButton';
 
 export default function VerbSelection() {
 
+  // Hooks
   const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
   const screenWidth = useWindowDimensions().width;
 
-
   // Selectors
-  const selectedTableList = useAppSelector(state => state.selectedTableList.value)
-  const selectedTense = useAppSelector(state => state.selectedTense.value)
-  const tableList: Table[] = useAppSelector(state => state.TableList.value)
-  const verbList = useAppSelector(state => state.verbList.value)
-  const verbListLoading = useAppSelector(state => state.verbList.loading)
-  const batchList = useAppSelector(state => state.BatchList.value)
+  const selectedTableList = useAppSelector(state => state.selectedTableList.value);
+  const selectedTense = useAppSelector(state => state.selectedTense.value);
+  const tableList = useAppSelector(state => state.TableList.value) as Table[];
+  const verbList = useAppSelector(state => state.verbList.value);
+  const verbListLoading = useAppSelector(state => state.verbList.loading);
+  const batchList = useAppSelector(state => state.BatchList.value);
 
-  // Functions
-  const calcNumColumns = () => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10))
-  
-  const textFilter = (text: string) => {
-    return unselectedVerbList.filter(verb => verb.name.includes(text))
-  }
-
-  const removeSelectedVerb = (selectedVerb: Verb) => {
-    setSelectedVerbList(selectedVerbList.filter(verb => verb.id !== selectedVerb.id))
-  }
-
-  const addSelectedVerb = (selectedVerb: Verb) => {
-    setSelectedVerbList([
-      ...selectedVerbList,
-      selectedVerb
-    ])
-  }
-
-  const getSelectedConjugationTableList = () : Table[] => {
-    let result: Table[] = [];
-    if (selectedTense && selectedVerbList && tableList) {
-      selectedVerbList.forEach(verb => {
-        const foundTable = tableList.find(table => table.tense.id === selectedTense.id && table.verb.id === verb.id);
-        if (foundTable) {
-          result.push(foundTable);
-        } else {
-          console.warn(`Table not found for tense ID ${selectedTense.id} and verb ID ${verb.id}`);
-        }
-      });
-    } else {
-      console.error('selectedTense, selectedVerbList, or tableList is undefined or null');
-    }
-    return result
-  }
+  const calcNumColumns = useCallback(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [])
 
   // States
-  const [numColumns, setNumColumns] = useState(calcNumColumns());
-  const [searchedText, setSearchText] = useState('')
-  const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([])
-  
-  // Derived data
-  const unselectedVerbList = verbList && verbList.filter(verb => !selectedVerbList.some(selectedVerb => selectedVerb.id === verb.id))
-  const filteredVerbList = textFilter(searchedText.toLowerCase())
-  const allTableList = batchList.flatMap(batch => batch.tableList).concat(selectedTableList)
+  // const [numColumns, setNumColumns] = useState(() => calcNumColumns());
+  const [searchedText, setSearchText] = useState('');
+  const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([]);
+  const numColumns = useMemo(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [screenWidth]);
 
+  // Functions
+
+  // const textFilter = useCallback((text: string) => {
+  //   return unselectedVerbList.filter(verb => verb.name.includes(text));
+  // }, [unselectedVerbList]);
+
+  const removeSelectedVerb = useCallback((selectedVerb: Verb) => {
+    setSelectedVerbList(prevList => prevList.filter(verb => verb.id !== selectedVerb.id));
+  }, []);
+
+  const addSelectedVerb = useCallback((selectedVerb: Verb) => {
+    setSelectedVerbList(prevList => [...prevList, selectedVerb]);
+  }, []);
+
+  const getSelectedConjugationTableList = useCallback((): Table[] => {
+    return selectedVerbList.reduce<Table[]>((result, verb) => {
+      const foundTable = tableList.find(table => table.tense.id === selectedTense?.id && table.verb.id === verb.id);
+      if (foundTable) {
+        result.push(foundTable);
+      } else {
+        console.warn(`Table not found for tense ID ${selectedTense?.id} and verb ID ${verb.id}`);
+      }
+      return result;
+    }, []);
+  }, [selectedVerbList, tableList, selectedTense]);
+
+  // Derived Data
+  const unselectedVerbList = useMemo(() => {
+    const selectedVerbIds = new Set(selectedVerbList.map(verb => verb.id));
+    console.log(verbList.filter(verb => !selectedVerbIds.has(verb.id)))
+    return verbList.filter(verb => !selectedVerbIds.has(verb.id));
+  }, [verbList, selectedVerbList]);
+
+  const filteredVerbList = useMemo(() => {
+    const textFilter = (text: string) => {
+      return unselectedVerbList.filter(verb => verb.name.includes(text));
+    };
+    return textFilter(searchedText.toLowerCase());
+  }, [searchedText, unselectedVerbList]);
+
+  const allTableList = useMemo(() => batchList.flatMap(batch => batch.tableList).concat(selectedTableList), [batchList, selectedTableList]);
+  
   // Effects
-  useEffect(() => {
-    setNumColumns(calcNumColumns());
-  }, [screenWidth]);
+  // useEffect(() => {
+  //   setNumColumns(calcNumColumns());
+  //   console.log('fd')
+  // }, []);
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -131,8 +138,13 @@ export default function VerbSelection() {
               // key={numColumns}
               renderItem={({item}) => 
                 <View style={{position: 'relative'}}>
-                  <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
-                  <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
+                  <TextIconButton 
+                    label={item.name} 
+                    color='white' 
+                    onPress={() => removeSelectedVerb(item)} 
+                    iconSize={20} 
+                    style={{ backgroundColor: 'grey' }} 
+                    icon={'remove'}/>
                 </View>
               }
               numColumns={numColumns}
@@ -142,20 +154,6 @@ export default function VerbSelection() {
             >
 
             </CustomFlatList>
-            {/* <FlatList
-              data={selectedVerbList}
-              // key={numColumns}
-              renderItem={({item}) => 
-                <View style={{position: 'relative'}}>
-                  <Button title={item.name + '    '} color='grey' onPress={() => removeSelectedVerb(item)}/>
-                  <MaterialIcons name='remove' size={20} color={'white'} style={{position: 'absolute', top: 8, right: 0, pointerEvents: 'none'}}/>
-                </View>
-              }
-              numColumns={numColumns}
-              ItemSeparatorComponent={() => <View style={{height: 10}} />}
-              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-            >
-            </FlatList> */}
           </View>
 
           {/* VERB LIST */}
@@ -167,17 +165,18 @@ export default function VerbSelection() {
               emptyMessage='No verbs found'
               numColumns={numColumns}
               key={numColumns}
+              keyExtractor={(item: Verb) => item.id.toString()}
               itemSeparatorHeight={15}
               columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-              // style={[{flex: 1}, globalstyles.flatList]}
+              style={[{flex: 1}, globalstyles.flatList]}
               renderItem={({item}) => 
-                <View style={styles.buttonWidth}>
+                // <View style={styles.buttonWidth}>
                   <ListButton
                     label={item.name}
                     onPress={() => addSelectedVerb(item)}
                     disabled={allTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
                   />
-                </View>
+                // </View>
                 }
             >
             </CustomFlatList>
@@ -230,6 +229,7 @@ const styles = StyleSheet.create({
     zIndex: 10
   },
   columnWrapperStyle: {
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    columnGap: 5
   }
 });

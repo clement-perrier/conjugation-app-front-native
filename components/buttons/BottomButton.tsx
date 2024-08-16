@@ -4,9 +4,17 @@ import { Text, Pressable, StyleSheet } from "react-native";
 
 export default function BottomButton({label, onPress, icon, disabled, iconOnly } : LayoutButton){
     return (
-        <Pressable onPress={onPress} style={[styles.button, disabled ? styles.disabled : styles.active ]} disabled={disabled}>
-            <MaterialIcons name={icon} size={40} color={'white'}/>
-            <Text style={styles.text}>{label}</Text>
+        <Pressable 
+            onPress={onPress} 
+            style={({pressed}) => [
+                styles.button, 
+                disabled ? styles.disabled : styles.active,
+                {backgroundColor: pressed ? 'grey' : 'black'}
+            ]} 
+            disabled={disabled}
+        >
+            {icon && <MaterialIcons name={icon} size={40} color={'white'}/>}
+            {label && <Text style={styles.text}>{label}</Text>}
         </Pressable>
     )
 }
@@ -14,7 +22,7 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly }
 const styles = StyleSheet.create({
     button: {
         height: 45,
-        // justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     widthFitContent: {

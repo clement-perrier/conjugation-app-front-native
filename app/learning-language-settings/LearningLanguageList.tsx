@@ -41,7 +41,6 @@ export default function LearningLanguageList() {
   ]
 
   return (
-    <>
     
     <MainLayout buttons={buttons} title='Languages that you are currenlty learning'>
 
@@ -65,7 +64,6 @@ export default function LearningLanguageList() {
       </CustomFlatList>
 
     </MainLayout>
-    </>
   );
 }
 

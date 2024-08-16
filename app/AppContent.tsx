@@ -1,5 +1,5 @@
 
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StatusBar } from "react-native";
 import AppNavigator from "./AppNavigator";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { useEffect, useState } from "react";
@@ -24,6 +24,7 @@ export default function AppContent() {
   useEffect(() => {
       dispatch(FetchUser())
       dispatch(FetchLearningLanguageList())
+      // StatusBar.currentHeight = 0
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function AppContent() {
   }
 
   return (
-    initialRouteName && <AppNavigator initialRouteName={initialRouteName}/>
+    initialRouteName && <AppNavigator initialRouteName={initialRouteName} />
   );
 }
 

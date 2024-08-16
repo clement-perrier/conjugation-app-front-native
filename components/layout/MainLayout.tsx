@@ -7,7 +7,7 @@ import BottomButton from '../buttons/BottomButton';
 export default function MainLayout({children, buttons, title} : {children: ReactElement, buttons?: LayoutButton[], title?: string}){
     
     return (
-        <View style={[styles.container, styles.padding20]}>
+        <View style={[styles.container]}>
 
             <Text>{title}</Text>
 
@@ -36,10 +36,6 @@ export default function MainLayout({children, buttons, title} : {children: React
     
 }
 
-// MainLayout.defaultProps = {
-//     contentCentered: true,
-// };
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -62,8 +58,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 20,
         width: '100%'
-    },
-    padding20: {
-        padding: 25
     }
   });

@@ -32,6 +32,7 @@ export default function Start() {
   const buttons: LayoutButton[] = [
     {
       label: 'START',
+      disabled: new Date(selectedBatch.reviewingDate).getDay() > new Date().getDay(),
       onPress: () => {
         navigation.navigate('Question')
       }

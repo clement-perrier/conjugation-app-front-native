@@ -87,3 +87,8 @@ export const UpdateUserDefaultLearningLanguage = async (userId: number, language
     const response = await apiService.put(`updateUserDefaultLearningLanguage?userId=${userId}&learningLanguageId=${languageId}`);
     return response.data;
 }
+
+export const RemoveBatch = async(batchId: number) => {
+    const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
+    return response.data;
+}

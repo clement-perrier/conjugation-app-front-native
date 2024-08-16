@@ -47,19 +47,21 @@ export default function Question() {
   };
 
   const slideIn = () => {
+    slideAnimation.setValue(0); 
     // Will change fadeAnim value to 1 in 5 seconds
     Animated.timing(slideAnimation, {
       toValue: 1,
-      duration: 200,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };
 
   const slideOut = () => {
+    slideAnimation.setValue(1); 
     // Will change fadeAnim value to 0 in 3 seconds
     Animated.timing(slideAnimation, {
       toValue: 0,
-      duration: 200,
+      duration: 100,
       useNativeDriver: true,
     }).start();
   };
@@ -96,17 +98,20 @@ export default function Question() {
   }
 
   const handleContinue = () => {
-    if (currentConjugationIndex < conjugationList.length - 1){
-      setCurrentConjugationIndex(currentConjugationIndex + 1) 
-      setanswer('')
-      setAnswerStatus(null);
-    } 
-    // Training is finished
-    else {
-      handleResults()
-      navigation.navigate('Results')
-    }
-    slideOut()
+    // slideOut()
+    setTimeout(() => {
+      if (currentConjugationIndex < conjugationList.length - 1){
+        setCurrentConjugationIndex(currentConjugationIndex + 1) 
+        setanswer('')
+        setAnswerStatus(null);
+      } 
+      // Training is finished
+      else {
+        handleResults()
+        navigation.navigate('Results')
+      }
+    }, 100);
+    
   }
 
   const handleResults = () => {
@@ -125,7 +130,7 @@ export default function Question() {
 
       // All correct => next day number - All mistake => day number unchanged and reviewing date +1 day
       updatedBatch.dayNumber = allCorrect ? getNextDayNumber(selectedBatch.dayNumber) : selectedBatch.dayNumber
-      updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, allCorrect ? getIncrement(selectedBatch.dayNumber) : 1)  
+      updatedBatch.reviewingDate = addDays(allCorrect ? getIncrement(selectedBatch.dayNumber) : 1)  
 
     } else {
 
@@ -135,7 +140,7 @@ export default function Question() {
       updatedBatch.tableList = selectedBatch.tableList.filter(table => !hasMistake(table))
       // All correct table => next day number
       updatedBatch.dayNumber = getNextDayNumber(selectedBatch.dayNumber)
-      updatedBatch.reviewingDate = addDays(selectedBatch.reviewingDate, getIncrement(selectedBatch.dayNumber))
+      updatedBatch.reviewingDate = addDays(getIncrement(selectedBatch.dayNumber))
 
       if (user){
 
@@ -149,7 +154,7 @@ export default function Question() {
           ...selectedBatch,
           id: bathcList.length,
           tableList: selectedBatch.tableList.filter(table => hasMistake(table)),
-          reviewingDate: addDays(selectedBatch.reviewingDate, 1),
+          reviewingDate: addDays(1),
           userLearningLanguage
         }
   

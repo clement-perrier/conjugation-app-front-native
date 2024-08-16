@@ -37,6 +37,10 @@ export default function Home() {
   },[]) */
 
   useEffect(() => {
+
+  }, []);
+
+  useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
       dispatch(FetchTenseList(languageId))
@@ -59,9 +63,10 @@ export default function Home() {
   return (
 
     <>
+    
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
-          
+     
         <IconButton style={{alignItems: 'center', alignContent: 'center'}} icon='settings' size={40}/>
 
         <Pressable 
@@ -75,7 +80,6 @@ export default function Home() {
            <View style={[styles.flagImage]}>
             <Flag country={user.defaultLearningLanguage.imageName}/>
           </View>
-          
           }
           
         </Pressable>
@@ -98,6 +102,7 @@ export default function Home() {
                   navigation.navigate('Start');
                 }}
                 icon='chevron-right'
+                focus={new Date(item.reviewingDate).getDay() <= new Date().getDay()}
               />
             )}
             itemSeparatorHeight={20}
@@ -110,8 +115,6 @@ export default function Home() {
   );
 }
 
-
-
 const styles = StyleSheet.create({
   flagButton: {
     alignItems: 'center',
@@ -120,7 +123,6 @@ const styles = StyleSheet.create({
     // marginTop: -15
     // padding: 4,
     // elevation: 5, // Shadow for Android
-    // shadowColor: '#000', // Shadow for iOS
   },
   buttonPressed: {
     backgroundColor: '#DDDDDD', // Background color when pressed
@@ -130,8 +132,6 @@ const styles = StyleSheet.create({
     height: 30
   },
   header: {
-    paddingHorizontal: 15,
-    // paddingTop: 15,
     justifyContent: 'space-between',
     backgroundColor: 'white',
     height: 'auto'

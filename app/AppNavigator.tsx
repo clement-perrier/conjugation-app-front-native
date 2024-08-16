@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, StackNavigationOptions } from "@react-navigation/stack";
 import TenseSelection from "./new-batch/TenseSelection";
 import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
@@ -6,7 +6,7 @@ import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
-import { Text, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -19,8 +19,10 @@ import RemoveBatchButton from "@/components/buttons/RemoveBatchButton";
 import { StyleSheet } from "react-native";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
-
-const Stack = createStackNavigator();
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
+// const Stack = createStackNavigator();
 
 export default function AppNavigator({ initialRouteName } : {initialRouteName: string}) {
 
@@ -35,6 +37,9 @@ export default function AppNavigator({ initialRouteName } : {initialRouteName: s
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
                     />
+                    // statusBarColor: 'pink'
+      // statusBarHidden: true,
+      // headerShowm: false
       // headerStyle: styles.header,
       // headerTitle: '',
       // headerBackTitleVisible: false,
@@ -44,61 +49,63 @@ export default function AppNavigator({ initialRouteName } : {initialRouteName: s
   }
 
   return (
-    <Provider store={store}>
-      {/* <ConnectivityProvider> */}
-        <View style={{flex: 1}}>
-          <Stack.Navigator initialRouteName={initialRouteName}>
-            <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
-            <Stack.Screen 
-              name="Learning language list"
-              component={LearningLanguageList}
-              options={getOptions(true)}
-            />
-            <Stack.Screen 
-              name="Add learning language"
-              component={AddLearningLanguage}
-              options={getOptions(true, true)}
-            />
-            <Stack.Screen 
-              name="Tense(s) selection"
-              component={TenseSelection}
-              options={getOptions(true, false)}
-            />
-            <Stack.Screen 
-              name="Verb(s) selection" 
-              component={VerbSelection}
-              options={getOptions(true, true, true)}
-            />
-            <Stack.Screen 
-              name="Batch progress"  
-              component={BatchProgress}
-              options={getOptions(false, true, true)}
-            />
-            <Stack.Screen 
-              name="Batch created"
-              component={BatchCreated} 
-              options={getOptions(false, true)}
-            />
-            <Stack.Screen 
-              name="Start"
-              component={Start} 
-              options={getOptions(true, false, false, true)}
-            />
-            <Stack.Screen 
-              name="Question" 
-              component={Question}
-              options={getOptions(false, true)}
-            />
-            <Stack.Screen 
-              name="Results" 
-              component={Results}
-              options={getOptions(false, false)}
-            />
+   <>
+        {/* <ConnectivityProvider> */}
+        
+          <View style={{flex: 1}}>
+            <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
+            <Stack.Navigator initialRouteName={initialRouteName}>
+              <Stack.Screen  name="Home" component={Home} options={{ headerShown: false}} />
+              <Stack.Screen 
+                name="Learning language list"
+                component={LearningLanguageList}
+                options={getOptions(true)}
+              />
+              <Stack.Screen 
+                name="Add learning language"
+                component={AddLearningLanguage}
+                options={getOptions(true, true)}
+              />
+              <Stack.Screen 
+                name="Tense(s) selection"
+                component={TenseSelection}
+                options={getOptions(true, false)}
+              />
+              <Stack.Screen 
+                name="Verb(s) selection" 
+                component={VerbSelection}
+                options={getOptions(true, true, true)}
+              />
+              <Stack.Screen 
+                name="Batch progress"  
+                component={BatchProgress}
+                options={getOptions(false, true, true)}
+              />
+              <Stack.Screen 
+                name="Batch created"
+                component={BatchCreated} 
+                options={getOptions(false, true)}
+              />
+              <Stack.Screen 
+                name="Start"
+                component={Start} 
+                options={getOptions(true, false, false, true)}
+              />
+              <Stack.Screen 
+                name="Question" 
+                component={Question}
+                options={getOptions(false, true)}
+              />
+              <Stack.Screen 
+                name="Results" 
+                component={Results}
+                options={getOptions(false, false)}
+              />
 
-          </Stack.Navigator>
-        </View>
-      {/* </ConnectivityProvider> */}
-    </Provider>
+            </Stack.Navigator>
+          </View>
+        {/* </ConnectivityProvider> */}
+    </>
   );
 }
 
@@ -165,6 +172,6 @@ const styles = StyleSheet.create({
     elevation: 0, // Remove elevation (for Android)
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
   }
 })
