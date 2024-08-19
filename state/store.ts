@@ -10,6 +10,7 @@ import TableListSlice from './slices/TableListSlice'
 import UserSlice from './slices/UserSlice'
 import LearningLanguageListSlice from './slices/LearningLanguageListSlice'
 import IsOnBoardingSlice from './slices/isOnBoardingSlice'
+import IsAuthenticated from './slices/isAuthtenticated'
 
 export const store = configureStore({
   reducer: {
@@ -23,7 +24,8 @@ export const store = configureStore({
     pronounList: PronounListSlice.reducer,
     TableList: TableListSlice.reducer,
     BatchList: BatchListSlice.reducer,
-    IsOnBoarding: IsOnBoardingSlice.reducer
+    IsOnBoarding: IsOnBoardingSlice.reducer,
+    IsAuthenticated: IsAuthenticated.reducer
   }
 })
 

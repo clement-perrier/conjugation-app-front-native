@@ -29,7 +29,6 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
-      
     },
     "web": {
       "bundler": "metro",
@@ -37,7 +36,9 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router", "expo-image-picker"
+      "expo-router",
+      "expo-image-picker",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

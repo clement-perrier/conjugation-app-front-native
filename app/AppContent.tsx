@@ -50,7 +50,7 @@ export default function AppContent() {
   }
 
   return (
-    initialRouteName && <AppNavigator initialRouteName={initialRouteName} />
+    initialRouteName && <AppNavigator/>
   );
 }
 

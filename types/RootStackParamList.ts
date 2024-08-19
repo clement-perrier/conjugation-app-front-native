@@ -10,4 +10,7 @@ export type RootStackParamList = {
     'Start': undefined
     'Question': undefined
     'Results': undefined
+    'Log in': undefined
+    'Sign up': undefined
+    'Reset password': undefined
   };

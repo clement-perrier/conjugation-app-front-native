@@ -4,6 +4,7 @@ import { SafeAreaView, StatusBar, View } from "react-native";
 import AppContent from "./AppContent";
 import { useEffect } from "react";
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppNavigator from "./AppNavigator";
 
 export default function Index() {
 
@@ -18,7 +19,7 @@ export default function Index() {
       <Provider store={store}>
         {/* <ConnectivityProvider> */}
           <View style={{flex: 1, padding: 15}}>
-            <AppContent/>
+            <AppNavigator/>
           </View>
         {/* </ConnectivityProvider> */}
       </Provider>

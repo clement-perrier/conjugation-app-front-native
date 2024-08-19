@@ -1,7 +1,7 @@
-import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator, StatusBar } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator, StatusBar, TextInput, Button } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, FetchUser, FetchLearningLanguageList } from '@/services/ApiService';
 import { formatDateAsLong } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -13,11 +13,16 @@ import { Batch } from '@/types/Batch';
 import IconButton from '@/components/buttons/IconButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
+import AppSecureStore from '@/state/SecureStore';
+import IsOnBoardingSlice, { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 
 export default function Home() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
+
+  const [key, onChangeKey] = useState('key1');
+  const [value, onChangeValue] = useState('TestValue');
 
   // Selectors
   const user = useAppSelector(state => state.User.value)
@@ -31,14 +36,11 @@ export default function Home() {
   }, [batchList])
   
   //  Effects
-  /* useEffect(() => {
-    dispatch(FetchUser())
-    dispatch(FetchLearningLanguageList())
-  },[]) */
-
   useEffect(() => {
-
-  }, []);
+    console.log('Home')
+    async function test() {AppSecureStore.SaveItemAsync('access_token', '');}
+    test()
+  },[])
 
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
@@ -48,6 +50,7 @@ export default function Home() {
       dispatch(FetchPronounList(languageId))
       dispatch(FetchTableList(languageId))
       dispatch(FetchBatchList({userId: user.id, languageId}))
+      dispatch(updateIsOnBoarding(false))
     }
   }, [user])
 
@@ -59,6 +62,10 @@ export default function Home() {
       iconOnly: true
     }
   ]
+
+  if(!user){
+    return <ActivityIndicator style={[globalstyles.text, globalstyles.flatListContent]} size="large" color="#0000ff" />
+  }
 
   return (
 
