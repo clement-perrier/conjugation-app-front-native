@@ -25,7 +25,12 @@ export const UserSlice = createSlice({
       state.value && (state.value.defaultLearningLanguage = {...action.payload})
     },
     addLearningLanguage: (state, action: PayloadAction<LearningLanguage>) => {
-      state.value && (state.value.learningLanguageList = [...state.value.learningLanguageList, action.payload])
+      if (state.value) {
+        state.value = {
+            ...state.value,
+            learningLanguageList: [...state.value.learningLanguageList || [], action.payload]
+        };
+      }
     }
   },
   extraReducers(builder) {

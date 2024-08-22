@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { ActivityIndicator, StatusBar, Text, View } from "react-native";
+import { ActivityIndicator, Platform, StatusBar, Text, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -25,13 +25,14 @@ import { globalstyles } from "@/utils/GlobalStyle";
 import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
 import { FetchLearningLanguageList, FetchUser } from "@/services/ApiService";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
+import { setDispatchRef } from "@/utils/DispatchRef";
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
 
 export default function AppNavigator() {
 
+  const navigation = useAppNavigation()
   const dispatch = useAppDispatch()
-  // States
 
   // Selectors
   const isOnboarding = useAppSelector(state => state.IsOnBoarding.value)
@@ -60,23 +61,31 @@ export default function AppNavigator() {
         dispatch(updateIsAuthenticated(false))
       }
     }
+    setDispatchRef(dispatch);
     checkAuth();
   }, []);
 
   useEffect(() => {
-    dispatch(FetchUser())
-    dispatch(FetchLearningLanguageList())
+    if(isAuthenticated === true){
+      dispatch(FetchLearningLanguageList())
+      dispatch(FetchUser())
+    } else if(isAuthenticated === false) {
+      // navigation.navigate('Log in')
+    }
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if(user?.defaultLearningLanguage === null){
-      dispatch(updateIsOnBoarding(true))
+    if (user?.defaultLearningLanguage === null) {
+      dispatch(updateIsOnBoarding(true));
     }
   }, [user]);
 
-  if (isAuthenticated === null) {
+  if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
     return (
-      <ActivityIndicator style={[globalstyles.text, globalstyles.flatListContent]} size="large" color="#0000ff" />
+      <View style={[globalstyles.text, {flex: 1}]}>
+        <Text style={globalstyles.text}>{isAuthenticated === null ? 'Authenticating' : 'Loading user'}</Text>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
     );
   }
   
@@ -84,11 +93,10 @@ export default function AppNavigator() {
    <>
       <View style={{flex: 1}}>
         <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-        <Stack.Navigator>
           {
             isAuthenticated ? (
               user?.defaultLearningLanguage ? (
-                <>
+                <Stack.Navigator initialRouteName="Home">
                   <Stack.Screen  name="Home" component={Home} options={{ headerShown: false}} />
                   <Stack.Screen 
                     name="Learning language list"
@@ -135,16 +143,18 @@ export default function AppNavigator() {
                     component={Results}
                     options={getOptions(false, false)}
                   /> 
-                </>
+                </Stack.Navigator>
               ) : (
+                <Stack.Navigator>
                 <Stack.Screen 
                     name="Add learning language"
                     component={AddLearningLanguage}
                     options={getOptions()}
                   />
+                </Stack.Navigator>
               )
             ) : (
-              <>
+              <Stack.Navigator>
                 <Stack.Screen 
                   name="Log in" 
                   component={LogIn}
@@ -160,10 +170,9 @@ export default function AppNavigator() {
                   component={ResetPassword}
                   options={getOptions(true, false)}
                 /> 
-              </>
+              </Stack.Navigator>
             )
           }
-        </Stack.Navigator>
       </View>
     </>
   );
@@ -181,7 +190,6 @@ export function CustomHeader(
       {cancelButton && <CancelStackButton selectionToBeCleared={selectionToBeCleared}/>}
     </View>
   );
-
     
 }
 

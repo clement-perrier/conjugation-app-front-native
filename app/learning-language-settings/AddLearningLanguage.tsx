@@ -30,6 +30,10 @@ export default function AddLearningLanguage() {
     }
   }, [isOnBoarding, user?.defaultLearningLanguage]);
 
+  useEffect(() => {
+    console.log(user)
+  }, []);
+
   // useEffect(() => {
   //   console.log(isOnBoarding, 'on boarding update')
   // }, [isOnBoarding]);
@@ -45,7 +49,7 @@ export default function AddLearningLanguage() {
             <ListButton 
               key={item.id}
               label={item.name}
-              disabled={user?.learningLanguageList.some(language => language.id === item.id)}
+              disabled={(user && user.learningLanguageList) ? user.learningLanguageList.some(language => language.id === item.id) : false}
               onPress={() =>{
                 // Updating Redux state
                 dispatch(addLearningLanguage(item))

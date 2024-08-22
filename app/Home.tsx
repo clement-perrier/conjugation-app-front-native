@@ -36,11 +36,8 @@ export default function Home() {
   }, [batchList])
   
   //  Effects
-  useEffect(() => {
-    console.log('Home')
-    async function test() {AppSecureStore.SaveItemAsync('access_token', '');}
-    test()
-  },[])
+  // useEffect(() => {
+  // },[])
 
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {

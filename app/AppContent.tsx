@@ -22,8 +22,8 @@ export default function AppContent() {
   const [isDataReady, setIsDataReady] = useState(false);
 
   useEffect(() => {
-      dispatch(FetchUser())
-      dispatch(FetchLearningLanguageList())
+      // dispatch(FetchUser())
+      // dispatch(FetchLearningLanguageList())
       // StatusBar.currentHeight = 0
   }, []);
 
