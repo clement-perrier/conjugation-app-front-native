@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { Verb } from '@/types/Verb';
+import Spinner from './Spinner';
 
 export default function CustomFlatList(
     { 
@@ -31,11 +32,16 @@ export default function CustomFlatList(
 ){
 
   if (isLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <Spinner text={'Loading data'}/>
+
   }
 
   if (data?.length === 0) {
-    return <Text style={globalstyles.text}>{emptyMessage}</Text>;
+    return (
+      <View style={globalstyles.container}>
+        <Text style={globalstyles.text}>{emptyMessage}</Text>
+      </View>
+    )
   }
 
   return (

@@ -18,8 +18,10 @@ export const globalstyles = StyleSheet.create({
         paddingVertical: 10
     },
     text: {
-        justifyContent: 'center',
-        display: 'flex'
+        // justifyContent: 'center',
+        // display: 'flex',
+        // alignItems: 'center',
+        // alignContent: 'center'
     },
     flexRow: {
         display: 'flex',

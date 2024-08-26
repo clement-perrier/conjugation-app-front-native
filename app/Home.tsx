@@ -14,6 +14,7 @@ import IconButton from '@/components/buttons/IconButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
+import Spinner from '@/components/layout/Spinner';
 
 export default function Home() {
 
@@ -53,7 +54,7 @@ export default function Home() {
   ]
 
   if(!user || !batchList){
-    return <ActivityIndicator style={[globalstyles.text, globalstyles.flatListContent]} size="large" color="#0000ff" />
+    return <Spinner text={'Loading data'}/>
   }
 
   return (

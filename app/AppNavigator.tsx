@@ -25,6 +25,7 @@ import { globalstyles } from "@/utils/GlobalStyle";
 import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
 import { loadInitialData } from "@/services/AuthenticationService";
+import Spinner from "@/components/layout/Spinner";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -53,8 +54,8 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
-    // AppSecureStore.SaveItemAsync('access_token', '');
-    // AppSecureStore.SaveItemAsync('refresh_token', '');
+    AppSecureStore.SaveItemAsync('access_token', '');
+    AppSecureStore.SaveItemAsync('refresh_token', '');
     async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
       if (token) {
@@ -65,18 +66,8 @@ export default function AppNavigator() {
         dispatch(updateIsAuthenticated(false))
       }
     }
-    // setDispatchRef(dispatch);
     checkAuth();  
   }, []);
-
-  // useEffect(() => {
-  //   if(isAuthenticated === true){
-  //     dispatch(FetchLearningLanguageList())
-  //     dispatch(FetchUser())
-  //   } else if(isAuthenticated === false) {
-  //     // navigation.navigate('Log in')
-  //   }
-  // }, [isAuthenticated]);
 
   useEffect(() => {
     if (user?.defaultLearningLanguage === null) {
@@ -85,12 +76,7 @@ export default function AppNavigator() {
   }, [user]);
 
   if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
-    return (
-      <View style={[globalstyles.text, {flex: 1}]}>
-        <Text style={globalstyles.text}>{isAuthenticated === null ? 'Authenticating' : 'Loading user'}</Text>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+    return <Spinner text={isAuthenticated === null ? 'Authenticating' : 'Loading user'}/>
   }
   
   return (

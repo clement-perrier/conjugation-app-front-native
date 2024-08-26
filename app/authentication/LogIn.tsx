@@ -16,7 +16,7 @@ export default function LogIn() {
   // Handlers
   const handleLogin = async (email: string, password: string) => {
     setIsLoading(true)
-    const token = Login(dispatch, email , password, false)
+    const token = await Login(dispatch, email , password, false)
     if(!token){
       setIsLoading(false)
     }

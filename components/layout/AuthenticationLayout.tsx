@@ -7,6 +7,7 @@ import { useState } from 'react';
 import BottomButton from '../buttons/BottomButton';
 import IconButton from '../buttons/IconButton';
 import { MaterialIcons } from '@expo/vector-icons';
+import Spinner from './Spinner';
 
 interface AuthenticationLayoutProps {
   isLogin: boolean,
@@ -24,12 +25,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   if(isLoading){
-    return (
-      <View style={[globalstyles.container]}>
-        <Text style={globalstyles.text}>{}</Text>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    )
+    return <Spinner text={isLogin ? 'Logging in' : 'Signing up'}/>
   }
 
   return (
