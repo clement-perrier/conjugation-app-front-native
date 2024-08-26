@@ -3,6 +3,11 @@ import { StyleSheet } from 'react-native';
 const headerButtonsSideGap = 11
 
 export const globalstyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: 'white'
+    },
     flatList: {
         height: 10,
         width: '100%',
@@ -21,6 +26,11 @@ export const globalstyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         alignContent: 'center'
+    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 20
     },
     headerButton: {
         // height: '100%',

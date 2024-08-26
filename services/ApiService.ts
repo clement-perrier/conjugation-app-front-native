@@ -10,6 +10,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { store } from '@/state/store';
 import { getDispatchRef } from '@/utils/DispatchRef';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
+import { handleFail } from '@/utils/Messages';
 
 
 // Axios configuration
@@ -72,7 +73,7 @@ async function refreshToken() {
 apiService.interceptors.request.use(async (config) => {
 
     // List of endpoints that do not require authentication
-    const noTokenEndpoints = ['auth/login', 'auth/signUp', 'auth/refreshToken'];
+    const noTokenEndpoints = ['auth/login', 'auth/signup', 'auth/refreshToken'];
 
     if (!noTokenEndpoints.includes(config.url || '')) {
 
@@ -96,8 +97,8 @@ apiService.interceptors.request.use(async (config) => {
 // Requests
 export const FetchUser = createAsyncThunk(
     'fetchUser',
-    async () => {
-        const response = await apiService.get('user?userId=1');
+    async (userId: number) => {
+        const response = await apiService.get(`user?userId=${userId}`);
         return response.data;
     }
 );
@@ -175,14 +176,42 @@ export const RemoveBatch = async(batchId: number) => {
     return response.data;
 }
 
-export const Login = async(loginUser: LoginUser) => {
+export const AuthLogin = async(loginUser: LoginUser) => {
     const response = await apiService.post('auth/login', loginUser);
     return response.data;
 }
 
-export const RefreshToken = async(refreshToken: string) => {
-    const response = await apiService.post('auth/refreshToken', refreshToken);
-    return response.data;
+export const AuthSignup = async(loginUser: LoginUser) => {
+    try {
+        const response = await apiService.post('auth/signup', loginUser);
+        return response.data;
+    } catch (error: any) {
+        if (error.response) {
+            // Handle HTTP errors
+            if (error.response.status === 409) {
+                handleFail('Signup Error', 'This email is already in use. Please try a different one.')
+            } else {
+                handleFail('Signup Error', error.response.data.detail || 'An unexpected error occurred.')
+            }
+          } else if (error.request) {
+            // Handle network errors
+            handleFail('Network Error', 'No response from server. Please check your network connection.')
+          } else {
+            // Handle other errors
+            handleFail('Error', 'Something went wrong. Please try again.')
+          }
+    }
+    
+}
+
+export const AuthRefreshToken = async(refreshToken: string) => {
+    try {
+        const response = await apiService.post('auth/refreshToken', refreshToken);
+        return response.data;
+    } catch (error) {
+        handleFail('Refresh token error', 'Something went wrong')
+    }
+    
 }
 
 // Interfaces

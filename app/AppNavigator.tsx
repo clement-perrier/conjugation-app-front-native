@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { ActivityIndicator, Platform, StatusBar, Text, View } from "react-native";
+import { ActivityIndicator, StatusBar, Text, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -16,16 +16,16 @@ import { StyleSheet } from "react-native";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AppSecureStore from "@/state/SecureStore";
 import LogIn from "./authentication/LogIn";
 import SignUp from "./authentication/SignUp";
 import ResetPassword from "./authentication/ResetPassword";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
-import { FetchLearningLanguageList, FetchUser } from "@/services/ApiService";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
-import { setDispatchRef } from "@/utils/DispatchRef";
+import { loadInitialData } from "@/services/AuthenticationService";
+
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
 
@@ -53,26 +53,30 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
+    // AppSecureStore.SaveItemAsync('access_token', '');
+    // AppSecureStore.SaveItemAsync('refresh_token', '');
     async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
       if (token) {
-        dispatch(updateIsAuthenticated(true))
+        const userId = Number(await AppSecureStore.GetItemAsync('user_id'));
+        loadInitialData(dispatch, userId)
       } else {
+        dispatch(updateIsOnBoarding(true))
         dispatch(updateIsAuthenticated(false))
       }
     }
-    setDispatchRef(dispatch);
-    checkAuth();
+    // setDispatchRef(dispatch);
+    checkAuth();  
   }, []);
 
-  useEffect(() => {
-    if(isAuthenticated === true){
-      dispatch(FetchLearningLanguageList())
-      dispatch(FetchUser())
-    } else if(isAuthenticated === false) {
-      // navigation.navigate('Log in')
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if(isAuthenticated === true){
+  //     dispatch(FetchLearningLanguageList())
+  //     dispatch(FetchUser())
+  //   } else if(isAuthenticated === false) {
+  //     // navigation.navigate('Log in')
+  //   }
+  // }, [isAuthenticated]);
 
   useEffect(() => {
     if (user?.defaultLearningLanguage === null) {
@@ -147,29 +151,29 @@ export default function AppNavigator() {
               ) : (
                 <Stack.Navigator>
                 <Stack.Screen 
-                    name="Add learning language"
+                    name="On boarding learning language"
                     component={AddLearningLanguage}
                     options={getOptions()}
                   />
                 </Stack.Navigator>
               )
             ) : (
-              <Stack.Navigator>
+              <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'}>
                 <Stack.Screen 
                   name="Log in" 
                   component={LogIn}
-                  options={getOptions(false, false)}
+                  options={getOptions()}
                 /> 
                 <Stack.Screen 
                   name="Sign up" 
                   component={SignUp}
-                  options={getOptions(true, false)}
+                  options={getOptions()}
                 /> 
                 <Stack.Screen 
                   name="Reset password" 
                   component={ResetPassword}
                   options={getOptions(true, false)}
-                /> 
+                />
               </Stack.Navigator>
             )
           }

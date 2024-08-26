@@ -1,8 +1,8 @@
-import { View, FlatList, StyleSheet, Text, Image, Pressable, ActivityIndicator, StatusBar, TextInput, Button } from 'react-native';
+import { View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
-import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, FetchUser, FetchLearningLanguageList } from '@/services/ApiService';
+import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { formatDateAsLong } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
@@ -13,17 +13,13 @@ import { Batch } from '@/types/Batch';
 import IconButton from '@/components/buttons/IconButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
-import AppSecureStore from '@/state/SecureStore';
-import IsOnBoardingSlice, { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
+import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 
 export default function Home() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
-
-  const [key, onChangeKey] = useState('key1');
-  const [value, onChangeValue] = useState('TestValue');
-
+  
   // Selectors
   const user = useAppSelector(state => state.User.value)
   const batchList = useAppSelector(state => state.BatchList.value)
@@ -35,10 +31,6 @@ export default function Home() {
     return batchList.slice().sort((a, b) => new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf())
   }, [batchList])
   
-  //  Effects
-  // useEffect(() => {
-  // },[])
-
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
@@ -60,7 +52,7 @@ export default function Home() {
     }
   ]
 
-  if(!user){
+  if(!user || !batchList){
     return <ActivityIndicator style={[globalstyles.text, globalstyles.flatListContent]} size="large" color="#0000ff" />
   }
 
@@ -123,10 +115,7 @@ const styles = StyleSheet.create({
   flagButton: {
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#black',
-    // marginTop: -15
-    // padding: 4,
-    // elevation: 5, // Shadow for Android
+    borderColor: '#black'
   },
   buttonPressed: {
     backgroundColor: '#DDDDDD', // Background color when pressed
