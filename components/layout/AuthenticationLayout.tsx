@@ -18,11 +18,27 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch()
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
+  // Functions
+  const validateEmail = (email: string) => {
+    if(email.length) {
+      return emailRegex.test(email)
+    } else {
+      return true
+    }
+  };
+
+  // Handlers
+  const handleBlur = () => {
+    setIsEmailValid(validateEmail(email));
+  };
 
   if(isLoading){
     return <Spinner text={isLogin ? 'Logging in' : 'Signing up'}/>
@@ -33,12 +49,18 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
 
       <Text style={[styles.title, globalstyles.text]}>{isLogin ? 'Log in' : 'Sign up'}</Text>
 
+      {/* Email input */}
       <TextInput
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        onBlur={handleBlur}
         style={styles.input}
-        />
+      />
+
+      {!isEmailValid && <Text style={styles.invalidEmailText}>Invalid email address</Text>}
+
+      {/* Password input */}
       <View style={{position: 'relative'}}>
         <TextInput
           placeholder="Password"
@@ -56,12 +78,17 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
         />
       </View>
 
+      {/* Forgot password */}
+      {isLogin && <Text style={[styles.forgotPassword]}>Forgot your password?</Text>}
+
+      {/* Main button */}
       <BottomButton 
         label={isLogin ? 'Login' : 'Signup'}
         onPress={() => onPrimaryPress(email, password)} 
-        // disabled={email.length == 0 || password.length == 0 || !email.includes('@') || !email.includes('.')}
+        disabled={email.length == 0 || password.length == 0 || !validateEmail(email)}
       />
 
+      {/* Bottom Text */}
       <View style={[globalstyles.flexRow, globalstyles.text]}>
         <Text>{isLogin ? `Don't have an account?` : 'Already have an account?'}</Text>
         <Text 
@@ -90,5 +117,14 @@ const styles = StyleSheet.create({
   bottomText: {
     fontWeight: 'bold',
     marginLeft: 4
+  },
+  forgotPassword: {
+    marginBottom: 20,
+    textAlign: 'right',
+    fontWeight: 'bold'
+  },
+  invalidEmailText: {
+    marginTop: -15,
+    color: 'red'
   }
 });
