@@ -17,11 +17,17 @@ export const globalstyles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: 10
     },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginBottom: 20,
+        textAlign: 'center'
+      },
     text: {
-        // justifyContent: 'center',
-        // display: 'flex',
-        // alignItems: 'center',
-        // alignContent: 'center'
+        justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'center'
     },
     flexRow: {
         display: 'flex',
@@ -33,6 +39,15 @@ export const globalstyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         rowGap: 20
+    },
+    input: {
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'black'
+    },
+    invalidEmailText: {
+      marginTop: -15,
+      color: 'red'
     },
     headerButton: {
         // height: '100%',
