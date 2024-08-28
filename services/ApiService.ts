@@ -6,12 +6,8 @@ import AppSecureStore from '@/state/SecureStore';
 import { jwtDecode } from 'jwt-decode';
 import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import CustomError from '@/utils/CustomError';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { store } from '@/state/store';
 import { getDispatchRef } from '@/utils/DispatchRef';
-import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
-import { handleFail } from '@/utils/Messages';
-
+import { handleFail, handleSuccess } from '@/utils/Messages';
 
 // Axios configuration
 const API_BASE_URL = 'http://192.168.1.181:8080';
@@ -75,7 +71,7 @@ apiService.interceptors.request.use(async (config) => {
     // List of endpoints that do not require authentication
     const noTokenEndpoints = ['auth/login', 'auth/signup', 'auth/refreshToken'];
 
-    if (!noTokenEndpoints.includes(config.url || '')) {
+    if (!config.url?.includes('auth')) {
 
         let accessToken = await AppSecureStore.GetItemAsync('access_token');
     
@@ -211,11 +207,39 @@ export const AuthRefreshToken = async(refreshToken: string) => {
     } catch (error) {
         handleFail('Refresh token error', 'Something went wrong')
     }
-    
+}
+
+export const AuthPasswordResetRequest = async(email: string) => {
+    try {
+        const response = await apiService.post(`auth/resetPassword?email=${email}`);
+        handleSuccess(`A password reset code has been sent to ${email}.`)
+        return response.data;
+    } catch (error) {
+        console.error('Reset password  request error:', error);
+        handleFail('Reset password request error', `User with email ${email} not found.`)
+        return null
+    }
+}
+
+export const AuthChangePassword = async(changePasswordRequest: ChangePasswordRequest) => {
+    try {
+        const response = await apiService.post('auth/changePassword', changePasswordRequest);
+        handleSuccess('Your password has been updated successfully.')
+        return response.data;
+    } catch (error) {
+        console.error('Reset password  request error:', error);
+        handleFail('Error', `Invalid or expired reset code.`)
+        return null
+    }
 }
 
 // Interfaces
-export interface LoginUser {
+export interface LoginUser {    
     email: string,
     password: string
+}
+
+export interface ChangePasswordRequest {
+    code: string,
+    newPassword: string
 }

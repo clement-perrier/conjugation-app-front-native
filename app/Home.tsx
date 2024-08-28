@@ -15,6 +15,7 @@ import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import Spinner from '@/components/layout/Spinner';
+import * as Linking from 'expo-linking'
 
 export default function Home() {
 
@@ -47,6 +48,7 @@ export default function Home() {
   // Buttons
   const buttons: LayoutButton[] = [
     {
+      // onPress: () => navigation.navigate('Tense(s) selection'),
       onPress: () => navigation.navigate('Tense(s) selection'),
       icon: 'add',
       iconOnly: true

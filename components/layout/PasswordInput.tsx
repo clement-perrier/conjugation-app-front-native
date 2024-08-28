@@ -1,6 +1,3 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import MainLayout from '@/components/layout/MainLayout';
-import { useAppDispatch } from '@/state/hooks';
 import { StyleSheet, TextInput, View } from 'react-native';
 import IconButton from '../buttons/IconButton';
 import { globalstyles } from '@/utils/GlobalStyle';
@@ -9,22 +6,24 @@ import { useState } from 'react';
 interface PasswordInputProps {
   placeholder: string,
   password: string,
-  handlePassword: React.Dispatch<React.SetStateAction<string>>
+  handlePassword: React.Dispatch<React.SetStateAction<string>>,
+  disable?: boolean
 }
 
-export default function PasswordInput({placeholder, password, handlePassword} : PasswordInputProps) {
+export default function PasswordInput({placeholder, password, handlePassword, disable} : PasswordInputProps) {
 
   // States
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
-    <View style={{position: 'relative'}}>
+    <View style={[{position: 'relative'}, disable && styles.disable]}>
       <TextInput
         placeholder={placeholder}
         value={password}
         onChangeText={handlePassword}
         secureTextEntry={!isPasswordVisible}
         style={globalstyles.input}
+        editable={!disable}
       />
       <IconButton 
         onPress={() => setIsPasswordVisible(!isPasswordVisible)} 
@@ -38,5 +37,7 @@ export default function PasswordInput({placeholder, password, handlePassword} : 
 }
 
 const styles = StyleSheet.create({
-
+  disable: {
+    opacity: 0.3
+  }
 });

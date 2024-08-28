@@ -1,4 +1,4 @@
-package com.anonymous.conjugationappfrontnative
+package com.clement.conjugationapp
 
 import android.app.Application
 import android.content.res.Configuration

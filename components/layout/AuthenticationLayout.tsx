@@ -61,7 +61,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
       {
         isLogin && 
           <Text 
-            onPress={() => navigation.navigate('Reset password')} 
+            onPress={() => navigation.navigate('Reset password request')} 
             style={[styles.forgotPassword]}
           >
             Forgot your password?
@@ -72,7 +72,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
       <BottomButton 
         label={isLogin ? 'Login' : 'Signup'}
         onPress={() => onPrimaryPress(email, password)} 
-        disabled={password.length < 6 || !validateEmail(email)}
+        // disabled={password.length < 6 || !validateEmail(email)}
       />
 
       {/* Bottom Text */}

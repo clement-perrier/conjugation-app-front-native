@@ -1,8 +1,5 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import MainLayout from '@/components/layout/MainLayout';
-import { useAppDispatch } from '@/state/hooks';
-import { StyleSheet, TextInput, View, Text } from 'react-native';
-import IconButton from '../buttons/IconButton';
+
+import { StyleSheet, TextInput, Text } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useState } from 'react';
 import { validateEmail } from '@/utils/ValidateEmail';

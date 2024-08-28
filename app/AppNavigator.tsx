@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { ActivityIndicator, StatusBar, Text, View } from "react-native";
+import { StatusBar, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -20,12 +20,12 @@ import { useEffect } from "react";
 import AppSecureStore from "@/state/SecureStore";
 import LogIn from "./authentication/LogIn";
 import SignUp from "./authentication/SignUp";
-import ResetPassword from "./authentication/ResetPassword";
-import { globalstyles } from "@/utils/GlobalStyle";
+import NewPassword from "./authentication/NewPassword";
 import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
 import { loadInitialData } from "@/services/AuthenticationService";
 import Spinner from "@/components/layout/Spinner";
+import PasswordResetRequest from "./authentication/PasswordResetRequest";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -54,8 +54,6 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
-    AppSecureStore.SaveItemAsync('access_token', '');
-    AppSecureStore.SaveItemAsync('refresh_token', '');
     async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
       if (token) {
@@ -67,6 +65,7 @@ export default function AppNavigator() {
       }
     }
     checkAuth();  
+    
   }, []);
 
   useEffect(() => {
@@ -156,9 +155,14 @@ export default function AppNavigator() {
                   options={getOptions()}
                 /> 
                 <Stack.Screen 
-                  name="Reset password" 
-                  component={ResetPassword}
+                  name="Reset password request" 
+                  component={PasswordResetRequest}
                   options={getOptions(true, false)}
+                />
+                <Stack.Screen 
+                  name="New password" 
+                  component={NewPassword}
+                  options={getOptions(false, true)}
                 />
               </Stack.Navigator>
             )

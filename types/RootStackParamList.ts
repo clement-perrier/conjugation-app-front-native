@@ -13,6 +13,7 @@ export type RootStackParamList = {
     'Results': undefined
     'Log in': undefined
     'Sign up': undefined
-    'Reset password': undefined
+    'Reset password request': undefined
+    'New password': undefined
     'Success screen': undefined
   };
