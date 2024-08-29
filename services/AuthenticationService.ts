@@ -18,8 +18,9 @@ export const Login = async (dispatch: any, email: string, password: string, sign
       } catch (error: any) {
   
         // Handle errors that occur during the API call
+        console.log(error)
          console.error('Login failed:', error.response?.data || error.message);  
-        handleFail('Login failed', 'Bad credentials');
+        handleFail('Login failed', error.response?.data.description || error.message);
 
         // You might throw the error again or handle it in another way
         // throw new Error(error.response?.data?.message || 'Login failed, please try again.');

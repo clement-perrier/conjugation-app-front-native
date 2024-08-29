@@ -16,7 +16,7 @@ import { StyleSheet } from "react-native";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AppSecureStore from "@/state/SecureStore";
 import LogIn from "./authentication/LogIn";
 import SignUp from "./authentication/SignUp";
@@ -26,6 +26,9 @@ import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
 import { loadInitialData } from "@/services/AuthenticationService";
 import Spinner from "@/components/layout/Spinner";
 import PasswordResetRequest from "./authentication/PasswordResetRequest";
+import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-community/netinfo";
+import { NetworkCheck } from "@/components/NetworkCheck";
+import { CustomAlert } from "@/utils/CustomAlert";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -39,6 +42,17 @@ export default function AppNavigator() {
   const isOnboarding = useAppSelector(state => state.IsOnBoarding.value)
   const isAuthenticated = useAppSelector(state => state.IsAuthenticated.value)
   const user = useAppSelector(state => state.User.value);
+
+  // Handlers
+  const handleNetworkChange: NetInfoChangeHandler = (state: NetInfoState) => {
+    if(!state.isConnected){
+      if(isAuthenticated) {
+        CustomAlert('No internet connection', 'Please reconnect to the internet to ensure that your changes are saved', () => {})
+      } else {
+        CustomAlert('No internet connection', 'Please reconnect to the internet to properly use the app', () => {})
+      }
+    }
+  };
 
   // Functions
   const getOptions = (previousButton?: boolean, cancelButton?: boolean, selectionToBeCleared?: boolean, removeBatchButton?: boolean) => {
@@ -65,6 +79,11 @@ export default function AppNavigator() {
       }
     }
     checkAuth();  
+
+    const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
+        return () => {
+            netInfoSubscription && netInfoSubscription();
+        };
     
   }, []);
 
@@ -74,7 +93,10 @@ export default function AppNavigator() {
     }
   }, [user]);
 
-  if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
+  /* if(!connectionStatus) {
+    return <NetworkCheck status={connectionStatus} type={connectionType} />
+  }
+  else  */if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
     return <Spinner text={isAuthenticated === null ? 'Authenticating' : 'Loading user'}/>
   }
   

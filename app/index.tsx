@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNavigator from "./AppNavigator";
 import Toast from 'react-native-toast-message';
+import { ConnectivityProvider } from "@/utils/ConnectivityProvider";
 
 export default function Index() {
 
@@ -18,12 +19,10 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        {/* <ConnectivityProvider> */}
-          <View style={{flex: 1, padding: 15}}>
-            <AppNavigator/>
-            <Toast/>
-          </View>
-        {/* </ConnectivityProvider> */}
+        <View style={{flex: 1, padding: 15}}>
+          <AppNavigator/>
+          <Toast/>
+        </View>
       </Provider>
     </SafeAreaProvider>
   );
