@@ -39,7 +39,7 @@ export default function CustomFlatList(
   if (data?.length === 0) {
     return (
       <View style={globalstyles.container}>
-        <Text style={globalstyles.text}>{emptyMessage}</Text>
+        <Text style={[globalstyles.text]}>{emptyMessage}</Text>
       </View>
     )
   }

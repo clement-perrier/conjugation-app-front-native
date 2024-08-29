@@ -27,7 +27,8 @@ export const globalstyles = StyleSheet.create({
         justifyContent: 'center',
         display: 'flex',
         alignItems: 'center',
-        alignContent: 'center'
+        alignContent: 'center',
+        textAlign: 'center'
     },
     flexRow: {
         display: 'flex',

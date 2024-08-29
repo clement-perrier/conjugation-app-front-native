@@ -2,7 +2,7 @@ import { View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
-import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
+import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, AuthLogout } from '@/services/ApiService';
 import { formatDateAsLong } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
@@ -16,6 +16,9 @@ import Flag from '@/components/Flag';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import Spinner from '@/components/layout/Spinner';
 import * as Linking from 'expo-linking'
+import { CustomAlert } from '@/utils/CustomAlert';
+import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
+import AppSecureStore from '@/state/SecureStore';
 
 export default function Home() {
 
@@ -27,8 +30,10 @@ export default function Home() {
   const batchList = useAppSelector(state => state.BatchList.value)
   const batchListLoading = useAppSelector(state => state.BatchList.loading)
 
-  // Derived data
+  // States
+  const [loading, setLoading] = useState(false)
 
+  // Derived data
   const sortedBatchList: Batch[] = useMemo(() => {
     return batchList.slice().sort((a, b) => new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf())
   }, [batchList])
@@ -55,8 +60,8 @@ export default function Home() {
     }
   ]
 
-  if(!user || !batchList){
-    return <Spinner text={'Loading data'}/>
+  if(loading){
+    return <Spinner text={'Logging out'}/>
   }
 
   return (
@@ -65,8 +70,6 @@ export default function Home() {
     
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
-     
-        <IconButton style={{alignItems: 'center', alignContent: 'center'}} icon='settings' size={40}/>
 
         <Pressable 
           style={({ pressed }) => [
@@ -82,6 +85,25 @@ export default function Home() {
           }
           
         </Pressable>
+
+        <IconButton  
+          icon='logout' 
+          size={40} 
+          onPress={() => CustomAlert(
+            'Confirm logout', 
+            'Are you sure you want to logout ?',
+            async () => {
+                setLoading(true)
+              // const response = await AuthLogout(user.email)
+              // if(response){
+                await AppSecureStore.SaveItemAsync('access_token', '');
+                await AppSecureStore.SaveItemAsync('refresh_token', '');
+                dispatch(updateIsAuthenticated(false))
+                // navigation.navigate('Log in')
+              // }
+            }
+            )}
+          />
 
       </View>
 

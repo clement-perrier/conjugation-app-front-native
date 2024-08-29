@@ -233,6 +233,18 @@ export const AuthChangePassword = async(changePasswordRequest: ChangePasswordReq
     }
 }
 
+export const AuthLogout = async(email: string) => {
+    try {
+        const response = await apiService.post(`auth/logout?email=${email}`);
+        handleSuccess('You are now logged out')
+        return response.data;
+    } catch (error) {
+        console.error('Log out request error:', error);
+        handleFail('Error', `Unknown error`)
+        return null
+    }
+}
+
 // Interfaces
 export interface LoginUser {    
     email: string,
