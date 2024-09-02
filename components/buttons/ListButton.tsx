@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { LayoutButton } from "@/types/LayoutButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text, Pressable, StyleSheet, View } from "react-native";
@@ -11,11 +12,11 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
                 styles.button, 
                 disabled && styles.disabled, 
                 focus && styles.focus,
-                {backgroundColor: pressed ? 'grey' : 'black'}
+                {backgroundColor: pressed ? 'grey' : Colors.secondary}
             ]}
         >
             <Text style={styles.text}>{label}</Text>
-            <MaterialIcons name={icon} size={20} color={'white'} style={styles.icon}/>
+            <MaterialIcons name={icon} size={20} color={Colors.textSecondary} style={styles.icon}/>
         </Pressable>
     )
 }
@@ -27,21 +28,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         display: 'flex',
         flexDirection: 'row',
-        position: 'relative',
-        backgroundColor: 'black',
-        flex: 1
+        borderRadius: 10
+    },
+    listButton: {
+        position: 'relative'
     },
     disabled: {
-        opacity: 0.8,
-        borderColor: 'orange',
-        borderWidth: 3
+        opacity: 0.3,
+        // borderColor: 'orange',
+        // borderWidth: 3
     },
     focus: {
-        borderColor: 'cyan',
-        borderWidth: 3
+        // shadowColor: '#FFC107',
+        // borderWidth: 1
     },
     text: {
-        color: 'white',
+        color: Colors.textSecondary,
     },
     icon: {
         position: 'absolute',

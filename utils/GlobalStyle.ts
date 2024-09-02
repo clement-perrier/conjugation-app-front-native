@@ -1,12 +1,16 @@
+import Colors from '@/constants/Colors';
 import { StyleSheet } from 'react-native';
 
 const headerButtonsSideGap = 11
 
 export const globalstyles = StyleSheet.create({
+    backgroundColor: {
+        backgroundColor: 'white'
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     flatList: {
         height: 10,
@@ -20,15 +24,19 @@ export const globalstyles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 20,
+        marginTop: 10,
         marginBottom: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: Colors.textPrimary,
+        textTransform: 'uppercase'
       },
     text: {
         justifyContent: 'center',
         display: 'flex',
         alignItems: 'center',
         alignContent: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        color: Colors.textSecondary
     },
     flexRow: {
         display: 'flex',
@@ -44,7 +52,8 @@ export const globalstyles = StyleSheet.create({
     input: {
         padding: 10,
         borderWidth: 1,
-        borderColor: 'black'
+        borderColor: Colors.secondary,
+        borderRadius: 8
     },
     invalidEmailText: {
       marginTop: -15,

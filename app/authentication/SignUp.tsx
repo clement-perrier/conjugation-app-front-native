@@ -1,11 +1,13 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch } from '@/state/hooks';
-import { StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import AuthenticationLayout from '@/components/layout/AuthenticationLayout';
 import { AuthSignup } from '@/services/ApiService';
 import { useState } from 'react';
 import { handleFail } from '@/utils/Messages';
 import { Login } from '@/services/AuthenticationService';
+import { MaterialIcons } from '@expo/vector-icons';
+import Flag from '@/components/Flag';
 
 export default function SignUp() {
 
@@ -33,7 +35,7 @@ export default function SignUp() {
     }
   }
 
-  return (
+  return (      
     <AuthenticationLayout 
       isLogin={false} 
       onPrimaryPress={handleSignup}

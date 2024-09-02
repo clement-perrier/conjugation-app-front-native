@@ -35,7 +35,6 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
 
-  const navigation = useAppNavigation()
   const dispatch = useAppDispatch()
 
   // Selectors
@@ -68,6 +67,7 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
+
     async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
       if (token) {
@@ -79,6 +79,7 @@ export default function AppNavigator() {
       }
     }
     checkAuth();  
+    // To be removed
 
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
         return () => {

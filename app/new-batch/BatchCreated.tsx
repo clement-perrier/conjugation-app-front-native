@@ -3,11 +3,15 @@ import TableList from "@/components/layout/TableList";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppSelector } from "@/state/hooks";
 import { LayoutButton } from "@/types/LayoutButton";
+import { formatBatchTitle } from "@/utils/Date";
 import { useEffect } from "react";
 
 export default function BatchCreated() {
 
   const navigation = useAppNavigation();
+  
+  // Selectors
+  const selectedBatch = useAppSelector(state => state.SelectedBatch.value)
 
   //  Buttons
   const buttons: LayoutButton[] = [
@@ -18,7 +22,7 @@ export default function BatchCreated() {
   ]
 
   return (
-    <MainLayout buttons={buttons}>
+    <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
 
         <TableList results={false}/>
         

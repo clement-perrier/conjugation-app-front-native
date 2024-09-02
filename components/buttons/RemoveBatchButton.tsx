@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/state/hooks";
 import { removeBatch } from "@/state/slices/BatchListSlice";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { Alert, Platform } from "react-native";
+import Colors from "@/constants/Colors";
 
 export default function RemoveBatchButton() {
 
@@ -56,7 +57,7 @@ export default function RemoveBatchButton() {
         <IconButton 
             icon={'delete'}
             size={30}
-            color="red"
+            color={Colors.danger}
             onPress={handlePress}
             style={[globalstyles.headerButton, globalstyles.headerLefttButton]}
         />

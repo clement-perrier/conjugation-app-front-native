@@ -7,6 +7,7 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import { Batch } from '@/types/Batch';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import { formatBatchTitle } from '@/utils/Date';
 
 export default function Start() {
 
@@ -16,6 +17,9 @@ export default function Start() {
 
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value)
+
+  console.log(new Date(selectedBatch.reviewingDate) > new Date())
+  console.log(new Date(selectedBatch.reviewingDate), new Date())
 
   // States
 
@@ -32,7 +36,7 @@ export default function Start() {
   const buttons: LayoutButton[] = [
     {
       label: 'START',
-      disabled: new Date(selectedBatch.reviewingDate).getDay() > new Date().getDay(),
+      disabled: new Date(selectedBatch.reviewingDate) > new Date(),
       onPress: () => {
         navigation.navigate('Question')
       }
@@ -40,7 +44,7 @@ export default function Start() {
   ]
 
   return (
-    <MainLayout buttons={buttons}>
+    <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
 
       <CustomFlatList
         data={selectedBatch?.tableList}

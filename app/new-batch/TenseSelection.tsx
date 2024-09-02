@@ -18,7 +18,7 @@ export default function TenseSelection() {
   const tenseListLoading = useAppSelector(state => state.tenseList.loading)
 
   return (
-    <MainLayout>
+    <MainLayout title='Select a tense'>
       
 
       <CustomFlatList

@@ -1,3 +1,5 @@
+import { Batch } from "@/types/Batch";
+
 function getDaySuffix(day: number) {
   if (day >= 11 && day <= 13) {
       return 'th';
@@ -10,7 +12,7 @@ function getDaySuffix(day: number) {
   }
 }
 
-export function formatDateAsLong(dateStr: string) {
+function formatDateAsLong(dateStr: string) {
   const date = new Date(dateStr);
 
   if (isNaN(date.getTime())) {
@@ -37,4 +39,8 @@ export function formatDateAsISO(date: Date): string {
   
   return `${year}-${month}-${day}`;
   
+}
+
+export function formatBatchTitle(batch: Batch){
+  return (formatDateAsLong(batch.reviewingDate) + ' - day ' + batch.dayNumber + '    ').toUpperCase();
 }

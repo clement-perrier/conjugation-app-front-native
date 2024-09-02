@@ -3,7 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, AuthLogout } from '@/services/ApiService';
-import { formatDateAsLong } from '@/utils/Date';
+import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
@@ -15,10 +15,10 @@ import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import Spinner from '@/components/layout/Spinner';
-import * as Linking from 'expo-linking'
 import { CustomAlert } from '@/utils/CustomAlert';
 import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
+import Colors from '@/constants/Colors';
 
 export default function Home() {
 
@@ -71,7 +71,7 @@ export default function Home() {
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
 
-        <Pressable 
+        {/* <Pressable 
           style={({ pressed }) => [
             styles.flagButton,
             pressed && styles.buttonPressed
@@ -84,11 +84,15 @@ export default function Home() {
           </View>
           }
           
-        </Pressable>
+        </Pressable> */}
+        {
+          user &&
+          <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
+        }
 
         <IconButton  
           icon='logout' 
-          size={40} 
+          size={35}
           onPress={() => CustomAlert(
             'Confirm logout', 
             'Are you sure you want to logout ?',
@@ -117,7 +121,7 @@ export default function Home() {
             renderItem={({ item }) => (
               <ListButton 
                 key={item.id}
-                label={formatDateAsLong(item.reviewingDate) + ' - Day ' + item.dayNumber + '    '}
+                label={formatBatchTitle(item)}
                 onPress={() => {
                   dispatch(updateSelectedBatch(item));
                   navigation.navigate('Start');
@@ -137,11 +141,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  flagButton: {
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#black'
-  },
   buttonPressed: {
     backgroundColor: '#DDDDDD', // Background color when pressed
   },
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: 'space-between',
-    backgroundColor: 'white',
-    height: 'auto'
+    height: 'auto',
+    backgroundColor: 'white'
   }
 });

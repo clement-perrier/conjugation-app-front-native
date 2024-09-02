@@ -42,7 +42,7 @@ export default function LearningLanguageList() {
 
   return (
     
-    <MainLayout buttons={buttons} title='Languages that you are currenlty learning'>
+    <MainLayout buttons={buttons} title='Your languages'>
 
       <CustomFlatList
         data={learningLanguageList}

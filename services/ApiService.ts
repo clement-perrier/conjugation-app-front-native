@@ -84,7 +84,32 @@ apiService.interceptors.request.use(async (config) => {
         config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     
-    return config;
+    return config
+    // // Apply SSL pinning using fetch from react-native-ssl-pinning
+    // return new Promise((resolve, reject) => {
+    //     fetch(config.baseURL + config.url, {
+    //       method: config.method || 'GET',
+    //       headers: config.headers,
+    //       sslPinning: {
+    //         certs: ['springboot'], // The certificate name without extension, placed in the appropriate directories
+    //       },
+    //       timeoutInterval: config.timeout,
+    //       body: config.data ? JSON.stringify(config.data) : undefined,
+    //     })
+    //       .then((response) => {
+    //         // Map the response back to axios response format
+    //         return resolve({
+    //           ...config,
+    //           data: response.data,
+    //           status: response.status,
+    //         //   statusText: response.statusText,
+    //           headers: response.headers,
+    //         });
+    //       })
+    //       .catch((error) => {
+    //         reject(error);
+    //       });
+    //   });
     
 }, (error) => {
     return Promise.reject(error);

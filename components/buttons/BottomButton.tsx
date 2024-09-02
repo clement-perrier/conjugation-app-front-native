@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { LayoutButton } from "@/types/LayoutButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Text, Pressable, StyleSheet } from "react-native";
@@ -9,7 +10,7 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly }
             style={({pressed}) => [
                 styles.button, 
                 disabled ? styles.disabled : styles.active,
-                {backgroundColor: pressed ? 'grey' : 'black'}
+                {backgroundColor: pressed ? 'grey' : Colors.primary}
             ]} 
             disabled={disabled}
         >
@@ -21,9 +22,11 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly }
 
 const styles = StyleSheet.create({
     button: {
-        height: 45,
+        height: 50,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 15,
+        backgroundColor: '#4A90E2'
     },
     widthFitContent: {
         width: 50
@@ -37,6 +40,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'white',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textTransform: 'uppercase'
+        // fontFamily: 'Roboto'
     }
 })

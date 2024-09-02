@@ -11,6 +11,7 @@ import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import { globalstyles } from '@/utils/GlobalStyle';
+import { handleSuccess } from '@/utils/Messages';
 import { useEffect } from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 
@@ -64,6 +65,8 @@ export default function BatchProgress() {
           // Update selected batch with this one
           dispatch(updateSelectedBatch(newBatch))
 
+          handleSuccess('Set created')
+
         }
 
         // Selection ended, clearing the selection
@@ -76,7 +79,7 @@ export default function BatchProgress() {
   ]
 
   return (
-    <MainLayout buttons={buttons}>
+    <MainLayout buttons={buttons} title='your set'>
       
       <CustomFlatList
         isLoading={false}

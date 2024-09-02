@@ -1,19 +1,18 @@
-import { View, Text, StyleSheet, FlatList, useWindowDimensions, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions, TextInput } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addSelectedTable } from '@/state/slices/SelectedTableListSlice';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import IconButton from '@/components/buttons/IconButton';
 import { Verb } from '@/types/Verb';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Table } from '@/types/Table';
 import MainLayout from '@/components/layout/MainLayout';
 import { LayoutButton } from '@/types/LayoutButton';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
-import { updateSelectableVerbs } from '@/state/slices/VerbListSlice';
 import TextIconButton from '@/components/buttons/TextIconButton';
+import Colors  from '@/constants/Colors';
 
 export default function VerbSelection() {
 
@@ -30,13 +29,14 @@ export default function VerbSelection() {
   const verbListLoading = useAppSelector(state => state.verbList.loading);
   const batchList = useAppSelector(state => state.BatchList.value);
 
-  const calcNumColumns = useCallback(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [])
+  // const calcNumColumns = useCallback(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [])
 
   // States
   // const [numColumns, setNumColumns] = useState(() => calcNumColumns());
   const [searchedText, setSearchText] = useState('');
   const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([]);
   const numColumns = useMemo(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [screenWidth]);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Functions
 
@@ -67,7 +67,6 @@ export default function VerbSelection() {
   // Derived Data
   const unselectedVerbList = useMemo(() => {
     const selectedVerbIds = new Set(selectedVerbList.map(verb => verb.id));
-    console.log(verbList.filter(verb => !selectedVerbIds.has(verb.id)))
     return verbList.filter(verb => !selectedVerbIds.has(verb.id));
   }, [verbList, selectedVerbList]);
 
@@ -79,12 +78,6 @@ export default function VerbSelection() {
   }, [searchedText, unselectedVerbList]);
 
   const allTableList = useMemo(() => batchList.flatMap(batch => batch.tableList).concat(selectedTableList), [batchList, selectedTableList]);
-  
-  // Effects
-  // useEffect(() => {
-  //   setNumColumns(calcNumColumns());
-  //   console.log('fd')
-  // }, []);
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -100,29 +93,31 @@ export default function VerbSelection() {
 
   return (
     
-    <MainLayout buttons={buttons}>
+    <MainLayout buttons={buttons} title={selectedTense ? `Select a verb in ${selectedTense.name}` : ''}>
 
       <>
 
         {/* SELECTED TENSE */}
-        { selectedTense && <Text>{selectedTense.name}</Text> }
+        {/* { selectedTense && <Text style={globalstyles.title}>{selectedTense.name}</Text> } */}
 
         {/* SEARCH INPUT */}
         <View>
 
-          <IconButton style={styles.searchButton} size={25} color='black' icon={'search'}/>
+          <IconButton style={styles.searchButton} size={25} icon={'search'}/>
           
           {searchedText ?
-              <IconButton style={styles.clearButton} size={25} color='black' icon={'clear'} onPress={() => setSearchText('')}/>
+              <IconButton style={styles.clearButton} size={25} icon={'clear'} onPress={() => setSearchText('')}/>
               :
               <></>
           }
           <TextInput
-            style={styles.input}
+            style={[globalstyles.input, styles.input, isFocused && {borderWidth: 1, borderColor: Colors.primary}]}
             onChangeText={setSearchText}
             value={searchedText}
             placeholder="search verb"
             inlineImageLeft='react_logo'
+            onBlur={() => setIsFocused(false)}
+            onFocus={() => setIsFocused(true)}
             />
             
         </View>
@@ -134,7 +129,7 @@ export default function VerbSelection() {
             <CustomFlatList
               data={selectedVerbList}
               isLoading={false}
-              emptyMessage='No verb selected yets'
+              // emptyMessage=''
               // key={numColumns}
               renderItem={({item}) => 
                 <View style={{position: 'relative'}}>
@@ -152,32 +147,28 @@ export default function VerbSelection() {
               columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
               style={{height: 'auto'}}
             >
-
             </CustomFlatList>
           </View>
 
           {/* VERB LIST */}
           <View style={{flex: 1, marginBottom: 10}}>
-
             <CustomFlatList
               data={filteredVerbList}
               isLoading={verbListLoading}
               emptyMessage='No verbs found'
-              numColumns={numColumns}
+              // numColumns={numColumns}
               key={numColumns}
               keyExtractor={(item: Verb) => item.id.toString()}
               itemSeparatorHeight={15}
-              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+              // columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
               style={[{flex: 1}, globalstyles.flatList]}
               renderItem={({item}) => 
-                // <View style={styles.buttonWidth}>
-                  <ListButton
-                    label={item.name}
-                    onPress={() => addSelectedVerb(item)}
-                    disabled={allTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
-                  />
-                // </View>
-                }
+                <ListButton
+                  label={item.name}
+                  onPress={() => addSelectedVerb(item)}
+                  disabled={allTableList.some(table => table.tense.id === selectedTense?.id && table.verb.id === item.id)}
+                />
+              }
             >
             </CustomFlatList>
           </View>
@@ -210,22 +201,22 @@ const styles = StyleSheet.create({
     zIndex: 1
   },
   input: {
-    height: 40,
-    margin: 12,
+    // height: 40,
+    // margin: 12,
     borderWidth: 1,
     paddingVertical: 10,
-    paddingLeft: 35,
+    paddingLeft: 40,
     paddingRight: 100
   },
   searchButton: {
     position: 'absolute',
-    top: 20,
-    left: 20
+    top: 12,
+    left: 10
   },
   clearButton: {
     position: 'absolute',
-    top: 20,
-    right: 20,
+    top: 12,
+    right: 10,
     zIndex: 10
   },
   columnWrapperStyle: {

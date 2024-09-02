@@ -56,6 +56,8 @@ export default function CustomFlatList(
       removeClippedSubviews={true}
       keyExtractor={keyExtractor}
       windowSize={10} 
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
     />
   );
 };

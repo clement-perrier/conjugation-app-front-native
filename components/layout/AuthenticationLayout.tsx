@@ -72,7 +72,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
       <BottomButton 
         label={isLogin ? 'Login' : 'Signup'}
         onPress={() => onPrimaryPress(email, password)} 
-        // disabled={password.length < 6 || !validateEmail(email)}
+        disabled={password.length < 6 || !validateEmail(email)}
       />
 
       {/* Bottom Text */}
