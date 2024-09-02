@@ -8,6 +8,7 @@ import { Batch } from '@/types/Batch';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import { formatBatchTitle } from '@/utils/Date';
+import Colors from '@/constants/Colors';
 
 export default function Start() {
 
@@ -17,9 +18,6 @@ export default function Start() {
 
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value)
-
-  console.log(new Date(selectedBatch.reviewingDate) > new Date())
-  console.log(new Date(selectedBatch.reviewingDate), new Date())
 
   // States
 
@@ -61,7 +59,8 @@ export default function Start() {
 
 const styles = StyleSheet.create({
   table: {
-    backgroundColor: 'gray',
-    padding: 15
+    backgroundColor: Colors.secondary,
+    padding: 15,
+    borderRadius: 4
   }
 });

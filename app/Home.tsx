@@ -1,7 +1,7 @@
-import { View, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Pressable, ActivityIndicator, Animated } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, AuthLogout } from '@/services/ApiService';
 import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -19,6 +19,7 @@ import { CustomAlert } from '@/utils/CustomAlert';
 import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Home() {
 
@@ -37,7 +38,7 @@ export default function Home() {
   const sortedBatchList: Batch[] = useMemo(() => {
     return batchList.slice().sort((a, b) => new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf())
   }, [batchList])
-  
+
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
@@ -70,21 +71,8 @@ export default function Home() {
     
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
-
-        {/* <Pressable 
-          style={({ pressed }) => [
-            styles.flagButton,
-            pressed && styles.buttonPressed
-          ]}
-          onPress={() => navigation.navigate('Learning language list')}
-        >
-          { user &&
-           <View style={[styles.flagImage]}>
-            <Flag country={user.defaultLearningLanguage.imageName}/>
-          </View>
-          }
-          
-        </Pressable> */}
+        
+        {/* Learning language flag */}
         {
           user &&
           <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
@@ -127,7 +115,7 @@ export default function Home() {
                   navigation.navigate('Start');
                 }}
                 icon='chevron-right'
-                focus={new Date(item.reviewingDate).getDay() <= new Date().getDay()}
+                focus={new Date(item.reviewingDate) <= new Date()}
               />
             )}
             itemSeparatorHeight={20}

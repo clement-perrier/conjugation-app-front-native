@@ -1,6 +1,7 @@
 export default {
   primary: '#1ABC9C', // Bright teal
   secondary: '#B0BEC5', // Medium gray
+  primaryShiny: '#1fe7c0',
   accent: '#34495E',   // Navy blue
   textPrimary: '#34495E', 
   textSecondary: '#2C3E50',
