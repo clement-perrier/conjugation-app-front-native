@@ -24,7 +24,7 @@ export const globalstyles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 20,
-        marginTop: 10,
+        marginTop: 20,
         marginBottom: 20,
         textAlign: 'center',
         color: Colors.textPrimary,
@@ -42,7 +42,8 @@ export const globalstyles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        alignContent: 'center'
+        alignContent: 'center',
+        columnGap: 10
     },
     flexColumn: {
         display: 'flex',

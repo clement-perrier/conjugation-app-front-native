@@ -60,7 +60,6 @@ export default function AddLearningLanguage() {
                     UpdateUserLearningLanguageList(user.id, item.id),
                     UpdateUserDefaultLearningLanguage(user.id, item.id)
                   )
-                  console.log(isOnBoarding)
                 !isOnBoarding && 
                   (
                     navigation.navigate('Home')

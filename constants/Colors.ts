@@ -6,7 +6,10 @@ export default {
   textPrimary: '#34495E', 
   textSecondary: '#2C3E50',
   warning: '#FFC107',
-  danger: '#E74C3C',
+  success: '#1ABC9C',
+  successBg: '#E8F5E9',
+  error: '#E74C3C',
+  errorBg: '#FFEBEE',
   white: '#ffffff',     
   black: '#000000'
 };

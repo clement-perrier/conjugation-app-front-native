@@ -192,6 +192,11 @@ export const UpdateUserDefaultLearningLanguage = async (userId: number, language
     return response.data;
 }
 
+export const UpdateUserDeviceToken = async (userId: number, deviceToken: string) => {
+    const response = await apiService.put(`updateUserDeviceToken?userId=${userId}&deviceToken=${deviceToken}`);
+    return response.data;
+}
+
 export const RemoveBatch = async(batchId: number) => {
     const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
     return response.data;
@@ -239,9 +244,9 @@ export const AuthPasswordResetRequest = async(email: string) => {
         const response = await apiService.post(`auth/resetPassword?email=${email}`);
         handleSuccess(`A password reset code has been sent to ${email}.`)
         return response.data;
-    } catch (error) {
-        console.error('Reset password  request error:', error);
-        handleFail('Reset password request error', `User with email ${email} not found.`)
+    } catch (error: any) {
+        console.error('Reset password request error:', error);
+        handleFail('Reset password request error', error.response?.data.description || error.message);
         return null
     }
 }

@@ -11,6 +11,9 @@ import { getIncrement, getNextDayNumber } from '@/types/DayNumber';
 import { Batch } from '@/types/Batch';
 import { SaveBatch, UpdateBatch } from '@/services/ApiService';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
+import BottomButton from '@/components/buttons/BottomButton';
+import Colors from '@/constants/Colors';
+import { globalstyles } from '@/utils/GlobalStyle';
 
 export default function Question() {
 
@@ -176,24 +179,25 @@ export default function Question() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[globalstyles.container, globalstyles.flexColumn]}>
       {
         currentConjugation ? (
           <>
             {/*  Title */}
-            <View style={styles.flexRow}>
-              <Text style={styles.uppercase}>{currentConjugation.verbName}</Text>
+            {/* <View style={globalstyles.title}>
+              <Text style={globalstyles.title}>{currentConjugation.verbName}</Text>
               <Text>in</Text> 
               <Text style={styles.uppercase}>{currentConjugation.tenseName}</Text>
-            </View>
+            </View> */}
+            <Text style={[globalstyles.title, {marginBottom: 0}]}>{currentConjugation.verbName} in {currentConjugation.tenseName}</Text>
 
             {/*  Input */}
-            <View style={styles.flexRow}>
-              <Text>{currentConjugation.pronoun.name}</Text>
+            <View style={[globalstyles.flexColumn, {flex: 1, justifyContent: 'center'}]}>
+              <Text style={[globalstyles.text, {textTransform: 'uppercase'}]}>{currentConjugation.pronoun.name}</Text>
               <TextInput
                 ref={inputRef}
                 autoFocus
-                style={styles.input}
+                style={[globalstyles.input, { height: 60, fontSize: 20, textAlign: 'center'}]}
                 onChangeText={setanswer}
                 value={answer}
                 inlineImageLeft='react-logo'
@@ -201,7 +205,7 @@ export default function Question() {
             </View>
 
             {/* Footer */}
-            <View style={styles.footer}>
+            <View style={{height: 150, justifyContent: 'flex-end'}}>
               {
                 // Answer checked
                 answerStatus ?
@@ -213,24 +217,37 @@ export default function Question() {
                       }),
                     }],
                   },]}>
-                    <View style={styles.resultContent}>
-                      <View style={answerStatus === 'correct' ? styles.correct : styles.incorrect}>
-                        {answerStatus === 'correct' ? <Text style={styles.correct}>Correct!</Text> : <Text style={styles.incorrect}>Incorrect! Correct answer: {currentConjugation.name}</Text>}
+                    <View style={[globalstyles.flexColumn, {width: '100%'}]}>
+                      <View style={[answerStatus === 'correct' ? styles.correct : styles.incorrect, {alignItems: 'center'}]}>
+                        {
+                          answerStatus === 'correct'
+                            ? <Text style={[{color: Colors.success}]}>Correct!</Text> 
+                            : <View> 
+                                <Text style={{color: Colors.error, textAlign: 'center', marginBottom: 5}}>Incorrect!</Text>
+                                <View style={globalstyles.flexRow}> 
+                                  <Text style={{color: Colors.error, textAlign: 'center'}}>Correct answer:</Text>
+                                  <Text style={{color: Colors.error, fontWeight: 'bold', textTransform: 'uppercase'}}>{currentConjugation.name}</Text>
+                                </View> 
+                              </View>
+                        }
+                      </View> 
+                      <View>
+                      <BottomButton
+                        label='continue' 
+                        onPress={handleContinue}
+                        color={answerStatus === 'correct' ? Colors.success : Colors.error }
+                      />
                       </View>
-                        <Button
-                          title='continue' 
-                          onPress={() => handleContinue()}
-                        ></Button>
                       </View>
                   </Animated.View>
                 // Answer not checked yet
                 :
-                <View style={styles.checkButton}>
-                  <Button 
-                    title='check' 
-                    onPress={() => handleCheck()}
+                <View>
+                  <BottomButton 
+                    label='check' 
+                    onPress={handleCheck}
                     disabled={answer.length === 0}
-                  ></Button>
+                  />
                 </View>
               }
             </View>
@@ -270,31 +287,31 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    alignItems: 'center',
-    padding: 20
+    // alignItems: 'center',
+    // backgroundColor: Colors.secondary
+    // padding: 20
   },
   result: {
     padding: 20,
-    backgroundColor: '#222',
-    borderWidth: 5,
+    // backgroundColor: '#E8F5E9',
+    // borderWidth: 1,
     width: '100%',
-    alignItems: 'center'
-
+    alignItems: 'center',
+    justifyContent:'center',
+    height: '100%'
   },
   resultContent: {
-    width: '40%',
+    // width: '40%',
   },
   checkButton: {
-    width: '20%'
+    // width: '20%'
   },
   correct: {
-    borderColor: 'green',
-    color: 'green',
-    fontWeight: 'bold'
+    borderColor: Colors.success,
+    backgroundColor: Colors.successBg
   },
   incorrect: {
-    borderColor: 'red',
-    color: 'red',
-    fontWeight: 'bold'
+    borderColor: Colors.error,
+    backgroundColor: Colors.errorBg
   }
 });

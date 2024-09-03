@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { StatusBar, View } from "react-native";
+import { Platform, StatusBar, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -27,11 +27,12 @@ import { loadInitialData } from "@/services/AuthenticationService";
 import Spinner from "@/components/layout/Spinner";
 import PasswordResetRequest from "./authentication/PasswordResetRequest";
 import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-community/netinfo";
-import { NetworkCheck } from "@/components/NetworkCheck";
 import { CustomAlert } from "@/utils/CustomAlert";
+import { updateDeviceToken, setupBackgroundMessageHandler } from "@/services/NotificationService";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
+setupBackgroundMessageHandler()
 
 export default function AppNavigator() {
 
@@ -53,6 +54,18 @@ export default function AppNavigator() {
     }
   };
 
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   // Functions
   const getOptions = (previousButton?: boolean, cancelButton?: boolean, selectionToBeCleared?: boolean, removeBatchButton?: boolean) => {
     return {
@@ -61,7 +74,11 @@ export default function AppNavigator() {
                       cancelButton={cancelButton}
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
-                    />
+                    />,
+      transitionSpec: {
+        open: config,
+        close: config
+      },
     }
   }
 
@@ -82,13 +99,17 @@ export default function AppNavigator() {
     // To be removed
 
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
-        return () => {
-            netInfoSubscription && netInfoSubscription();
-        };
+    return () => {
+        netInfoSubscription && netInfoSubscription();
+    };
     
   }, []);
 
   useEffect(() => {
+
+    // Update device token and listening to firebase push notification
+    user && updateDeviceToken(user.id)
+
     if (user?.defaultLearningLanguage === null) {
       dispatch(updateIsOnBoarding(true));
     }

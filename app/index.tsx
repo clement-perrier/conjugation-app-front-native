@@ -8,9 +8,7 @@ import Toast from 'react-native-toast-message';
 import { globalstyles } from "@/utils/GlobalStyle";
 
 export default function Index() {
-
-  const insets = useSafeAreaInsets();
-
+  
   useEffect(() => {
 
   }, []);   

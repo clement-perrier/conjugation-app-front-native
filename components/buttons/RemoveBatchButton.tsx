@@ -57,7 +57,7 @@ export default function RemoveBatchButton() {
         <IconButton 
             icon={'delete'}
             size={30}
-            color={Colors.danger}
+            color={Colors.error}
             onPress={handlePress}
             style={[globalstyles.headerButton, globalstyles.headerLefttButton]}
         />

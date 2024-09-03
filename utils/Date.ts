@@ -42,5 +42,5 @@ export function formatDateAsISO(date: Date): string {
 }
 
 export function formatBatchTitle(batch: Batch){
-  return (formatDateAsLong(batch.reviewingDate) + ' - day ' + batch.dayNumber + '    ').toUpperCase();
+  return (formatDateAsLong(batch.reviewingDate) + ' - day ' + batch.dayNumber).toUpperCase();
 }
