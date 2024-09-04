@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 import { User } from '@/types/User';
 import { UpdateUserDeviceToken } from './ApiService';
 
-const isStandalone = Constants.executionEnvironment === 'standalone';
+const isExpo = Constants.AppOwnership === 'expo';
 
 async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -22,7 +22,7 @@ async function requestUserPermission() {
 
 // Function to register the background message handler conditionally
 export function setupBackgroundMessageHandler() {
-  if (isStandalone) {
+  if (!isExpo && Platform.OS !== 'web') {
     // Register background message handler for non-Expo and non-web environments
     messaging().setBackgroundMessageHandler(async remoteMessage => {
       console.log('Message handled in the background!', remoteMessage);
@@ -35,7 +35,7 @@ export function setupBackgroundMessageHandler() {
 
 export function updateDeviceToken(userId: number){
 
-  if(isStandalone){
+  if(!isExpo && Platform.OS !== 'web'){
     console.log('ccd')
     firebase.messaging().getToken()
     .then(function(currentToken) {

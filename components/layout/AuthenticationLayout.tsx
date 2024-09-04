@@ -93,7 +93,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
 const styles = StyleSheet.create({
   bottomText: {
     fontWeight: 'bold',
-    marginLeft: 4
+    // marginLeft: 1
   },
   forgotPassword: {
     marginBottom: 10,

@@ -30,6 +30,8 @@ export default function Question() {
   const [conjugationList, setConjugationList] = useState<Conjugation[]>([])
   const [answer, setanswer] = useState('')
   const [answerStatus, setAnswerStatus] = useState<String | null>(null)
+
+  // Refs
   const slideAnimation = useRef(new Animated.Value(0)).current;
   const inputRef = useRef<TextInput>(null)
 

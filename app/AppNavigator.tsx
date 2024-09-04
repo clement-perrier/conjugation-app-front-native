@@ -84,6 +84,7 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
+    dispatch(updateIsAuthenticated(false))
 
     async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
@@ -118,7 +119,8 @@ export default function AppNavigator() {
   /* if(!connectionStatus) {
     return <NetworkCheck status={connectionStatus} type={connectionType} />
   }
-  else  */if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
+  else  */
+  if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
     return <Spinner text={isAuthenticated === null ? 'Authenticating' : 'Loading user'}/>
   }
   
