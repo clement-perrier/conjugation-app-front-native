@@ -1,6 +1,7 @@
 import ListButton from '@/components/buttons/ListButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import MainLayout from '@/components/layout/MainLayout';
+import Spinner from '@/components/layout/Spinner';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { SaveBatch } from '@/services/ApiService';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
@@ -12,18 +13,21 @@ import { LayoutButton } from '@/types/LayoutButton';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { handleSuccess } from '@/utils/Messages';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 
 export default function BatchProgress() {
 
   const navigation = useAppNavigation();
-
   const dispatch = useAppDispatch();
 
+  // Selectors
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
   const batchList = useAppSelector(state => state.BatchList.value)
   const user = useAppSelector(state => state.User.value)
+
+  // States
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     console.log(selectedTableList)
@@ -38,7 +42,7 @@ export default function BatchProgress() {
     {
       label: 'CREATE SET',
       disabled: selectedTableList.length < 1,
-      onPress: () => {
+      onPress: async () => {
 
         if (user){
 
@@ -55,17 +59,20 @@ export default function BatchProgress() {
             userLearningLanguage
           }
 
+          setLoading(true)
+
           // Save new Batch in database
-          SaveBatch(newBatch)
+          const savedBatch = await SaveBatch(newBatch)
 
-          // Optimistics update => redux add new batch to batch list
-          newBatch.id = batchList.length
-          dispatch(addBatch(newBatch))
-
-          // Update selected batch with this one
-          dispatch(updateSelectedBatch(newBatch))
-
-          handleSuccess('Set created')
+          if(savedBatch) {
+            // newBatch.id = batchList.length
+            dispatch(addBatch(savedBatch))
+            // Update selected batch with this one
+            dispatch(updateSelectedBatch(savedBatch))
+            handleSuccess('Set created')
+          }
+          
+          setLoading(false)
 
         }
 
@@ -77,6 +84,10 @@ export default function BatchProgress() {
         
     }
   ]
+
+  if(loading) {
+    return <Spinner text={'Creation'}/>
+  }
 
   return (
     <MainLayout buttons={buttons} title='your set'>

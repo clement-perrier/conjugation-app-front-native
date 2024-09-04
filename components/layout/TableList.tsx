@@ -4,6 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import CustomFlatList from "./CustomFlatList";
 import { Conjugation } from "@/types/Conjugation";
+import Colors from "@/constants/Colors";
 
 export default function TableList({results} : {results: boolean}){
 
@@ -18,30 +19,59 @@ export default function TableList({results} : {results: boolean}){
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some((conjugation: Conjugation) => conjugation.correct === false)
                 return (
-                    <View style={globalstyles.flexRow}>
                         <View 
                             key={item.tense.id + item.verb.id} 
-                            style={[styles.table, 
+                            style={[styles.table,  globalstyles.flexColumn,
                                     results ? 
                                             (correct ? styles.tableCorrect : styles.tableIncorrect) 
                                             : styles.tableNormal]}>
-                            <Text style={styles.uppercase}>{item.tense.name} - {item.verb.name}</Text>
+                        
+                            {/* Encouraging message */}
                             {
-                                item.conjugationList?.map((conjugation: Conjugation) => 
-                                <Text 
-                                    key={conjugation.id}
-                                    style={[styles.conjugation, 
-                                        results ? 
-                                                (conjugation.correct ? styles.conjugationCorrect : styles.conjugationIncorrect) 
-                                                : styles.conjugationNormal]}>
-                                    {conjugation.pronoun.name + ' ' + conjugation.name}
-                                </Text>
-                                )
+                                results &&
+                                    <View style={[globalstyles.flexRow, {justifyContent: 'center'}]}>
+                                        {results && <Feather style={{textAlign: 'center'}} name={correct ? "check" : 'x'} size={35} color={correct ? Colors.success : Colors.error} />}
+                                        <Text style={{color: correct ? Colors.success : Colors.error}}>
+                                            {correct
+                                                ? "Well done!"
+                                                : "Some answers weren’t quite right. Please try again tomorrow. You’ll get it!"
+                                            }
+                                        </Text>
+                                    </View>
                             }
+
+                            {/* Conjugation table title */}
+                            <Text style={[globalstyles.text, styles.uppercase, {color: Colors.textSecondary}]}>{item.tense.name} - {item.verb.name}</Text>
+
+                            {/* Conjugation lines */}
+                            <View>
+                                {
+                                    item.conjugationList?.map((conjugation: Conjugation, index: any) => 
+                                        // Conjugation line
+                                        <View 
+                                            key={conjugation.id}
+                                            style={[
+                                                globalstyles.flexRow, 
+                                                styles.conjugation,
+                                                index === item.conjugationList.length -1 && styles.lastConjugation,
+                                                // results ? (conjugation.correct ? styles.conjugationCorrect : styles.conjugationIncorrect) : styles.conjugationNormal
+                                            ]}
+                                        >
+                                            <Text 
+                                                key={conjugation.id}
+                                                style={{color: results ? (conjugation.correct ? Colors.success : Colors.error) : Colors.textSecondary}}
+                                            >
+                                                {conjugation.pronoun.name + ' ' + conjugation.name}
+                                            </Text>
+                                            {results && <Feather  name={conjugation.correct ? "check" : 'x'} size={15} color={conjugation.correct ? Colors.success : Colors.error} style={{marginTop: 4}}/>}
+                                        </View>
+
+                                    )
+                                }
+                            </View>
+
                         </View>
-                        {results && <Feather name={correct ? "check" : 'x'} size={30} color={correct ? "green" : 'red'} />}
-                    </View>
-                    )
+                )
             }}
         >
         </CustomFlatList>
@@ -49,45 +79,39 @@ export default function TableList({results} : {results: boolean}){
 }
 
 const styles = StyleSheet.create({
-    flexRow: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
     table: {
-        padding: 10,
-        borderRadius: 5,
-        borderWidth: 2,
-        flex: 1
+        padding: 20,
+        borderRadius: 10
     },
     tableNormal: {
-        borderColor: 'gray',
-        backgroundColor: 'rgba(50, 50, 50, 0.2)'
+        backgroundColor: Colors.secondary
     },
     tableCorrect: {
-        borderColor: 'green',
-        backgroundColor: 'rgba(0, 255, 0, 0.2)'
+        backgroundColor: Colors.successBg
     },
     tableIncorrect: {
-        borderColor: 'red',
-        backgroundColor: 'rgba(255, 0, 0, 0.2)'
+        backgroundColor: Colors.errorBg
     },
     conjugation: {
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1
+        padding: 10,
+        borderBottomWidth: 1,
+        justifyContent: 'center',
+        borderBottomColor: Colors.accent
+    },
+    lastConjugation: {
+        borderBottomWidth: 0
     },
     conjugationNormal: {
-        borderColor: 'gray',
-        backgroundColor: 'rgba(50, 50, 50, 0.3)'
+        borderBottomColor: Colors.accent,
+        // color: Colors.accent
     },
     conjugationCorrect: {
-        borderColor: 'green',
-        backgroundColor: 'rgba(0, 255, 0, 0.3)'
+        // color: Colors.success,
+        borderBottomColor: Colors.success,
     },
     conjugationIncorrect: {
-        borderColor: 'red',
-        backgroundColor: 'rgba(255, 0, 0, 0.3)'
+        // color: Colors.error,
+        borderBottomColor: Colors.textSecondary
     },
     uppercase: {
         textTransform: 'uppercase'

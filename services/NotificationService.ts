@@ -8,6 +8,7 @@ import { User } from '@/types/User';
 import { UpdateUserDeviceToken } from './ApiService';
 
 const isExpo = Constants.AppOwnership === 'expo';
+const isStandalone  = Constants.executionEnvironment === 'standalone';
 
 async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -24,18 +25,18 @@ async function requestUserPermission() {
 export function setupBackgroundMessageHandler() {
   if (!isExpo && Platform.OS !== 'web') {
     // Register background message handler for non-Expo and non-web environments
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
-      // Handle background message
-    });
+    // messaging().setBackgroundMessageHandler(async remoteMessage => {
+    //   console.log('Message handled in the background!', remoteMessage);
+    //   // Handle background message
+    // });
   } else {
     console.log('Background message handler not set. Running in Expo or on web.');
   }
 }
 
 export function updateDeviceToken(userId: number){
-
-  if(!isExpo && Platform.OS !== 'web'){
+  console.log(isExpo)
+  if(isStandalone && Platform.OS !== 'web'){
     console.log('ccd')
     firebase.messaging().getToken()
     .then(function(currentToken) {
@@ -54,7 +55,6 @@ export function updateDeviceToken(userId: number){
 
     // requestUserPermission()
 
-    
   } 
 
 }

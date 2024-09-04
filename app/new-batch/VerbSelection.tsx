@@ -125,7 +125,7 @@ export default function VerbSelection() {
         <View style={{flex: 1}}>
 
           {/* SELECTED VERB LIST */}  
-          <View style={{width: '100%', marginBottom: 10, height: 'auto'}}>
+          <View style={{width: '100%', height: 'auto'}}>
             <CustomFlatList
               data={selectedVerbList}
               isLoading={false}

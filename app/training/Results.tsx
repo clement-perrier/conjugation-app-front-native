@@ -30,7 +30,7 @@ export default function Results() {
   ]
 
   return (
-    <MainLayout buttons={buttons}>
+    <MainLayout buttons={buttons} title='Results'>
 
       <TableList results={true}/>
 

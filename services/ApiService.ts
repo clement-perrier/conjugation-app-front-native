@@ -79,7 +79,7 @@ apiService.interceptors.request.use(async (config) => {
             accessToken = await refreshToken();
         }
         if(!accessToken){
-            return Promise.reject();
+            return config
         }
         config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -119,92 +119,151 @@ apiService.interceptors.request.use(async (config) => {
 export const FetchUser = createAsyncThunk(
     'fetchUser',
     async (userId: number) => {
-        const response = await apiService.get(`user?userId=${userId}`);
-        return response.data;
+        try {
+            const response = await apiService.get(`user?userId=${userId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Loading user failed', error)
+        }
     }
 );
 
 export const FetchLearningLanguageList = createAsyncThunk(
     'fetchLearningLanguageList',
     async () => {
-        const response = await apiService.get('learningLanguages');
-        return response.data;
+        try {
+            const response = await apiService.get('learningLanguages');
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching languages failed', error)
+        }
     }
 );
 
 export const FetchTenseList = createAsyncThunk(
     'fetchTenseList',
     async (languageId: number) => {
-        const response = await apiService.get(`tenses?languageId=${languageId}`);
-        return response.data;
+        try {
+            const response = await apiService.get(`tenses?languageId=${languageId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching tenses failed', error)
+        }
     }
 );
 
 export const FetchVerbList = createAsyncThunk(
     'fetchVerbList',
-    async (languageId: number) : Promise<Verb[]> => {
-        const response = await apiService.get(`verbs?languageId=${languageId}`);
-        return response.data;
+    async (languageId: number) => {
+        try {
+            const response = await apiService.get(`verbs?languageId=${languageId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching verbs failed', error)
+        }
+
     }
 )
 
 export const FetchPronounList = createAsyncThunk(
     'fetchPronounList',
     async (languageId: number) => {
-        const response = await apiService.get(`pronouns?languageId=${languageId}`);
-        return response.data;
+        try {
+            const response = await apiService.get(`pronouns?languageId=${languageId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching pronouns failed', error)
+        }
     }
 )
 
 export const FetchTableList = createAsyncThunk(
     'fetchTableList',
     async (languageId: number) => {
-        const response = await apiService.get(`tables?languageId=${languageId}`);
-        return response.data;
+        try {
+            const response = await apiService.get(`tables?languageId=${languageId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching conjugation tables failed', error)
+        }
     }
 )
 
 export const FetchBatchList = createAsyncThunk(
     'fetchBatchList',
     async ({userId, languageId} : {userId: number, languageId: number}) => {
-        const response = await apiService.get(`batchesByUserAndLanguage?userId=${userId}&languageId=${languageId}`);
-        return response.data;
+        try {
+            const response = await apiService.get(`batchesByUserAndLanguage?userId=${userId}&languageId=${languageId}`);
+            return response.data;
+        } catch (error) {
+            handleRequestError('Fetching repetitions failed', error)
+        }
     }
+    
 )
 
 export const SaveBatch = async (batch: Batch) => {
-    const response = await apiService.post('newBatch', batch);
-    return response.data;
+    try {
+        const response = await apiService.post('newBatch', batch);
+        return response.data;
+    } catch (error) {
+        handleRequestError('Repetition creation failed', error)
+    }
 }
 
 export const UpdateBatch = async (batch: Batch) => {
-    const response = await apiService.put('updateBatch', batch);
-    return response.data;
+    try {
+        const response = await apiService.put('updateBatch', batch);
+        return response.data;
+    } catch (error) {
+        handleRequestError('Repetition update failed', error)
+    }
 }
 
 export const UpdateUserLearningLanguageList = async (userId: number, languageId: number) => {
-    const response = await apiService.put(`updateUserLearningLanguageList?userId=${userId}&learningLanguageId=${languageId}`);
-    return response.data;
+    try {
+        const response = await apiService.put(`updateUserLearningLanguageList?userId=${userId}&learningLanguageId=${languageId}`);
+        return response.data;
+    } catch (error) {
+        handleRequestError('User update failed', error)
+    }
 }
 
 export const UpdateUserDefaultLearningLanguage = async (userId: number, languageId: number) => {
-    const response = await apiService.put(`updateUserDefaultLearningLanguage?userId=${userId}&learningLanguageId=${languageId}`);
-    return response.data;
+    try {
+        const response = await apiService.put(`updateUserDefaultLearningLanguage?userId=${userId}&learningLanguageId=${languageId}`);
+        return response.data;
+    } catch (error) {
+        handleRequestError('User update failed', error)
+    }
 }
 
 export const UpdateUserDeviceToken = async (userId: number, deviceToken: string) => {
-    const response = await apiService.put(`updateUserDeviceToken?userId=${userId}&deviceToken=${deviceToken}`);
-    return response.data;
+    try {
+        const response = await apiService.put(`updateUserDeviceToken?userId=${userId}&deviceToken=${deviceToken}`);
+        return response.data;
+    } catch (error) {
+        handleRequestError('User device token update failed', error)
+    }
 }
 
 export const RemoveBatch = async(batchId: number) => {
-    const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
-    return response.data;
+    try {
+        const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
+        return response.data;
+    } catch (error) {
+        handleRequestError('Repetition deletion failed', error)
+    }
 }
 
 export const AuthLogin = async(loginUser: LoginUser) => {
-    const response = await apiService.post('auth/login', loginUser);
-    return response.data;
+    try {
+        const response = await apiService.post('auth/login', loginUser);
+        return response.data;
+    } catch (error) {
+        handleRequestError('Login failed', error)
+    }
+    
 }
 
 export const AuthSignup = async(loginUser: LoginUser) => {
@@ -235,7 +294,7 @@ export const AuthRefreshToken = async(refreshToken: string) => {
         const response = await apiService.post('auth/refreshToken', refreshToken);
         return response.data;
     } catch (error) {
-        handleFail('Refresh token error', 'Something went wrong')
+        handleRequestError('Refresh token error', error)
     }
 }
 
@@ -245,9 +304,7 @@ export const AuthPasswordResetRequest = async(email: string) => {
         handleSuccess(`A password reset code has been sent to ${email}.`)
         return response.data;
     } catch (error: any) {
-        console.error('Reset password request error:', error);
-        handleFail('Reset password request error', error.response?.data.description || error.message);
-        return null
+        handleRequestError('Password reset request error', error)
     }
 }
 
@@ -257,9 +314,7 @@ export const AuthChangePassword = async(changePasswordRequest: ChangePasswordReq
         handleSuccess('Your password has been updated successfully.')
         return response.data;
     } catch (error) {
-        console.error('Reset password  request error:', error);
-        handleFail('Error', `Invalid or expired reset code.`)
-        return null
+        handleRequestError('Update password request error', error)
     }
 }
 
@@ -269,9 +324,7 @@ export const AuthLogout = async(email: string) => {
         handleSuccess('You are now logged out')
         return response.data;
     } catch (error) {
-        console.error('Log out request error:', error);
-        handleFail('Error', `Unknown error`)
-        return null
+        handleRequestError('Log out request error', error)
     }
 }
 
@@ -284,4 +337,10 @@ export interface LoginUser {
 export interface ChangePasswordRequest {
     code: string,
     newPassword: string
+}
+
+const handleRequestError = (message: string, error: any) => {
+    console.error(message, error);
+    handleFail(message, error.response?.data.description || error.message);
+    return null;
 }
