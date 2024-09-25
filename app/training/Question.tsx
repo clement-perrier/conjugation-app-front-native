@@ -226,7 +226,7 @@ export default function Question() {
         currentConjugation ? (
           <>
             {/* Progress Bar */}
-            <View style={[globalstyles.flexRow, {columnGap: 0, width: '100%', height: 10}]}>
+            <View style={[globalstyles.flexRow, styles.progressBarContainer]}>
               {
                 conjugationList.map((conjugation, index) => (
                   <Progress.Bar 
@@ -404,5 +404,11 @@ const styles = StyleSheet.create({
   incorrect: {
     borderColor: Colors.error,
     backgroundColor: Colors.errorBg
+  },
+  progressBarContainer: {
+    columnGap: 0, 
+    width: '100%',
+    height: 10,
+    marginTop: 15
   }
 });
