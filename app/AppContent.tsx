@@ -1,4 +1,4 @@
-
+/* 
 import { ActivityIndicator, StatusBar } from "react-native";
 import AppNavigator from "./AppNavigator";
 import { useAppDispatch, useAppSelector } from "@/state/hooks";
@@ -55,3 +55,4 @@ export default function AppContent() {
 }
 
 
+ */

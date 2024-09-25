@@ -1,0 +1,1 @@
+export const SET_NUMBER_LIMIT = 5;

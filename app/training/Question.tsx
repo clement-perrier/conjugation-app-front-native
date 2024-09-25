@@ -14,6 +14,11 @@ import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import BottomButton from '@/components/buttons/BottomButton';
 import Colors from '@/constants/Colors';
 import { globalstyles } from '@/utils/GlobalStyle';
+import Styles from '@/constants/Styles';
+import * as Progress from 'react-native-progress';
+import {ProgressBar} from 'react-native-multicolor-progress-bar';
+import { globalAgent } from 'https';
+import { current } from '@reduxjs/toolkit';
 
 export default function Question() {
 
@@ -30,6 +35,7 @@ export default function Question() {
   const [conjugationList, setConjugationList] = useState<Conjugation[]>([])
   const [answer, setanswer] = useState('')
   const [answerStatus, setAnswerStatus] = useState<String | null>(null)
+  const [count, setCount] = useState(0)
 
   // Refs
   const slideAnimation = useRef(new Animated.Value(0)).current;
@@ -37,8 +43,10 @@ export default function Question() {
 
   //  Derived data
   const currentConjugation: Conjugation = conjugationList[currentConjugationIndex] ?? null
+  const progress = count / conjugationList.length
 
   // Functions
+  // Method shuffling the conjugation array randomly
   const shuffleArray = (array: Conjugation[]) : Conjugation[] => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
@@ -47,6 +55,7 @@ export default function Question() {
     return array;
   }
 
+  // Method returning the flat and randomly shuffled conjugation list with conjugation items having correct attribute
   const getConjugationList = () : Conjugation[] => {
       return shuffleArray(selectedBatch?.tableList.flatMap(table => table.conjugationList ?? []) ?? [])
   };
@@ -91,14 +100,40 @@ export default function Question() {
   // Handlers
   const handleCheck = () => {
     let correct: boolean | null = null
-    if(answer.toLowerCase() === currentConjugation.name) {
+    if(answer.toLowerCase().replace(/\s+$/, '') === currentConjugation.name) {
       setAnswerStatus('correct')
-       correct = true
+      setConjugationList(
+          conjugationList.map(conjugation => {
+            if(conjugation.id === currentConjugation.id){
+              return {
+                ...conjugation,
+                correct: true
+              }
+            } else {
+              return conjugation
+            }
+          })
+      )
+      correct = true
     } else {
       setAnswerStatus('incorrect')
+      setConjugationList(
+        conjugationList.map(conjugation => {
+          if(conjugation.id === currentConjugation.id){
+            return {
+              ...conjugation,
+              correct: false
+            }
+          } else {
+            return conjugation
+          }
+        })
+    )
       correct = false
     }
+    console.log(conjugationList)
     dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
+    setCount(count + 1)
     slideIn()
   }
 
@@ -112,8 +147,12 @@ export default function Question() {
       } 
       // Training is finished
       else {
-        handleResults()
-        navigation.navigate('Results')
+        setCurrentConjugationIndex(currentConjugationIndex + 1) 
+        
+        setTimeout(() => {
+          handleResults()
+          navigation.navigate('Results')
+        }, 1000)
       }
     }, 100);
     
@@ -181,17 +220,66 @@ export default function Question() {
   }
 
   return (
+
     <View style={[globalstyles.container, globalstyles.flexColumn]}>
       {
         currentConjugation ? (
           <>
+            {/* Progress Bar */}
+            <View style={[globalstyles.flexRow, {columnGap: 0, width: '100%', height: 10}]}>
+              {
+                conjugationList.map((conjugation, index) => (
+                  <Progress.Bar 
+                    key={conjugation.id}
+                    progress={count > index ? 1 : 0} 
+                    color={count <= index ? Colors.tertiary : (conjugation.correct ? Colors.success : Colors.error)}
+                    borderWidth={0}
+                    borderRadius={10}
+                    width={0}
+                    height={10}
+                    unfilledColor={Colors.tertiary}
+                    style={{flex: 1}} 
+                  />
+                ))
+              }
+              {/* <Progress.Bar 
+                progress={1} 
+                borderWidth={0}
+                borderRadius={10}
+                width={0}
+                height={10}
+                unfilledColor={Colors.tertiary}
+                style={{flex: 1}} 
+              />
+              <Progress.Bar 
+                progress={1} 
+                color={Colors.error}
+                borderWidth={0}
+                // borderRadius={10}
+                width={0}
+                height={10}
+                unfilledColor={Colors.tertiary}
+                style={{flex: 1}} 
+              /> */}
+            </View>
+
+            {/* <ProgressBar
+              arrayOfProgressObjects={[
+              {
+                color: 'red',
+                value: 0.4,
+                nameToDisplay: "40%"
+              },
+              {
+                color: 'blue',
+                value: 0.6,
+                opacity: 0.5
+              },
+              ]}
+            /> */}
+       
             {/*  Title */}
-            {/* <View style={globalstyles.title}>
-              <Text style={globalstyles.title}>{currentConjugation.verbName}</Text>
-              <Text>in</Text> 
-              <Text style={styles.uppercase}>{currentConjugation.tenseName}</Text>
-            </View> */}
-            <Text style={[globalstyles.title, {marginBottom: 0}]}>{currentConjugation.verbName} in {currentConjugation.tenseName}</Text>
+            <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
 
             {/*  Input */}
             <View style={[globalstyles.flexColumn, {flex: 1, justifyContent: 'center'}]}>
@@ -202,7 +290,6 @@ export default function Question() {
                 style={[globalstyles.input, { height: 60, fontSize: 20, textAlign: 'center'}]}
                 onChangeText={setanswer}
                 value={answer}
-                inlineImageLeft='react-logo'
               />
             </View>
 
@@ -223,7 +310,7 @@ export default function Question() {
                       <View style={[answerStatus === 'correct' ? styles.correct : styles.incorrect, {alignItems: 'center'}]}>
                         {
                           answerStatus === 'correct'
-                            ? <Text style={[{color: Colors.success}]}>Correct!</Text> 
+                            ? <Text style={[{color: Colors.success}, {fontWeight: 'bold'}]}>Correct!</Text> 
                             : <View> 
                                 <Text style={{color: Colors.error, textAlign: 'center', marginBottom: 5}}>Incorrect!</Text>
                                 <View style={globalstyles.flexRow}> 
@@ -259,6 +346,7 @@ export default function Question() {
         )
       }
     </View>
+
   );
 }
 
@@ -300,7 +388,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent:'center',
-    height: '100%'
+    height: '100%',
+    borderRadius: 8
   },
   resultContent: {
     // width: '40%',

@@ -6,6 +6,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import ListButton from '@/components/buttons/ListButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import Styles from '@/constants/Styles';
 
 export default function TenseSelection() {
 
@@ -34,7 +35,6 @@ export default function TenseSelection() {
             }}
           />
         )}
-        itemSeparatorHeight={15}
       />
 
         {/* <FlatList 

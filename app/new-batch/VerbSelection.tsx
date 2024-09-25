@@ -13,6 +13,8 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import TextIconButton from '@/components/buttons/TextIconButton';
 import Colors  from '@/constants/Colors';
+import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
+import { CustomAlert } from '@/utils/CustomAlert';
 
 export default function VerbSelection() {
 
@@ -84,8 +86,13 @@ export default function VerbSelection() {
     {
       label: 'ADD TO SET',
       onPress: () => {
-        dispatch(addSelectedTable(getSelectedConjugationTableList()))
-        navigation.navigate('Batch progress')
+        const newTableList = getSelectedConjugationTableList()
+        if(newTableList.length + selectedTableList.length > SET_NUMBER_LIMIT) {
+          CustomAlert('Set limit reached', 'You\'ve reached the limit of 5 verbs per repetition set to keep the learning manageable. Please remove some verbs from the set to continue.')
+        } else {
+          dispatch(addSelectedTable(getSelectedConjugationTableList()))
+          navigation.navigate('Batch progress')
+        }
       },
       disabled: selectedVerbList.length === 0
     }
@@ -115,7 +122,6 @@ export default function VerbSelection() {
             onChangeText={setSearchText}
             value={searchedText}
             placeholder="search verb"
-            inlineImageLeft='react_logo'
             onBlur={() => setIsFocused(false)}
             onFocus={() => setIsFocused(true)}
             />
@@ -135,10 +141,10 @@ export default function VerbSelection() {
                 <View style={{position: 'relative'}}>
                   <TextIconButton 
                     label={item.name} 
-                    color='white' 
+                    color={Colors.textSecondary} 
                     onPress={() => removeSelectedVerb(item)} 
                     iconSize={20} 
-                    style={{ backgroundColor: 'grey' }} 
+                    style={{ borderRadius: 10 }} 
                     icon={'remove'}/>
                 </View>
               }
@@ -159,7 +165,6 @@ export default function VerbSelection() {
               // numColumns={numColumns}
               key={numColumns}
               keyExtractor={(item: Verb) => item.id.toString()}
-              itemSeparatorHeight={15}
               // columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
               style={[{flex: 1}, globalstyles.flatList]}
               renderItem={({item}) => 

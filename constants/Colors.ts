@@ -1,13 +1,14 @@
 export default {
   primary: '#1ABC9C', // Bright teal
   secondary: '#B0BEC5', // Medium gray
+  tertiary: '#dee6eb',
   primaryShiny: '#1fe7c0',
   accent: '#34495E',   // Navy blue
   textPrimary: '#34495E', 
   textSecondary: '#2C3E50',
   warning: '#FFC107',
-  success: '#1ABC9C',
-  successBg: '#E8F5E9',
+  success: '#27AE60',
+  successBg: '#D4EFDF',
   error: '#E74C3C',
   errorBg: '#FFEBEE',
   white: '#ffffff',     

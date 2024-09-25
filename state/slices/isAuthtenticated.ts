@@ -10,7 +10,7 @@ const initialState: isAuthenticatedState = {
 };
 
 export const IsAuthenticated = createSlice({
-  name: 'isAuthenticated',
+  name: 'IsAuthenticated',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState: initialState,
   reducers: {

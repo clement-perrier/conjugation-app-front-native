@@ -49,7 +49,6 @@ export default function Start() {
         renderItem={({item}) => 
             <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
         }
-        itemSeparatorHeight={20}
       >
       </CustomFlatList>
 

@@ -23,20 +23,23 @@ import SignUp from "./authentication/SignUp";
 import NewPassword from "./authentication/NewPassword";
 import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
-import { loadInitialData } from "@/services/AuthenticationService";
+import { checkAuth, loadInitialData } from "@/services/AuthenticationService";
 import Spinner from "@/components/layout/Spinner";
 import PasswordResetRequest from "./authentication/PasswordResetRequest";
 import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-community/netinfo";
 import { CustomAlert } from "@/utils/CustomAlert";
-import { updateDeviceToken, setupBackgroundMessageHandler } from "@/services/NotificationService";
+import { updateDeviceToken } from "@/services/NotificationService";
+import Offline from "./Offline";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
-setupBackgroundMessageHandler()
 
 export default function AppNavigator() {
 
   const dispatch = useAppDispatch()
+
+  // States
+  const [isOffline, setIsOffline] = useState(false)
 
   // Selectors
   const isOnboarding = useAppSelector(state => state.IsOnBoarding.value)
@@ -46,6 +49,7 @@ export default function AppNavigator() {
   // Handlers
   const handleNetworkChange: NetInfoChangeHandler = (state: NetInfoState) => {
     if(!state.isConnected){
+      setIsOffline(true)
       if(isAuthenticated) {
         CustomAlert('No internet connection', 'Please reconnect to the internet to ensure that your changes are saved', () => {})
       } else {
@@ -84,22 +88,25 @@ export default function AppNavigator() {
 
   // Effects
   useEffect(() => {
-    dispatch(updateIsAuthenticated(false))
 
-    async function checkAuth() {
+    const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
+
+    // dispatch(updateIsAuthenticated(false))
+    // user && console.log('user', user)
+  /*   async function checkAuth() {
       const token = await AppSecureStore.GetItemAsync('access_token');
+      // Token exist => user already connected
       if (token) {
         const userId = Number(await AppSecureStore.GetItemAsync('user_id'));
         loadInitialData(dispatch, userId)
       } else {
-        dispatch(updateIsOnBoarding(true))
+        // dispatch(updateIsOnBoarding(true))
         dispatch(updateIsAuthenticated(false))
       }
-    }
-    checkAuth();  
-    // To be removed
+    } */
+    //  Check if user already connected
+    checkAuth(dispatch);  
 
-    const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
     return () => {
         netInfoSubscription && netInfoSubscription();
     };
@@ -181,11 +188,21 @@ export default function AppNavigator() {
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator>
-                <Stack.Screen 
-                    name="On boarding learning language"
-                    component={AddLearningLanguage}
-                    options={getOptions()}
-                  />
+                  {
+                    isOffline 
+                      ?
+                        <Stack.Screen 
+                          name="Offline"
+                          component={Offline}
+                          options={getOptions()}
+                        />
+                      :
+                        <Stack.Screen 
+                          name="On boarding learning language"
+                          component={AddLearningLanguage}
+                          options={getOptions()}
+                        />
+                  }
                 </Stack.Navigator>
               )
             ) : (

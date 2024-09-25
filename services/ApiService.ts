@@ -8,9 +8,14 @@ import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import CustomError from '@/utils/CustomError';
 import { getDispatchRef } from '@/utils/DispatchRef';
 import { handleFail, handleSuccess } from '@/utils/Messages';
+import { store } from '@/state/store';
+import { Conjugation } from '@/types/Conjugation';
+import { Table } from '@/types/Table';
 
 // Axios configuration
-const API_BASE_URL = 'http://192.168.1.181:8080';
+const local = '192.168.1.181:8080'
+const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
+const API_BASE_URL = `http://${local}`
 
 const apiService = axios.create({
     baseURL: API_BASE_URL
@@ -22,9 +27,15 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Function to decode and check token expiration
 function isAccessTokenExpired(token: string | null): boolean {
     if (!token) return true;
-    const decoded: any = jwtDecode(token);
-    const exp = decoded.exp * 1000; // Convert expiration time to milliseconds
-    return Date.now() >= exp;
+    try {
+        const decoded: any = jwtDecode(token);
+        const exp = decoded.exp * 1000; // Convert expiration time to milliseconds
+        return Date.now() >= exp;
+    } catch (error) {
+        return true
+    }
+    
+    
 }
 
 async function isRefreshTokenExpired(){
@@ -43,10 +54,12 @@ async function refreshToken() {
 
     if (!refreshToken) {
         CustomError('Refresh token is not local stored')
+        return null
     } else {
         try {
-            const response = await apiService.post('auth/refreshToken', { token: refreshToken });
-            const { accessToken, refreshToken: newRefreshToken } = response.data;
+            // const response = await apiService.post('auth/refreshToken', { token: refreshToken });
+            const response = await AuthRefreshToken(refreshToken)
+            const { accessToken, refreshToken: newRefreshToken } = response;
             
             // Update the secure store with the new tokens
             await AppSecureStore.SaveItemAsync('access_token', accessToken);
@@ -54,12 +67,9 @@ async function refreshToken() {
 
             return accessToken;
         } catch (error) {
+            console.log('refresh token not working')
             await AppSecureStore.SaveItemAsync('access_token', '')
             await AppSecureStore.SaveItemAsync('refresh_token', '')
-            const dispatch = getDispatchRef();
-            if (dispatch) {
-                dispatch(updateIsAuthenticated(false));
-            }
             return null
         }
     }
@@ -69,18 +79,20 @@ async function refreshToken() {
 apiService.interceptors.request.use(async (config) => {
 
     // List of endpoints that do not require authentication
-    const noTokenEndpoints = ['auth/login', 'auth/signup', 'auth/refreshToken'];
+    // const noTokenEndpoints = ['auth/login', 'auth/signup', 'auth/refreshToken'];
 
     if (!config.url?.includes('auth')) {
 
         let accessToken = await AppSecureStore.GetItemAsync('access_token');
     
-        if (isAccessTokenExpired(accessToken)) {
-            accessToken = await refreshToken();
-        }
         if(!accessToken){
             return config
         }
+        
+        if (isAccessTokenExpired(accessToken)) {
+            accessToken = await refreshToken();
+        }
+        
         config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     
@@ -182,7 +194,7 @@ export const FetchTableList = createAsyncThunk(
     async (languageId: number) => {
         try {
             const response = await apiService.get(`tables?languageId=${languageId}`);
-            return response.data;
+            return response.data
         } catch (error) {
             handleRequestError('Fetching conjugation tables failed', error)
         }
@@ -291,7 +303,7 @@ export const AuthSignup = async(loginUser: LoginUser) => {
 
 export const AuthRefreshToken = async(refreshToken: string) => {
     try {
-        const response = await apiService.post('auth/refreshToken', refreshToken);
+        const response = await apiService.post('auth/refreshToken', {token: refreshToken});
         return response.data;
     } catch (error) {
         handleRequestError('Refresh token error', error)

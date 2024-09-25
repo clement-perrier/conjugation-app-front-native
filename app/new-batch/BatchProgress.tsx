@@ -2,6 +2,7 @@ import ListButton from '@/components/buttons/ListButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import MainLayout from '@/components/layout/MainLayout';
 import Spinner from '@/components/layout/Spinner';
+import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { SaveBatch } from '@/services/ApiService';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
@@ -26,6 +27,9 @@ export default function BatchProgress() {
   const batchList = useAppSelector(state => state.BatchList.value)
   const user = useAppSelector(state => state.User.value)
 
+  //  Derived data
+  const isSetLimitReached = selectedTableList.length >= SET_NUMBER_LIMIT
+
   // States
   const [loading, setLoading] = useState(false)
 
@@ -37,7 +41,8 @@ export default function BatchProgress() {
   const buttons: LayoutButton[] = [
     {
       label: 'ADD MORE',
-      onPress: () => navigation.push('Tense(s) selection')
+      onPress: () => navigation.push('Tense(s) selection'),
+      disabled: isSetLimitReached
     },
     {
       label: 'CREATE SET',
@@ -92,22 +97,27 @@ export default function BatchProgress() {
   return (
     <MainLayout buttons={buttons} title='your set'>
       
-      <CustomFlatList
-        isLoading={false}
-        emptyMessage='Selection is empty'
-        data={selectedTableList}
-        renderItem={({item}) => 
-            <ListButton
-              label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
-              onPress={() => {
-                dispatch(removeSelectedTable(item))
-              }}
-              icon='close'
-            />
-        }
-        itemSeparatorHeight={10}
-      >
-      </CustomFlatList>
+      <>
+      
+        <CustomFlatList
+          isLoading={false}
+          emptyMessage='Selection is empty'
+          data={selectedTableList}
+          renderItem={({item}) => 
+              <ListButton
+                label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 
+                onPress={() => {
+                  dispatch(removeSelectedTable(item))
+                }}
+                icon='close'
+              />
+          }
+        >
+        </CustomFlatList>
+
+        { isSetLimitReached && <Text style={globalstyles.text}>Set limit reached</Text>}
+
+      </>
 
     </MainLayout>
   );

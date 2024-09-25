@@ -19,7 +19,10 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Your message here",
         "NSPhotoLibraryUsageDescription": "Your message here",
-        "NSPhotoLibraryAddUsageDescription": "Your message here"
+        "NSPhotoLibraryAddUsageDescription": "Your message here",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {

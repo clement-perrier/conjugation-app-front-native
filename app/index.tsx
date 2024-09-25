@@ -16,10 +16,10 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <View style={[{flex: 1, padding: 15}, globalstyles.backgroundColor]}>
-          <AppNavigator/>
-          <Toast/>
-        </View>
+          <View style={[{flex: 1, padding: 15}, globalstyles.backgroundColor]}>
+            <AppNavigator/>
+            <Toast/>
+          </View>
       </Provider>
     </SafeAreaProvider>
   );

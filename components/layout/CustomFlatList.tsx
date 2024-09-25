@@ -3,6 +3,7 @@ import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, Vie
 import { globalstyles } from '@/utils/GlobalStyle';
 import { Verb } from '@/types/Verb';
 import Spinner from './Spinner';
+import Styles from '@/constants/Styles';
 
 export default function CustomFlatList(
     { 
@@ -11,7 +12,7 @@ export default function CustomFlatList(
         isLoading,
         emptyMessage,
         contentContainerStyle,
-        itemSeparatorHeight = 20,
+        itemSeparatorHeight = Styles.itemSeparatorHeight,
         numColumns,
         columnWrapperStyle,
         style,
