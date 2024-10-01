@@ -1,6 +1,6 @@
 import { store } from "@/state/store";
 import { Provider } from "react-redux";
-import { View } from "react-native";
+import { StatusBar, View } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNavigator from "./AppNavigator";
@@ -17,6 +17,7 @@ export default function Index() {
     <SafeAreaProvider>
       <Provider store={store}>
           <View style={[{flex: 1, padding: 15}, globalstyles.backgroundColor]}>
+            <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
             <AppNavigator/>
             <Toast/>
           </View>

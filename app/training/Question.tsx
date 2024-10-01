@@ -19,6 +19,7 @@ import * as Progress from 'react-native-progress';
 import {ProgressBar} from 'react-native-multicolor-progress-bar';
 import { globalAgent } from 'https';
 import { current } from '@reduxjs/toolkit';
+import Spinner from '@/components/layout/Spinner';
 
 export default function Question() {
 
@@ -139,7 +140,7 @@ export default function Question() {
 
   const handleContinue = () => {
     // slideOut()
-    setTimeout(() => {
+    // setTimeout(() => {
       if (currentConjugationIndex < conjugationList.length - 1){
         setCurrentConjugationIndex(currentConjugationIndex + 1) 
         setanswer('')
@@ -147,14 +148,14 @@ export default function Question() {
       } 
       // Training is finished
       else {
-        setCurrentConjugationIndex(currentConjugationIndex + 1) 
+        // setCurrentConjugationIndex(currentConjugationIndex + 1) 
         
-        setTimeout(() => {
+        // setTimeout(() => {
           handleResults()
           navigation.navigate('Results')
-        }, 1000)
+        // }, 1000)
       }
-    }, 100);
+    // }, 100);
     
   }
 
@@ -262,21 +263,6 @@ export default function Question() {
                 style={{flex: 1}} 
               /> */}
             </View>
-
-            {/* <ProgressBar
-              arrayOfProgressObjects={[
-              {
-                color: 'red',
-                value: 0.4,
-                nameToDisplay: "40%"
-              },
-              {
-                color: 'blue',
-                value: 0.6,
-                opacity: 0.5
-              },
-              ]}
-            /> */}
        
             {/*  Title */}
             <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
@@ -342,7 +328,8 @@ export default function Question() {
             </View>
           </>
         ) : (
-      <Text>Loading...</Text>
+      // <Text>Loading...</Text>
+      <Spinner text={'Loading'}/>
         )
       }
     </View>

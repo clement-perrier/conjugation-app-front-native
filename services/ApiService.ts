@@ -11,11 +11,12 @@ import { handleFail, handleSuccess } from '@/utils/Messages';
 import { store } from '@/state/store';
 import { Conjugation } from '@/types/Conjugation';
 import { Table } from '@/types/Table';
+import { useState } from 'react';
 
 // Axios configuration
 const local = '192.168.1.181:8080'
 const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
-const API_BASE_URL = `http://${local}`
+const API_BASE_URL = `http://${aws}`
 
 const apiService = axios.create({
     baseURL: API_BASE_URL
@@ -135,7 +136,7 @@ export const FetchUser = createAsyncThunk(
             const response = await apiService.get(`user?userId=${userId}`);
             return response.data;
         } catch (error) {
-            handleRequestError('Loading user failed', error)
+            handleRequestError('Logged out', error)
         }
     }
 );
@@ -306,7 +307,7 @@ export const AuthRefreshToken = async(refreshToken: string) => {
         const response = await apiService.post('auth/refreshToken', {token: refreshToken});
         return response.data;
     } catch (error) {
-        handleRequestError('Refresh token error', error)
+        // handleRequestError('Refresh token error', error)
     }
 }
 
