@@ -17,7 +17,7 @@ export default function Index() {
     <SafeAreaProvider>
       <Provider store={store}>
           <View style={[{flex: 1, padding: 15}, globalstyles.backgroundColor]}>
-            <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
+            <StatusBar barStyle="dark-content" />
             <AppNavigator/>
             <Toast/>
           </View>

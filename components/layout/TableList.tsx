@@ -19,6 +19,7 @@ export default function TableList({results} : {results: boolean}){
             renderItem={({item}) => {
                 const correct = !item.conjugationList?.some((conjugation: Conjugation) => conjugation.correct === false)
                 return (
+                    <View style={styles.tableContainer}>
                         <View 
                             key={item.tense.id + item.verb.id} 
                             style={[styles.table,  globalstyles.flexColumn,
@@ -29,9 +30,9 @@ export default function TableList({results} : {results: boolean}){
                             {/* Encouraging message */}
                             {
                                 results &&
-                                    <View style={[globalstyles.flexRow, {justifyContent: 'center'}]}>
+                                    <View style={[globalstyles.flexRow, {justifyContent: 'center', alignItems: 'center'}]}>
                                         {results && <Feather style={{textAlign: 'center'}} name={correct ? "check" : 'x'} size={35} color={correct ? Colors.success : Colors.error} />}
-                                        <Text style={{color: correct ? Colors.success : Colors.error}}>
+                                        <Text style={[{color: correct ? Colors.success : Colors.error}]}>
                                             {correct
                                                 ? "Well done!"
                                                 : "Some answers weren’t quite right. Please try again tomorrow. You’ll get it!"
@@ -44,7 +45,7 @@ export default function TableList({results} : {results: boolean}){
                             <Text style={[globalstyles.text, styles.uppercase, {color: Colors.textSecondary}]}>{item.tense.name} - {item.verb.name}</Text>
 
                             {/* Conjugation lines */}
-                            <View>
+                            <View style={{width:'100%'}}>
                                 {
                                     item.conjugationList?.map((conjugation: Conjugation, index: any) => 
                                         // Conjugation line
@@ -71,6 +72,7 @@ export default function TableList({results} : {results: boolean}){
                             </View>
 
                         </View>
+                    </View>
                 )
             }}
         >
@@ -79,9 +81,15 @@ export default function TableList({results} : {results: boolean}){
 }
 
 const styles = StyleSheet.create({
+    tableContainer: {
+        alignItems: 'center'
+    },
     table: {
         padding: 20,
-        borderRadius: 10
+        borderRadius: 10,
+        alignItems: 'center',
+        maxWidth: 430,
+        width: '100%'
     },
     tableNormal: {
         backgroundColor: Colors.secondary

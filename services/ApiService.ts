@@ -1,17 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Verb } from '@/types/Verb';
 import { Batch } from '@/types/Batch';
 import AppSecureStore from '@/state/SecureStore';
 import { jwtDecode } from 'jwt-decode';
-import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import CustomError from '@/utils/CustomError';
-import { getDispatchRef } from '@/utils/DispatchRef';
 import { handleFail, handleSuccess } from '@/utils/Messages';
-import { store } from '@/state/store';
-import { Conjugation } from '@/types/Conjugation';
-import { Table } from '@/types/Table';
-import { useState } from 'react';
 
 // Axios configuration
 const local = '192.168.1.181:8080'
