@@ -133,6 +133,7 @@ export default function AppNavigator() {
   
   return (
    <>
+      <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
       <View style={{flex: 1}}>
           {
             isAuthenticated ? (

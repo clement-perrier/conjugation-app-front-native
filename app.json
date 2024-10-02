@@ -26,11 +26,14 @@
       }
     },
     "android": {
-      "versionCode": 1,
+      "versionCode": 3,
       "bundleIdentifier": "com.clement.conjugationapp",
       "permissions": [
         "CAMERA_ROLL",
         "READ_EXTERNAL_STORAGE"
+      ],
+      "removePermissions": [
+        "com.google.android.gms.permission.AD_ID"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
