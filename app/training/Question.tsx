@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button, Animated } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Animated, Keyboard } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
@@ -14,11 +14,7 @@ import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import BottomButton from '@/components/buttons/BottomButton';
 import Colors from '@/constants/Colors';
 import { globalstyles } from '@/utils/GlobalStyle';
-import Styles from '@/constants/Styles';
 import * as Progress from 'react-native-progress';
-import {ProgressBar} from 'react-native-multicolor-progress-bar';
-import { globalAgent } from 'https';
-import { current } from '@reduxjs/toolkit';
 import Spinner from '@/components/layout/Spinner';
 
 export default function Question() {
@@ -37,6 +33,8 @@ export default function Question() {
   const [answer, setanswer] = useState('')
   const [answerStatus, setAnswerStatus] = useState<String | null>(null)
   const [count, setCount] = useState(0)
+  const [inputEditable, setInputEditable] = useState(true)
+  const [shouldFocus, setShouldFocus] = useState(false);
 
   // Refs
   const slideAnimation = useRef(new Animated.Value(0)).current;
@@ -93,14 +91,24 @@ export default function Question() {
   }, [])
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (answerStatus === null) {
+      setShouldFocus(true); // Trigger focus
+    } else {
+      setShouldFocus(false); // Reset when answer is checked
     }
-  }, [currentConjugationIndex])
+  }, [currentConjugationIndex, answerStatus]);
+
+  useEffect(() => {
+    if (shouldFocus && inputRef.current) {
+      inputRef.current.focus();
+      // Keyboard.show();
+    }
+  }, [shouldFocus]);
 
   // Handlers
   const handleCheck = () => {
     let correct: boolean | null = null
+    setInputEditable(false)
     if(answer.toLowerCase().replace(/\s+$/, '') === currentConjugation.name) {
       setAnswerStatus('correct')
       setConjugationList(
@@ -143,6 +151,8 @@ export default function Question() {
     // setTimeout(() => {
       if (currentConjugationIndex < conjugationList.length - 1){
         setCurrentConjugationIndex(currentConjugationIndex + 1) 
+        setInputEditable(true)
+
         setanswer('')
         setAnswerStatus(null);
       } 
@@ -156,6 +166,8 @@ export default function Question() {
         // }, 1000)
       }
     // }, 100);
+
+    
     
   }
 
@@ -272,10 +284,11 @@ export default function Question() {
               <Text style={[globalstyles.text, {textTransform: 'uppercase'}]}>{currentConjugation.pronoun.name}</Text>
               <TextInput
                 ref={inputRef}
-                autoFocus
+                // autoFocus={answerStatus === null}
                 style={[globalstyles.input, { height: 60, fontSize: 20, textAlign: 'center'}]}
                 onChangeText={setanswer}
                 value={answer}
+                editable={shouldFocus}
               />
             </View>
 
