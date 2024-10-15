@@ -6,7 +6,9 @@ import Constants from 'expo-constants';
 import { Linking, Platform } from 'react-native';
 import { User } from '@/types/User';
 import { UpdateUserDeviceToken } from './ApiService';
-
+import { Alert } from 'react-native';
+import { NOTIFICATION_PERMISSION_ASKED } from '@/constants/Configuration';
+import AppSecureStore from '@/state/SecureStore';
 
 async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -34,11 +36,7 @@ async function requestUserPermission() {
 
 export async function updateDeviceToken (userId: number){
 
-  const initialUrl =  await Linking.getInitialURL();
-
-  if(Platform.OS !== 'web' && !initialUrl?.includes('exp://')) {
-
-    firebase.messaging().getToken()
+  messaging().getToken()
     .then(function(currentToken) {
         if (currentToken) {
             console.log('FCM registration token: ', currentToken);
@@ -55,6 +53,45 @@ export async function updateDeviceToken (userId: number){
         return null
     });
 
+}
+
+// Function to check and request notification permissions
+export async function requestNotificationPermission(userId: number) {
+
+  const initialUrl =  await Linking.getInitialURL();
+
+  if (Platform.OS !== 'web' && !initialUrl?.includes('exp://')) {
+
+    const alreadyAsked = await AppSecureStore.GetItemAsync(NOTIFICATION_PERMISSION_ASKED);
+
+    if (alreadyAsked === 'true') {
+      console.log('User has already been asked for notification permission. Skipping...');
+      Alert.alert('User has already been asked for notification permission. Skipping...');
+      return;
+    }
+
+    try {
+
+      const authStatus = await messaging().requestPermission();
+      
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+      if (enabled) {
+        console.log('Notification permission granted');
+        updateDeviceToken(userId);
+      } else {
+        console.log('Notification permission denied');
+        Alert.alert('Permission denied', 'Please enable notifications in settings.');
+      }
+      
+    } catch (error) {
+      console.log('Error requesting notification permission: ', error);
+    }
+
   }
 
 }
+
+

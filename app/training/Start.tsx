@@ -14,14 +14,13 @@ export default function Start() {
 
   const navigation = useAppNavigation()
 
-  const dispatch = useAppDispatch()
-
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value)
 
   // States
 
   // Derived data
+  const isDueToday: boolean = new Date(selectedBatch.reviewingDate) <= new Date()
 
   // Effects
 
@@ -34,10 +33,11 @@ export default function Start() {
   const buttons: LayoutButton[] = [
     {
       label: 'START',
-      disabled: new Date(selectedBatch.reviewingDate) > new Date(),
+      disabled: !isDueToday,
       onPress: () => {
         navigation.navigate('Question')
-      }
+      },
+      topMessage: !isDueToday ? 'This set is not due today' : ''
     }
   ]
 

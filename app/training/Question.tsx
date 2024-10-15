@@ -280,12 +280,12 @@ export default function Question() {
             <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
 
             {/*  Input */}
-            <View style={[globalstyles.flexColumn, {flex: 1, justifyContent: 'center'}]}>
-              <Text style={[globalstyles.text, {textTransform: 'uppercase'}]}>{currentConjugation.pronoun.name}</Text>
+            <View style={[globalstyles.flexRow, {flex: 1, justifyContent: 'center'}]}>
+              <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
               <TextInput
                 ref={inputRef}
                 // autoFocus={answerStatus === null}
-                style={[globalstyles.input, { height: 60, fontSize: 20, textAlign: 'center'}]}
+                style={[globalstyles.input, { height: 60, fontSize: 20}]}
                 onChangeText={setanswer}
                 value={answer}
                 editable={shouldFocus}

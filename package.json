@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -47,7 +47,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-multi-progress": "^1.3.0",
-    "react-native": "^0.74.5",
+    "react-native": "0.74.5",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-immersive": "^2.0.0",
     "react-native-multicolor-progress-bar": "^2.0.0",

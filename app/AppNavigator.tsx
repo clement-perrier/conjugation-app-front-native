@@ -28,7 +28,7 @@ import Spinner from "@/components/layout/Spinner";
 import PasswordResetRequest from "./authentication/PasswordResetRequest";
 import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-community/netinfo";
 import { CustomAlert } from "@/utils/CustomAlert";
-import { updateDeviceToken } from "@/services/NotificationService";
+import { requestNotificationPermission, updateDeviceToken } from "@/services/NotificationService";
 import Offline from "./Offline";
 
 const Stack = createNativeStackNavigator();
@@ -116,7 +116,7 @@ export default function AppNavigator() {
   useEffect(() => {
 
     // Update device token and listening to firebase push notification
-    user && updateDeviceToken(user.id)
+    user && requestNotificationPermission(user.id)
 
     if (user?.defaultLearningLanguage === null) {
       dispatch(updateIsOnBoarding(true));

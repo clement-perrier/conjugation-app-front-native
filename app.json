@@ -6,10 +6,14 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "conjugationapp",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -29,8 +33,9 @@
       "versionCode": 3,
       "bundleIdentifier": "com.clement.conjugationapp",
       "permissions": [
-        "CAMERA_ROLL",
-        "READ_EXTERNAL_STORAGE"
+        "android.permission.CAMERA_ROLL",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
       ],
       "removePermissions": [
         "com.google.android.gms.permission.AD_ID"
@@ -38,8 +43,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
-      }
-      ,
+      },
       "intentFilters": [
         {
           "action": "VIEW",
@@ -54,7 +58,8 @@
             "DEFAULT"
           ]
         }
-      ]
+      ],
+      "package": "com.clement.conjugationapp"
     },
     "web": {
       "bundler": "metro",

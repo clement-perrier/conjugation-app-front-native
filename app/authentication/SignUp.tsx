@@ -26,9 +26,10 @@ export default function SignUp() {
   // Handlers
   const handleSignup = async (email: string, password: string) => {
     setIsLoading(true)
-    const registeredUser = await AuthSignup({email, password})
+    const emailTrimmed = email.trim()
+    const registeredUser = await AuthSignup({email: emailTrimmed, password})
     if(registeredUser){
-      Login(dispatch, email, password, true)
+      Login(dispatch, emailTrimmed, password, true)
     } else {
       setIsLoading(false)
       // handleFail('Sign up failed', 'Something went wrong') 

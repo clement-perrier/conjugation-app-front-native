@@ -18,16 +18,19 @@ export default function MainLayout({children, buttons, title} : {children: React
 
             <View style={[styles.buttonsContainer]}>
                 {buttons?.map((button, index) => 
-                    <BottomButton 
-                        key={index}
-                        label={button.label}
-                        onPress={button.onPress}
-                        icon={button.icon}
-                        iconSize={button.iconSize}
-                        color={button.color}
-                        disabled={button.disabled}
-                        iconOnly={button.iconOnly}
-                    />
+                    <View key={index} style={globalstyles.flexColumn}>
+                        { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
+                        <BottomButton 
+                            key={index}
+                            label={button.label}
+                            onPress={button.onPress}
+                            icon={button.icon}
+                            iconSize={button.iconSize}
+                            color={button.color}
+                            disabled={button.disabled}
+                            iconOnly={button.iconOnly}
+                        />
+                    </View>
                 )}
             </View>
 

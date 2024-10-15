@@ -6,11 +6,12 @@ import { useState } from 'react';
 interface PasswordInputProps {
   placeholder: string,
   password: string,
-  handlePassword: React.Dispatch<React.SetStateAction<string>>,
-  disable?: boolean
+  handlePassword: (React.Dispatch<React.SetStateAction<string>>),
+  disable?: boolean,
+  onBlur?: () => void
 }
 
-export default function PasswordInput({placeholder, password, handlePassword, disable} : PasswordInputProps) {
+export default function PasswordInput({placeholder, password, handlePassword, disable, onBlur} : PasswordInputProps) {
 
   // States
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -24,6 +25,7 @@ export default function PasswordInput({placeholder, password, handlePassword, di
         secureTextEntry={!isPasswordVisible}
         style={globalstyles.input}
         editable={!disable}
+        onBlur={onBlur}
       />
       <IconButton 
         onPress={() => setIsPasswordVisible(!isPasswordVisible)} 

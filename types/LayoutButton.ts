@@ -8,5 +8,6 @@ export type LayoutButton = {
     color?: string
     disabled?: boolean
     iconOnly?: boolean
-    focus?: boolean
+    focus?: boolean,
+    topMessage?: string | null
 }

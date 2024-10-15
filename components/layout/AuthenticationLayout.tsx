@@ -3,7 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { useAppDispatch } from '@/state/hooks';
 import { StyleSheet, TextInput, View, Text, ActivityIndicator } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomButton from '../buttons/BottomButton';
 import IconButton from '../buttons/IconButton';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -23,12 +23,24 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
   // States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
+  const [passwordsEqual, setPasswordsEqual] = useState(true);
 
   // Handlers
-  const handleBlur = () => {
+  const handleBlurEmail = () => {
     setIsEmailValid(validateEmail(email));
   };
+
+  // Functions
+  const arePasswordsEqual = () => {
+    return password === passwordConfirmation
+  }
+
+  // useEffect to validate passwords whenever they change
+  useEffect(() => {
+    setPasswordsEqual(arePasswordsEqual());
+  }, [password, passwordConfirmation]); // Depend on both password states
 
   if(isLoading){
     return <Spinner text={isLogin ? 'Logging in' : 'Signing up'}/>
@@ -44,7 +56,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
-        onBlur={handleBlur}
+        onBlur={handleBlurEmail}
         style={globalstyles.input}
       />
 
@@ -56,23 +68,37 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
         password={password}
         handlePassword={setPassword}
       />
+      {
+        !isLogin && 
+          <PasswordInput
+            placeholder={'Confirm password'}
+            password={passwordConfirmation}
+            handlePassword={setPasswordConfirmation}
+          />
+      }
+      {/* Display password mismatch message */}
+      {!passwordsEqual && password && passwordConfirmation && (
+        <Text style={globalstyles.invalidEmailText}>Passwords are different</Text>
+      )}
 
       {/* Forgot password */}
       {
         isLogin && 
-          <Text 
-            onPress={() => navigation.navigate('Reset password request')} 
-            style={[styles.forgotPassword]}
-          >
-            Forgot your password?
-          </Text>
+          <View style={styles.forgotPasswordContainer}>
+            <Text 
+              onPress={() => navigation.navigate('Reset password request')} 
+              style={styles.forgotPassword}
+            >
+              Forgot your password?
+            </Text>
+          </View>
       }
 
       {/* Main button */}
       <BottomButton 
         label={isLogin ? 'Login' : 'Signup'}
         onPress={() => onPrimaryPress(email, password)} 
-        disabled={password.length < 6 || !validateEmail(email)}
+        disabled={password.length < 6 || !validateEmail(email) || (!isLogin && !arePasswordsEqual())}
       />
 
       {/* Bottom Text */}
@@ -93,12 +119,16 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
 const styles = StyleSheet.create({
   bottomText: {
     fontWeight: 'bold',
+    marginLeft: -4
     // marginLeft: 1
   },
+  forgotPasswordContainer: {
+    alignSelf: 'flex-end',
+    marginTop: -20,
+    marginRight: -10
+  },
   forgotPassword: {
-    marginBottom: 10,
-    marginTop: -10,
-    textAlign: 'right',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    padding: 10
   }
 });
