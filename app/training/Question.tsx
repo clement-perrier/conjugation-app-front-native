@@ -108,6 +108,7 @@ export default function Question() {
   // Handlers
   const handleCheck = () => {
     let correct: boolean | null = null
+    let userAnswer: string | null = null
     setInputEditable(false)
     if(answer.toLowerCase().replace(/\s+$/, '') === currentConjugation.name) {
       setAnswerStatus('correct')
@@ -126,6 +127,7 @@ export default function Question() {
       correct = true
     } else {
       setAnswerStatus('incorrect')
+      userAnswer = answer
       setConjugationList(
         conjugationList.map(conjugation => {
           if(conjugation.id === currentConjugation.id){
@@ -141,7 +143,9 @@ export default function Question() {
       correct = false
     }
     console.log(conjugationList)
-    dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
+    userAnswer 
+      ? dispatch(updateWithResult({id: currentConjugation.id, correct: correct, userAnswer}))
+      : dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
     setCount(count + 1)
     slideIn()
   }

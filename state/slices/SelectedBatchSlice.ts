@@ -26,15 +26,15 @@ export const SelectedBatchSlice = createSlice({
     updateSelectedBatch: (state, action: PayloadAction<Batch>) => {
       state.value = action.payload
     },
-    updateWithResult: (state, action: PayloadAction<{id: number, correct: boolean}>) => {
-      const {id, correct} = action.payload
+    updateWithResult: (state, action: PayloadAction<{id: number, correct: boolean, userAnswer?: string}>) => {
+      const {id, correct, userAnswer} = action.payload
       if (state.value) {
         state.value = {
             ...state.value,
             tableList: state.value.tableList.map(tableItem => ({
                 ...tableItem,
                 conjugationList: tableItem.conjugationList?.map(conjugationItem =>
-                    conjugationItem.id === id ? { ...conjugationItem, correct } : conjugationItem
+                    conjugationItem.id === id ? { ...conjugationItem, correct, userAnswer } : conjugationItem
                 )
             }))
         };

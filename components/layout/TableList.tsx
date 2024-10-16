@@ -58,11 +58,16 @@ export default function TableList({results} : {results: boolean}){
                                                 // results ? (conjugation.correct ? styles.conjugationCorrect : styles.conjugationIncorrect) : styles.conjugationNormal
                                             ]}
                                         >
+                                            {/* Correct answer */}
                                             <Text 
                                                 key={conjugation.id}
                                                 style={{color: results ? (conjugation.correct ? Colors.success : Colors.error) : Colors.textSecondary}}
                                             >
-                                                {conjugation.pronoun.name + ' ' + conjugation.name}
+                                                {conjugation.pronoun.name}
+                                                <Text style={{fontWeight: '500'}}> {conjugation.name}  </Text>
+                                                {/* User answer when user is wrong */}
+                                                {/* textDecorationLine: 'line-through' */}
+                                                {results && !conjugation.correct && <Text style={{textDecorationLine: 'line-through'}}>{conjugation.userAnswer}</Text>}
                                             </Text>
                                             {results && <Feather  name={conjugation.correct ? "check" : 'x'} size={15} color={conjugation.correct ? Colors.success : Colors.error} style={{marginTop: 4}}/>}
                                         </View>

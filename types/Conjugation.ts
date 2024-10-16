@@ -6,5 +6,6 @@ export interface Conjugation {
     pronoun: Pronoun
     verbName: string
     tenseName: string
-    correct: boolean
+    correct: boolean,
+    userAnswer: string | undefined
 }
