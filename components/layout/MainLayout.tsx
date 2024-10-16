@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { LayoutButton } from '@/types/LayoutButton';
 import BottomButton from '../buttons/BottomButton';
 import { globalstyles } from '@/utils/GlobalStyle';
+import Styles from '@/constants/Styles';
 
 
 export default function MainLayout({children, buttons, title} : {children: ReactElement, buttons?: LayoutButton[], title?: string}){
@@ -10,7 +11,7 @@ export default function MainLayout({children, buttons, title} : {children: React
     return (
         <View style={[globalstyles.container]}>
 
-            <Text style={globalstyles.title}>{title}</Text>
+            { title && <Text style={globalstyles.title}>{title}</Text> }
 
             <View style={styles.content}>
                {children}
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
         display: 'flex', 
         rowGap: 15,
         justifyContent: 'center',
-        paddingTop: 10,
+        paddingTop: Styles.mainPadding,
         width: '100%'
     }
   });

@@ -15,6 +15,7 @@ import TextIconButton from '@/components/buttons/TextIconButton';
 import Colors  from '@/constants/Colors';
 import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 import { CustomAlert } from '@/utils/CustomAlert';
+import Styles from '@/constants/Styles';
 
 export default function VerbSelection() {
 
@@ -108,7 +109,7 @@ export default function VerbSelection() {
         {/* { selectedTense && <Text style={globalstyles.title}>{selectedTense.name}</Text> } */}
 
         {/* SEARCH INPUT */}
-        <View>
+        <View style={styles.inputContainer}>
 
           <IconButton style={styles.searchButton} size={25} icon={'search'}/>
           
@@ -130,34 +131,37 @@ export default function VerbSelection() {
 
         <View style={{flex: 1}}>
 
-          {/* SELECTED VERB LIST */}  
-          <View style={{width: '100%', height: 'auto'}}>
-            <CustomFlatList
-              data={selectedVerbList}
-              isLoading={false}
-              // emptyMessage=''
-              // key={numColumns}
-              renderItem={({item}) => 
-                <View style={{position: 'relative'}}>
-                  <TextIconButton 
-                    label={item.name} 
-                    color={Colors.textSecondary} 
-                    onPress={() => removeSelectedVerb(item)} 
-                    iconSize={20} 
-                    style={{ borderRadius: 10 }} 
-                    icon={'remove'}/>
-                </View>
-              }
-              numColumns={numColumns}
-              itemSeparatorHeight={10}
-              columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-              style={{height: 'auto'}}
-            >
-            </CustomFlatList>
-          </View>
+        {/* SELECTED VERB LIST */}
+         { 
+          selectedVerbList.length > 0 &&
+            <View style={{width: '100%', height: 'auto', paddingBottom: Styles.mainPadding}}>
+              <CustomFlatList
+                data={selectedVerbList}
+                isLoading={false}
+                // emptyMessage=''
+                // key={numColumns}
+                renderItem={({item}) => 
+                  <View style={{position: 'relative'}}>
+                    <TextIconButton 
+                      label={item.name} 
+                      color={Colors.textSecondary} 
+                      onPress={() => removeSelectedVerb(item)} 
+                      iconSize={20} 
+                      style={{ borderRadius: 10 }} 
+                      icon={'remove'}/>
+                  </View>
+                }
+                numColumns={numColumns}
+                itemSeparatorHeight={10}
+                columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+                style={{height: 'auto'}}
+              >
+              </CustomFlatList>
+            </View>
+          }
 
           {/* VERB LIST */}
-          <View style={{flex: 1, marginBottom: 10}}>
+          <View style={{flex: 1}}>
             <CustomFlatList
               data={filteredVerbList}
               isLoading={verbListLoading}
@@ -205,13 +209,16 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 1
   },
+  inputContainer: {
+    paddingBottom: Styles.mainPadding
+  },
   input: {
     // height: 40,
     // margin: 12,
     borderWidth: 1,
     paddingVertical: 10,
     paddingLeft: 40,
-    paddingRight: 100
+    paddingRight: 100,
   },
   searchButton: {
     position: 'absolute',

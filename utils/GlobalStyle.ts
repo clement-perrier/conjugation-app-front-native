@@ -19,12 +19,12 @@ export const globalstyles = StyleSheet.create({
     flatListContent: {
         flexGrow: 1,
         justifyContent: 'center',
-        paddingVertical: 10
+        // paddingVertical: 10
     },
     title: {
         fontWeight: 'bold',
         fontSize: 20,
-        marginTop: 20,
+        marginTop: 5,
         marginBottom: 20,
         textAlign: 'center',
         color: Colors.textPrimary,

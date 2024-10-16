@@ -6,6 +6,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import AppNavigator from "./AppNavigator";
 import Toast from 'react-native-toast-message';
 import { globalstyles } from "@/utils/GlobalStyle";
+import Styles from "@/constants/Styles";
 
 export default function Index() {
   
@@ -16,7 +17,7 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-          <View style={[{flex: 1, padding: 15}, globalstyles.backgroundColor]}>
+          <View style={[{flex: 1, padding: Styles.mainPadding}, globalstyles.backgroundColor]}>
             {/* <StatusBar barStyle="dark-content" translucent backgroundColor={'white'} /> */}
             <AppNavigator/>
             <Toast/>

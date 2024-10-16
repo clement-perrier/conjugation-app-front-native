@@ -20,6 +20,7 @@ import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import Styles from '@/constants/Styles';
 
 export default function Home() {
 
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
   header: {
     justifyContent: 'space-between',
     height: 'auto',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingBottom: Styles.mainPadding
   }
 });

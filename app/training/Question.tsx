@@ -42,7 +42,7 @@ export default function Question() {
 
   //  Derived data
   const currentConjugation: Conjugation = conjugationList[currentConjugationIndex] ?? null
-  const progress = count / conjugationList.length
+  // const progress = count / conjugationList.length
 
   // Functions
   // Method shuffling the conjugation array randomly
@@ -142,7 +142,7 @@ export default function Question() {
     )
       correct = false
     }
-    console.log(conjugationList)
+    console.log(conjugationList);
     userAnswer 
       ? dispatch(updateWithResult({id: currentConjugation.id, correct: correct, userAnswer}))
       : dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
@@ -284,12 +284,12 @@ export default function Question() {
             <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
 
             {/*  Input */}
-            <View style={[globalstyles.flexRow, {flex: 1, justifyContent: 'center'}]}>
+            <View style={[globalstyles.flexRow, {flex: 1}]}>
               <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
               <TextInput
                 ref={inputRef}
                 // autoFocus={answerStatus === null}
-                style={[globalstyles.input, { height: 60, fontSize: 20}]}
+                style={[globalstyles.input, { height: 60, fontSize: 20, flex: 1}]}
                 onChangeText={setanswer}
                 value={answer}
                 editable={shouldFocus}
@@ -297,7 +297,7 @@ export default function Question() {
             </View>
 
             {/* Footer */}
-            <View style={{height: 150, justifyContent: 'flex-end'}}>
+            <View>
               {
                 // Answer checked
                 answerStatus ?
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent:'center',
-    height: '100%',
+    // height: '100%',
     borderRadius: 8
   },
   resultContent: {

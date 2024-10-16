@@ -30,6 +30,7 @@ import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-commu
 import { CustomAlert } from "@/utils/CustomAlert";
 import { requestNotificationPermission, updateDeviceToken } from "@/services/NotificationService";
 import Offline from "./Offline";
+import Styles from "@/constants/Styles";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -82,7 +83,7 @@ export default function AppNavigator() {
       transitionSpec: {
         open: config,
         close: config
-      },
+      }
     }
   }
 
@@ -91,19 +92,6 @@ export default function AppNavigator() {
 
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
 
-    // dispatch(updateIsAuthenticated(false))
-    // user && console.log('user', user)
-  /*   async function checkAuth() {
-      const token = await AppSecureStore.GetItemAsync('access_token');
-      // Token exist => user already connected
-      if (token) {
-        const userId = Number(await AppSecureStore.GetItemAsync('user_id'));
-        loadInitialData(dispatch, userId)
-      } else {
-        // dispatch(updateIsOnBoarding(true))
-        dispatch(updateIsAuthenticated(false))
-      }
-    } */
     //  Check if user already connected
     checkAuth(dispatch);  
 
@@ -296,5 +284,6 @@ const styles = StyleSheet.create({
     elevation: 0, // Remove elevation (for Android)
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 15
   }
 })
