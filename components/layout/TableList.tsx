@@ -30,9 +30,9 @@ export default function TableList({results} : {results: boolean}){
                             {/* Encouraging message */}
                             {
                                 results &&
-                                    <View style={[globalstyles.flexRow, {justifyContent: 'center', alignItems: 'center'}]}>
-                                        {results && <Feather style={{textAlign: 'center'}} name={correct ? "check" : 'x'} size={35} color={correct ? Colors.success : Colors.error} />}
-                                        <Text style={[{color: correct ? Colors.success : Colors.error}]}>
+                                    <View style={[globalstyles.flexRow]}>
+                                        {results && <Feather name={correct ? "check" : 'x'} size={35} color={correct ? Colors.success : Colors.error} />}
+                                        <Text style={[{color: correct ? Colors.success : Colors.error}, {flex: 1}]}>
                                             {correct
                                                 ? "Well done!"
                                                 : "Some answers weren’t quite right. Please try again tomorrow. You’ll get it!"

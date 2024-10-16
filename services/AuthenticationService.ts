@@ -9,7 +9,7 @@ export async function checkAuth(dispatch: any) {
   const userId = Number(await AppSecureStore.GetItemAsync('user_id'));
   // Token exist => user already connected
   if (token && userId) {
-    loadInitialData(dispatch, userId)
+    loadInitialData(dispatch, userId);
   } else {
     // dispatch(updateIsOnBoarding(true))
     dispatch(updateIsAuthenticated(false))
