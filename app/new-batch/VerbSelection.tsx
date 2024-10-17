@@ -105,9 +105,6 @@ export default function VerbSelection() {
 
       <>
 
-        {/* SELECTED TENSE */}
-        {/* { selectedTense && <Text style={globalstyles.title}>{selectedTense.name}</Text> } */}
-
         {/* SEARCH INPUT */}
         <View style={styles.inputContainer}>
 

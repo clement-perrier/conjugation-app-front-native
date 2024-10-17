@@ -2,6 +2,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import IconButton from '../buttons/IconButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useState } from 'react';
+import Styles from '@/constants/Styles';
 
 interface PasswordInputProps {
   placeholder: string,
@@ -32,7 +33,7 @@ export default function PasswordInput({placeholder, password, handlePassword, di
         icon={isPasswordVisible ? 'visibility-off' : 'visibility'} 
         size={18} 
         color="black"
-        style={{position: 'absolute', right: 10, top: '50%', transform: [{ translateY: -9 }],}}
+        style={styles.icon}
       />
     </View>
   );
@@ -41,5 +42,12 @@ export default function PasswordInput({placeholder, password, handlePassword, di
 const styles = StyleSheet.create({
   disable: {
     opacity: 0.3
+  },
+  icon: {
+    position: 'absolute',
+    right: 5,
+    padding: 10,
+    top: '50%', 
+    transform: [{ translateY: -19 }]
   }
 });
