@@ -50,6 +50,11 @@ export const globalstyles = StyleSheet.create({
         flexDirection: 'column',
         rowGap: 20
     },
+    flexEnd: {
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
     input: {
         padding: 10,
         borderWidth: 1,

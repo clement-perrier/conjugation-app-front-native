@@ -1,8 +1,8 @@
-import { View, Text, TextInput, StyleSheet, Animated, Keyboard } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Animated, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { updateWithResult } from '@/state/slices/SelectedBatchSlice';
 import { addBatch, updateBatchInfo } from '@/state/slices/BatchListSlice';
 import addDays from '@/utils/AddDays';
@@ -16,6 +16,8 @@ import Colors from '@/constants/Colors';
 import { globalstyles } from '@/utils/GlobalStyle';
 import * as Progress from 'react-native-progress';
 import Spinner from '@/components/layout/Spinner';
+import IconButton from '@/components/buttons/IconButton';
+import CustomTooltip from '@/components/CsutomTooltip';
 
 export default function Question() {
 
@@ -33,8 +35,8 @@ export default function Question() {
   const [answer, setanswer] = useState('')
   const [answerStatus, setAnswerStatus] = useState<String | null>(null)
   const [count, setCount] = useState(0)
-  const [inputEditable, setInputEditable] = useState(true)
   const [shouldFocus, setShouldFocus] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   // Refs
   const slideAnimation = useRef(new Animated.Value(0)).current;
@@ -109,7 +111,6 @@ export default function Question() {
   const handleCheck = () => {
     let correct: boolean | null = null
     let userAnswer: string | null = null
-    setInputEditable(false)
     if(answer.toLowerCase().replace(/\s+$/, '') === currentConjugation.name) {
       setAnswerStatus('correct')
       setConjugationList(
@@ -155,8 +156,6 @@ export default function Question() {
     // setTimeout(() => {
       if (currentConjugationIndex < conjugationList.length - 1){
         setCurrentConjugationIndex(currentConjugationIndex + 1) 
-        setInputEditable(true)
-
         setanswer('')
         setAnswerStatus(null);
       } 
@@ -284,18 +283,55 @@ export default function Question() {
             <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
 
             {/*  Input */}
-            <View style={[globalstyles.flexRow, {flex: 1}]}>
-              <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
-              <TextInput
-                ref={inputRef}
-                // autoFocus={answerStatus === null}
-                style={[globalstyles.input, { height: 60, fontSize: 20, flex: 1}]}
-                onChangeText={setanswer}
-                value={answer}
-                editable={shouldFocus}
-              />
-            </View>
+            <View style={{flex: 1, justifyContent: 'center'}}>
 
+              <View style={[globalstyles.flexRow]}>
+                <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
+                <TextInput
+                  ref={inputRef}
+                  // autoFocus={answerStatus === null}
+                  style={[globalstyles.input, { height: 60, fontSize: 20, flex: 1}]}
+                  onChangeText={setanswer}
+                  value={answer}
+                  editable={shouldFocus}
+                />
+              </View>
+
+              <View style={[styles.tooltipContainer, globalstyles.flexEnd]}>
+                {
+                  tooltipVisible &&
+                  <TouchableWithoutFeedback onPress={() => setTooltipVisible(false)}> 
+                    <View style={styles.tooltip}>
+                      <Text style={{color: Colors.textPrimary}}>Tip: Press and hold letters for accents.</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                }
+                <IconButton 
+                  icon={'info-outline'}      
+                  size={23}
+                  color={Colors.white}
+                  onPress={() => setTooltipVisible(!tooltipVisible)}
+                  style={{justifyContent: 'center', backgroundColor: Colors.primary, borderRadius: 20}}
+                />
+                {/* <CustomTooltip
+                  visible={tooltipVisible}
+                  setVisible={() => setTooltipVisible(false)}
+                /> */}
+              </View>
+
+              {/* <Tooltip
+                isVisible={tooltipVisible}
+                content={<Text style={globalstyles.text}>Tip: Press and hold letters for accents.</Text>}
+                placement="left"
+                onClose={() => setTooltipVisible(false)}
+                allowChildInteraction={true}
+                useInteractionManager={false}
+              >
+                
+              </Tooltip> */}
+
+            </View>
+            
             {/* Footer */}
             <View>
               {
@@ -324,13 +360,13 @@ export default function Question() {
                         }
                       </View> 
                       <View>
-                      <BottomButton
-                        label='continue' 
-                        onPress={handleContinue}
-                        color={answerStatus === 'correct' ? Colors.success : Colors.error }
-                      />
+                        <BottomButton
+                          label='continue' 
+                          onPress={handleContinue}
+                          color={answerStatus === 'correct' ? Colors.success : Colors.error }
+                        />
                       </View>
-                      </View>
+                    </View>
                   </Animated.View>
                 // Answer not checked yet
                 :
@@ -373,6 +409,21 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 10,
     paddingRight: 20
+  },
+  tooltipContainer: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    marginTop: 15
+  },
+  tooltip: {
+    position: 'absolute',
+    padding: 15,
+    right: 0,
+    top: 30,
+    backgroundColor: Colors.secondary,
+    borderWidth: 2,
+    borderColor: Colors.tertiary,
+    borderRadius: 10,
   },
   uppercase: {
     textTransform: 'uppercase'

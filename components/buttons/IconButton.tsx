@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Colors from '@/constants/Colors';
 import { useState } from 'react';
@@ -6,7 +6,7 @@ import { useState } from 'react';
 interface IconButtonProps {
     icon: keyof typeof MaterialIcons.glyphMap
     onPress?: () => void,
-    style?: ViewStyle | ViewStyle[],
+    style?: ViewStyle | ViewStyle[] | TextStyle,
     color?: string,
     size?: number
 }
