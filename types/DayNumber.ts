@@ -11,7 +11,7 @@ export enum DayNumber {
 }
 
 // Define an array that holds the intervals
-const dayNumberList = [
+export const dayNumberList = [
     DayNumber.ZERO,
     DayNumber.ONE,
     DayNumber.TWO,
