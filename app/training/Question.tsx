@@ -3,7 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
 import React, { useEffect, useState, useRef } from 'react';
-import { updateWithResult } from '@/state/slices/SelectedBatchSlice';
+import { updateSelectedBatch, updateWithResult } from '@/state/slices/SelectedBatchSlice';
 import { addBatch, updateBatchInfo } from '@/state/slices/BatchListSlice';
 import addDays from '@/utils/AddDays';
 import { hasCorrect, hasMistake } from '@/types/Table';
@@ -18,6 +18,7 @@ import * as Progress from 'react-native-progress';
 import Spinner from '@/components/layout/Spinner';
 import IconButton from '@/components/buttons/IconButton';
 import CustomTooltip from '@/components/CsutomTooltip';
+import { updateIsNewBatchAdded } from '@/state/slices/isNewBatchAdded';
 
 export default function Question() {
 
@@ -152,8 +153,8 @@ export default function Question() {
   }
 
   const handleContinue = () => {
-    // slideOut()
-    // setTimeout(() => {
+
+      // Training continue
       if (currentConjugationIndex < conjugationList.length - 1){
         setCurrentConjugationIndex(currentConjugationIndex + 1) 
         setanswer('')
@@ -161,40 +162,30 @@ export default function Question() {
       } 
       // Training is finished
       else {
-        // setCurrentConjugationIndex(currentConjugationIndex + 1) 
-        
-        // setTimeout(() => {
-          handleResults()
-          navigation.navigate('Results')
-        // }, 1000)
+        handleResults()
+        navigation.navigate('Results')
       }
-    // }, 100);
 
-    
-    
   }
 
   const handleResults = () => {
 
     const updatedBatch: Batch = {...selectedBatch}
-
-    const allCorrect = selectedBatch.tableList.every(table => 
-                          table.conjugationList?.every(conjugation => 
-                              conjugation.correct === true));
-                              
-    const allMistake = selectedBatch.tableList.every(table => 
-                          table.conjugationList?.some(conjugation => 
-                              conjugation.correct === false));
-
+    
+    const allCorrect = selectedBatch.tableList.every(table =>
+      table.conjugationList?.every(conjugation => 
+          conjugation.correct === true))
+          
+    const allMistake = selectedBatch.tableList.every(table => hasMistake(table))
+    
     if(allCorrect || allMistake){
 
       // All correct => next day number - All mistake => day number unchanged and reviewing date +1 day
       updatedBatch.dayNumber = allCorrect ? getNextDayNumber(selectedBatch.dayNumber) : selectedBatch.dayNumber
       updatedBatch.reviewingDate = addDays(allCorrect ? getIncrement(selectedBatch.dayNumber) : 1)  
 
-    } else {
-
       // Some table correct some table mistake
+    } else {
 
       // Filtering correct table(s)
       updatedBatch.tableList = selectedBatch.tableList.filter(table => !hasMistake(table))
@@ -220,6 +211,9 @@ export default function Question() {
   
         // Dispatch add new batch to BatchList
         dispatch(addBatch(newBatch))
+
+        // Dispatch info that a new batch has been added to BatchList (needed for results screen)
+        dispatch(updateIsNewBatchAdded(true))
   
         // Save new Batch to DB
         SaveBatch(newBatch)
@@ -230,6 +224,9 @@ export default function Question() {
 
     // Dispatch updated batch to batch list
     dispatch(updateBatchInfo(updatedBatch))
+
+    // Dispatch updated selectedBatch
+    dispatch(updateSelectedBatch(updatedBatch))
 
     // Update batch in DB
     UpdateBatch(updatedBatch)

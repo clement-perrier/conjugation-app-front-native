@@ -12,7 +12,7 @@ function getDaySuffix(day: number) {
   }
 }
 
-function formatDateAsLong(dateStr: string) {
+export function formatDateAsLong(dateStr: string) {
   const date = new Date(dateStr);
 
   if (isNaN(date.getTime())) {

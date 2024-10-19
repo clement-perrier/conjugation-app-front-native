@@ -1,10 +1,13 @@
+import CustomFlatList from "@/components/layout/CustomFlatList";
 import MainLayout from "@/components/layout/MainLayout";
-import TableList from "@/components/layout/TableList";
+import TableView from "@/components/table/TableView";
+import Colors from "@/constants/Colors";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppSelector } from "@/state/hooks";
 import { LayoutButton } from "@/types/LayoutButton";
 import { formatBatchTitle } from "@/utils/Date";
-import { useEffect } from "react";
+import { globalstyles } from "@/utils/GlobalStyle";
+import { StyleSheet, View } from "react-native";
 
 export default function BatchCreated() {
 
@@ -24,8 +27,26 @@ export default function BatchCreated() {
   return (
     <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
 
-        <TableList results={false}/>
+      <CustomFlatList
+          data={selectedBatch.tableList}
+          isLoading={false}
+          emptyMessage=""
+          renderItem={({item, index}) => {
+              return (
+                  <View style={[globalstyles.tableContainer, styles.tableContainer]}>
+                      <TableView table={item} isResult={false} key={index}/>
+                  </View>
+              )
+          }}
+      >
+      </CustomFlatList>
         
     </MainLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  tableContainer: {
+    backgroundColor: Colors.secondary
+  },
+})

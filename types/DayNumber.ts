@@ -34,6 +34,17 @@ export const getNextDayNumber = (currentDayNumber: DayNumber): DayNumber => {
         
 };
 
+// Function to get the previous day number on the current day number
+export const getPreviousDayNumber = (currentDayNumber: DayNumber): DayNumber => {
+
+    const currentIndex = dayNumberList.indexOf(currentDayNumber);
+
+    return currentIndex !== -1 && currentIndex < dayNumberList.length - 1
+        ? dayNumberList[currentIndex - 1]
+        : DayNumber.ONE; // Return DayNumber.ONE if not found
+        
+};
+
 export const getIncrement = (currentDayNumber: DayNumber): DayNumber => {
 
     const currentIndex = dayNumberList.indexOf(currentDayNumber);

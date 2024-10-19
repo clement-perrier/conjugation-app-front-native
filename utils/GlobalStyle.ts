@@ -1,4 +1,5 @@
 import Colors from '@/constants/Colors';
+import Styles from '@/constants/Styles';
 import { StyleSheet } from 'react-native';
 
 const headerButtonsSideGap = 11
@@ -38,6 +39,12 @@ export const globalstyles = StyleSheet.create({
         textAlign: 'center',
         color: Colors.textSecondary
     },
+    uppercase: {
+        textTransform: 'uppercase',
+    },
+    lowercase: {
+        textTransform: 'lowercase',
+    },
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
@@ -64,6 +71,12 @@ export const globalstyles = StyleSheet.create({
     invalidEmailText: {
       marginTop: -15,
       color: 'red'
+    },
+    tableContainer: {
+        width: '100%',
+        padding: Styles.mainPadding,
+        borderRadius: 10,
+        maxWidth: 430
     },
     headerButton: {
         // height: '100%',

@@ -55,12 +55,12 @@ export default function Start() {
   return (
     <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
       <>
-      <CustomProgressSteps currentStep={selectedBatch.dayNumber}/>
+        <CustomProgressSteps currentStep={selectedBatch.dayNumber}/>
 
         <CustomFlatList
           data={selectedBatch?.tableList}
           renderItem={({item}) => 
-              <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
+            <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
           }
         >
         </CustomFlatList>

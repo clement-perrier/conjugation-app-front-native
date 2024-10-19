@@ -1,14 +1,19 @@
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
-import { DayNumber, dayNumberList } from '@/types/DayNumber';
+import { dayNumberList, getNextDayNumber, getPreviousDayNumber } from '@/types/DayNumber';
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { screensEnabled } from 'react-native-screens';
 
-const CustomProgressSteps = ({currentStep} : {currentStep: number}) => {
+interface CustomProgressStepsProps {
+  currentStep: number, 
+  isResult?: boolean,
+  isCorrect?: boolean
+}
+
+const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgressStepsProps) => {
   
   // Data
-  const steps = dayNumberList;
+  const steps = [...dayNumberList];
   
   const circleSize = 29
 
@@ -29,42 +34,63 @@ const CustomProgressSteps = ({currentStep} : {currentStep: number}) => {
   return (
     <View style={styles.progressContainer}>
       {steps.map((step, index) => {
-        console.log(step, index)
+
         const isActive = step < currentStep;
         const isCurrent = step === currentStep
+        const isNext = step === getNextDayNumber(currentStep)
+        const isPrevious = step === getPreviousDayNumber(currentStep)
         const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
-        return (
-          <View key={index} style={styles.stepContainer}>
-            {/* Circle */}
-            <View
-              style={[
-                styles.circle,
-                {width: circleSize, height: circleSize, borderRadius: 8,},
-                isCurrent ? styles.currentCircle : (isActive ? styles.activeCircle : styles.inactiveCircle)
-              ]}
-            >
-              <Text 
-                style={[
-                  styles.circleText, 
-                  {fontSize: fontSize},
-                  isActive ? styles.activeCircleText : styles.circleText
-                ]}>
-                  D{step}
-                </Text>
-            </View>
 
-            {/* Line */}
-            {index !== steps.length - 1 && (
+        const isNotDisplayed = isResult && (
+                                !isCurrent ||
+                                 !(step === getNextDayNumber(currentStep)) || 
+                                 !(step === getPreviousDayNumber(currentStep))
+                                )
+
+        const isDisplayed = !isResult || (
+                              isResult && (
+                                isCurrent || isNext || isPrevious
+                              )
+                            )
+
+        return (
+          isDisplayed && 
+            <View key={index} style={styles.stepContainer}>
+              {/* Circle */}
               <View
                 style={[
-                  styles.line,
-                  isActive ? styles.activeLine : styles.inactiveLine,
-                  {width: lineWidth}
+                  styles.circle,
+                  {width: circleSize, height: circleSize, borderRadius: 8,},
+                  isCurrent ? ((!isResult || isCorrect) ? styles.currentCircle : styles.incorrectCircle) : (isActive ? styles.activeCircle : styles.inactiveCircle)
                 ]}
-              />
-            )}
-          </View>
-        );
+              >
+                <Text 
+                  style={[
+                    styles.circleText, 
+                    {fontSize: fontSize},
+                    isActive ? styles.activeCircleText : styles.circleText
+                  ]}>
+                    D{step}
+                  </Text>
+              </View>
+
+              {/* Line */}
+              {
+                (isResult ? !isNext : index !== steps.length - 1) && (
+                  <>
+                  <View
+                    style={[
+                      styles.line,
+                      isActive ? styles.activeLine : styles.inactiveLine,
+                      {width: lineWidth}
+                    ]}
+                  />
+                  <Text></Text>
+                  </>
+                )
+              }
+            </View>
+        )
       })}
     </View>
   );
@@ -74,9 +100,8 @@ const styles = StyleSheet.create({
   progressContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: Styles.mainPadding
-    // padding: 20,
+    justifyContent: 'center',
+    // marginVertical: Styles.mainPadding
   },
   stepContainer: {
     flexDirection: 'row',
@@ -84,9 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   circle: {
-    // width: circleWidth,
-    // height: circleWidth,
-    // borderRadius: 35,
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bold'
@@ -106,6 +128,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     borderWidth: 1,
     borderColor: Colors.tertiary
+  },
+  incorrectCircle: {
+    backgroundColor: Colors.secondary,
+    borderWidth: 2,
+    borderColor: Colors.error
   },
   circleText: {
     color: Colors.textPrimary,
