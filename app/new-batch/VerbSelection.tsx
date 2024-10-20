@@ -131,27 +131,24 @@ export default function VerbSelection() {
         {/* SELECTED VERB LIST */}
          { 
           selectedVerbList.length > 0 &&
-            <View style={{width: '100%', height: 'auto', paddingBottom: Styles.mainPadding}}>
+            <View style={[globalstyles.flexColumn, {marginBottom: Styles.mainPadding}]}>
               <CustomFlatList
                 data={selectedVerbList}
                 isLoading={false}
-                // emptyMessage=''
-                // key={numColumns}
                 renderItem={({item}) => 
-                  <View style={{position: 'relative'}}>
                     <TextIconButton 
                       label={item.name} 
                       color={Colors.textSecondary} 
+                      backgroundColor={Colors.tertiary}
                       onPress={() => removeSelectedVerb(item)} 
                       iconSize={20} 
-                      style={{ borderRadius: 10 }} 
+                      style={{ borderRadius: 10}} 
                       icon={'remove'}/>
-                  </View>
                 }
-                numColumns={numColumns}
-                itemSeparatorHeight={10}
-                columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
-                style={{height: 'auto'}}
+                // numColumns={numColumns}
+                itemSeparatorHeight={5}
+                // columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
+                // style={{height: 'auto'}}
               >
               </CustomFlatList>
             </View>

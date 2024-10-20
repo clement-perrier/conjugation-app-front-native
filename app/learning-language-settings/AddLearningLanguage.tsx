@@ -65,7 +65,7 @@ export default function AddLearningLanguage() {
                     navigation.navigate('Home')
                   )
               }}
-              icon='chevron-right'
+              // icon='chevron-right'
           />}
       >
 

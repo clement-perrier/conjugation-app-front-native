@@ -1,5 +1,6 @@
 import Colors from "@/constants/Colors";
 import { LayoutButton } from "@/types/LayoutButton";
+import { globalstyles } from "@/utils/GlobalStyle";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import { Text, Pressable, StyleSheet, View, Animated } from "react-native";
@@ -59,7 +60,7 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
                 ]}
             >
                 { focus && <View style={styles.circle}></View> }
-                <Text style={styles.text}>{label}</Text>
+                <Text style={[globalstyles.text, globalstyles.uppercase]}>{label}</Text>
                 <MaterialIcons name={icon} size={20} color={Colors.textSecondary} style={styles.icon} />
             </Pressable>
         // </Animated.View>
@@ -98,9 +99,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary,
         width: 9,
         height: 9
-    },
-    text: {
-        color: Colors.textSecondary,
     },
     icon: {
         position: 'absolute',

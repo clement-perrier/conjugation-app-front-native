@@ -1,8 +1,8 @@
-import { View, StyleSheet, Pressable, ActivityIndicator, Animated } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList, AuthLogout } from '@/services/ApiService';
+import React, { useEffect, useMemo, useState } from 'react';
+import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import MainLayout from '@/components/layout/MainLayout';
@@ -19,7 +19,6 @@ import { CustomAlert } from '@/utils/CustomAlert';
 import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
-import { MaterialIcons } from '@expo/vector-icons';
 import Styles from '@/constants/Styles';
 
 export default function Home() {
@@ -38,6 +37,7 @@ export default function Home() {
   // Derived data
   // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
+    console.log('batchList updated', batchList)
     return batchList.slice().sort((a, b) => 
       new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf() ||
       a.dayNumber - b.dayNumber
@@ -112,8 +112,8 @@ export default function Home() {
               data={sortedBatchList}
               isLoading={batchListLoading}
               emptyMessage="Create a repetition set to start learning"
-              itemSeparatorHeight={Styles.mainPadding}
-              renderItem={({ item, index }) => (
+              itemSeparatorHeight={15}
+              renderItem={({ item, index } : {item: Batch, index: number}) => (
                 <>
                   {/* Padding top */}
                   {index === 0 && <View style={{height: Styles.mainPadding}}></View>}
@@ -126,9 +126,21 @@ export default function Home() {
                       dispatch(updateSelectedBatch(item));
                       navigation.navigate('Start');
                     }}
-                    icon='chevron-right'
+                    // icon='chevron-right'
                     focus={new Date(item.reviewingDate) <= new Date()}
                   />
+
+                  <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
+                    {
+                      item.tableList.map((table, index) => 
+                        
+                        <Text style={[globalstyles.text, globalstyles.uppercase, {margin: 1, fontSize: 11, fontStyle: 'italic', padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8}]} key={index}>
+                            {table.verb.name} - {table.tense.name}
+                            {/* {index != item.tableList.length - 1 && ', '} */}
+                        </Text>
+                      )
+                    }
+                  </View>
 
                   {/* Padding bottom */}
                   {index === sortedBatchList.length - 1 && <View style={{height: Styles.mainPadding}}></View>}

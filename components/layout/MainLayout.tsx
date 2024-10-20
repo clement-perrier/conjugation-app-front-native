@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         display: 'flex', 
-        // rowGap: 15,
+        rowGap: 15,
         justifyContent: 'center',
         paddingTop: Styles.mainPadding,
         width: '100%'

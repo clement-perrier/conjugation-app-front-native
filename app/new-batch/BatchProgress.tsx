@@ -12,6 +12,7 @@ import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/Sele
 import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
+import { formatDateAsISO } from '@/utils/Date';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { handleSuccess } from '@/utils/Messages';
 import { useEffect, useState } from 'react';
@@ -30,6 +31,47 @@ export default function BatchProgress() {
   //  Derived data
   const isSetLimitReached = selectedTableList.length >= SET_NUMBER_LIMIT
 
+  // Handle functions
+  const handleCreateSet = async () => {
+    if (user){
+
+      const userLearningLanguage: UserLearningLanguage = {
+        userId: user.id, 
+        learningLanguageId: user.defaultLearningLanguage.id
+      }
+
+      // New batch object
+      const newBatch: Batch = {
+        dayNumber: 0,
+        reviewingDate: formatDateAsISO(new Date()),
+        tableList: selectedTableList,
+        userLearningLanguage
+      }
+
+      setLoading(true)
+
+      // Save new Batch in database
+      const savedBatch = await SaveBatch(newBatch)
+
+      if(savedBatch) {
+        // newBatch.id = batchList.length
+        dispatch(addBatch(savedBatch))
+        // Update selected batch with this one
+        dispatch(updateSelectedBatch(savedBatch))
+        handleSuccess('Set created')
+      }
+      
+      setLoading(false)
+
+    }
+
+    // Selection ended, clearing the selection
+    dispatch(clearSelectedTableList())
+
+    // Navigation to next page
+    navigation.navigate('Batch created')
+  }
+
   // States
   const [loading, setLoading] = useState(false)
 
@@ -47,45 +89,7 @@ export default function BatchProgress() {
     {
       label: 'CREATE SET',
       disabled: selectedTableList.length < 1,
-      onPress: async () => {
-
-        if (user){
-
-          const userLearningLanguage: UserLearningLanguage = {
-            userId: user.id, 
-            learningLanguageId: user.defaultLearningLanguage.id
-          }
-  
-          // New batch object
-          const newBatch: Batch = {
-            dayNumber: 0,
-            reviewingDate: new Date().toISOString(),
-            tableList: selectedTableList,
-            userLearningLanguage
-          }
-
-          setLoading(true)
-
-          // Save new Batch in database
-          const savedBatch = await SaveBatch(newBatch)
-
-          if(savedBatch) {
-            // newBatch.id = batchList.length
-            dispatch(addBatch(savedBatch))
-            // Update selected batch with this one
-            dispatch(updateSelectedBatch(savedBatch))
-            handleSuccess('Set created')
-          }
-          
-          setLoading(false)
-
-        }
-
-        // Selection ended, clearing the selection
-        dispatch(clearSelectedTableList())
-
-        // Navigation to next page
-        navigation.navigate('Batch created')},
+      onPress: handleCreateSet,
         
     }
   ]

@@ -56,7 +56,7 @@ export default function LearningLanguageList() {
                 user && UpdateUserDefaultLearningLanguage(user.id, item.id)
                 navigation.navigate('Home')
               }}
-              icon='chevron-right'
+              // icon='chevron-right'
             />
         }
       >

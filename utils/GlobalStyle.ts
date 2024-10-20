@@ -14,7 +14,7 @@ export const globalstyles = StyleSheet.create({
         backgroundColor: 'white',
     },
     flatList: {
-        height: 10,
+        // height: 10,
         width: '100%',
     },
     flatListContent: {
