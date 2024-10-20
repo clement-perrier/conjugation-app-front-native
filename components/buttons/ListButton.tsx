@@ -9,31 +9,30 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
     const borderColor = useRef(new Animated.Value(0)).current;
   
     useEffect(() => {
-        console.log(focus)
-        const shineAnimation = () => {
-          Animated.sequence([
-            Animated.timing(borderColor, {
-              toValue: 1, // Animate to a lighter color
-              duration: 500,
-              useNativeDriver: false, // Use false because color animation does not support native driver
-            }),
-            Animated.timing(borderColor, {
-              toValue: 0, // Animate back to the original color
-              duration: 500,
-              useNativeDriver: false,
-            }),
-          ]).start()
-        }
-        if(focus){
-            // Start the animation
-            shineAnimation();
+        // const shineAnimation = () => {
+        //   Animated.sequence([
+        //     Animated.timing(borderColor, {
+        //       toValue: 1, // Animate to a lighter color
+        //       duration: 500,
+        //       useNativeDriver: false, // Use false because color animation does not support native driver
+        //     }),
+        //     Animated.timing(borderColor, {
+        //       toValue: 0, // Animate back to the original color
+        //       duration: 500,
+        //       useNativeDriver: false,
+        //     }),
+        //   ]).start()
+        // }
+        // if(focus){
+        //     // Start the animation
+        //     shineAnimation();
                 
-            // Set up an interval to repeat the animation every 5 seconds
-            const intervalId = setInterval(shineAnimation, 3000);
+        //     // Set up an interval to repeat the animation every 5 seconds
+        //     const intervalId = setInterval(shineAnimation, 3000);
 
-            // Clean up the animation when the component is unmounted
-            return () => clearInterval(intervalId);
-        }
+        //     // Clean up the animation when the component is unmounted
+        //     return () => clearInterval(intervalId);
+        // }
         
       },[])
     
@@ -49,21 +48,21 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
       };
       
     return (
-        <Animated.View style={focus && [{borderWidth: 2, borderRadius: 13 }, animatedStyle]}>
+        // <Animated.View style={focus && [{borderWidth: 2, borderRadius: 13 }, animatedStyle]}>
             <Pressable
                 onPress={onPress}
                 disabled={disabled}
                 style={({ pressed }) => [
                     styles.button,
                     disabled && styles.disabled,
-                    focus && styles.focus,
                     { backgroundColor: pressed ? 'grey' : Colors.secondary }
                 ]}
             >
+                { focus && <View style={styles.circle}></View> }
                 <Text style={styles.text}>{label}</Text>
                 <MaterialIcons name={icon} size={20} color={Colors.textSecondary} style={styles.icon} />
             </Pressable>
-        </Animated.View>
+        // </Animated.View>
     )
 }
 
@@ -74,7 +73,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         display: 'flex',
         flexDirection: 'row',
-        borderRadius: 10,
+        borderRadius: 12,
+        // borderWidth: 1,
+        // borderColor: Colors.tertiary
         // borderWidth: 5
     },
     listButton: {
@@ -87,8 +88,16 @@ const styles = StyleSheet.create({
     },
     focus: {
         // shadowColor: '#FFC107',
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: Colors.primary
+    },
+    circle: {
+        position: 'absolute',
+        left: 35,
+        borderRadius: 20,
+        backgroundColor: Colors.primary,
+        width: 9,
+        height: 9
     },
     text: {
         color: Colors.textSecondary,

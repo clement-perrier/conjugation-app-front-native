@@ -36,10 +36,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   // Derived data
+  // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
-    return batchList.slice().sort((a, b) => new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf())
+    return batchList.slice().sort((a, b) => 
+      new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf() ||
+      a.dayNumber - b.dayNumber
+    ) 
+      
   }, [batchList])
 
+  // Effects
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
@@ -102,25 +108,33 @@ export default function Home() {
 
       {/* Batches list */}
       <MainLayout buttons={buttons}>
+          <CustomFlatList
+              data={sortedBatchList}
+              isLoading={batchListLoading}
+              emptyMessage="Create a repetition set to start learning"
+              itemSeparatorHeight={Styles.mainPadding}
+              renderItem={({ item, index }) => (
+                <>
+                  {/* Padding top */}
+                  {index === 0 && <View style={{height: Styles.mainPadding}}></View>}
 
-        <CustomFlatList
-            data={sortedBatchList}
-            isLoading={batchListLoading}
-            emptyMessage="Create a repetition set to start learning"
-            renderItem={({ item }) => (
-              <ListButton 
-                key={item.id}
-                label={formatBatchTitle(item)}
-                onPress={() => {
-                  dispatch(updateSelectedBatch(item));
-                  navigation.navigate('Start');
-                }}
-                icon='chevron-right'
-                focus={new Date(item.reviewingDate) <= new Date()}
-              />
-            )}
-            itemSeparatorHeight={20}
-          />
+                  {/* Button */}
+                  <ListButton 
+                    key={item.id}
+                    label={formatBatchTitle(item)}
+                    onPress={() => {
+                      dispatch(updateSelectedBatch(item));
+                      navigation.navigate('Start');
+                    }}
+                    icon='chevron-right'
+                    focus={new Date(item.reviewingDate) <= new Date()}
+                  />
+
+                  {/* Padding bottom */}
+                  {index === sortedBatchList.length - 1 && <View style={{height: Styles.mainPadding}}></View>}
+                </>
+              )}
+            />
         
       </MainLayout>
       

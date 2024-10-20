@@ -5,14 +5,13 @@ import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateIsNewBatchAdded } from '@/state/slices/isNewBatchAdded';
 import { Batch } from '@/types/Batch';
 import { hasMistake } from '@/types/Table';
-import { useEffect } from 'react';
 import { View, StyleSheet, Text} from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import Colors from '@/constants/Colors';
 import CustomProgressSteps from '@/components/CustomProgressSteps';
 import TableView from '@/components/table/TableView';
 import { MaterialIcons } from '@expo/vector-icons';
-import { formatDateAsISO, formatDateAsLong } from '@/utils/Date';
+import { formatDateAsLong } from '@/utils/Date';
 import { ScrollView } from 'react-native';
 import Styles from '@/constants/Styles';
 
