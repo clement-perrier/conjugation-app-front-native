@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Animated, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Animated } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { Conjugation } from '@/types/Conjugation';
@@ -6,7 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { updateSelectedBatch, updateWithResult } from '@/state/slices/SelectedBatchSlice';
 import { addBatch, updateBatchInfo } from '@/state/slices/BatchListSlice';
 import addDays from '@/utils/AddDays';
-import { hasCorrect, hasMistake } from '@/types/Table';
+import { hasMistake } from '@/types/Table';
 import { getIncrement, getNextDayNumber } from '@/types/DayNumber';
 import { Batch } from '@/types/Batch';
 import { SaveBatch, UpdateBatch } from '@/services/ApiService';
@@ -16,9 +16,9 @@ import Colors from '@/constants/Colors';
 import { globalstyles } from '@/utils/GlobalStyle';
 import * as Progress from 'react-native-progress';
 import Spinner from '@/components/layout/Spinner';
-import IconButton from '@/components/buttons/IconButton';
-import CustomTooltip from '@/components/CsutomTooltip';
+import CustomTooltip from '@/components/CustomTooltip';
 import { updateIsNewBatchAdded } from '@/state/slices/isNewBatchAdded';
+import InfoButton from '@/components/buttons/InfoButton';
 
 export default function Question() {
 
@@ -279,14 +279,13 @@ export default function Question() {
             {/*  Title */}
             <Text style={[globalstyles.title, {marginBottom: 0}]}><Text style={{color: Colors.primary}}>{currentConjugation.verbName}</Text> in {currentConjugation.tenseName}</Text>
 
-            {/*  Input */}
+            {/*  Input & Info button + Tooltip*/}
             <View style={{flex: 1, justifyContent: 'center'}}>
 
               <View style={[globalstyles.flexRow]}>
                 <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
                 <TextInput
                   ref={inputRef}
-                  // autoFocus={answerStatus === null}
                   style={[globalstyles.input, { height: 60, fontSize: 20, flex: 1}]}
                   onChangeText={setanswer}
                   value={answer}
@@ -294,39 +293,21 @@ export default function Question() {
                 />
               </View>
 
+              {/* Info button & tooltip */}
               <View style={[styles.tooltipContainer, globalstyles.flexEnd]}>
-                {
-                  tooltipVisible &&
-                  <TouchableWithoutFeedback onPress={() => setTooltipVisible(false)}> 
-                    <View style={styles.tooltip}>
-                      <Text style={{color: Colors.textPrimary}}>Tip: Press and hold letters for accents.</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                }
-                <IconButton 
-                  icon={'info-outline'}      
-                  size={23}
-                  color={Colors.white}
-                  onPress={() => setTooltipVisible(!tooltipVisible)}
-                  style={{justifyContent: 'center', backgroundColor: Colors.primary, borderRadius: 20}}
-                />
-                {/* <CustomTooltip
-                  visible={tooltipVisible}
+  
+                <InfoButton size={25} handlePress={() => setTooltipVisible(!tooltipVisible)}/>
+
+                <CustomTooltip 
+                  label={'Tip: Press and hold letters for accents. '}
+                  visible={tooltipVisible} 
                   setVisible={() => setTooltipVisible(false)}
-                /> */}
-              </View>
-
-              {/* <Tooltip
-                isVisible={tooltipVisible}
-                content={<Text style={globalstyles.text}>Tip: Press and hold letters for accents.</Text>}
-                placement="left"
-                onClose={() => setTooltipVisible(false)}
-                allowChildInteraction={true}
-                useInteractionManager={false}
-              >
+                  position={{ top: 0, right: 30, bottom: 0}}
+                  size={{}}
+                />
                 
-              </Tooltip> */}
-
+              </View>
+              
             </View>
             
             {/* Footer */}
@@ -408,9 +389,8 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   tooltipContainer: {
-    display: 'flex', 
-    flexDirection: 'row', 
-    marginTop: 15
+    // flexDirection: 'row', 
+    marginTop: 10
   },
   tooltip: {
     position: 'absolute',

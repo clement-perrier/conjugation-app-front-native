@@ -20,6 +20,7 @@ import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
+import { requestNotificationPermission } from '@/services/NotificationService';
 
 export default function Home() {
 
@@ -64,6 +65,12 @@ export default function Home() {
       // onPress: () => navigation.navigate('Tense(s) selection'),
       onPress: () => navigation.navigate('Tense(s) selection'),
       icon: 'add',
+      iconOnly: true
+    },
+    {
+      // onPress: () => navigation.navigate('Tense(s) selection'),
+      onPress: () => user && requestNotificationPermission(user.id),
+      icon: 'interests',
       iconOnly: true
     }
   ]

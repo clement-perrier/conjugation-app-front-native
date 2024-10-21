@@ -38,7 +38,7 @@ export async function updateDeviceToken (userId: number){
 
   messaging().getToken()
     .then(function(currentToken) {
-        if (currentToken) {
+        if (currentToken && userId) {
             console.log('FCM registration token: ', currentToken);
             // Update user device token
             UpdateUserDeviceToken(userId, currentToken)
@@ -56,7 +56,8 @@ export async function updateDeviceToken (userId: number){
 }
 
 // Function to check and request notification permissions
-export async function requestNotificationPermission(userId: number) {
+export async function requestNotificationPermission(userId: number | undefined) {
+
 
   const initialUrl =  await Linking.getInitialURL();
 
@@ -78,7 +79,7 @@ export async function requestNotificationPermission(userId: number) {
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
   
-      if (enabled) {
+      if (enabled && userId) {
         console.log('Notification permission granted');
         updateDeviceToken(userId);
       } else {
