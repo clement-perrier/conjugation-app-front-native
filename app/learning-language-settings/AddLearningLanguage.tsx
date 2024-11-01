@@ -1,15 +1,13 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
-import { globalstyles } from '@/utils/GlobalStyle';
+import { StyleSheet } from 'react-native';
 import ListButton from '@/components/buttons/ListButton';
 import { LearningLanguage } from '@/types/LearningLanguage';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { addLearningLanguage, updateDefaultLearningLanguage } from '@/state/slices/UserSlice';
 import { UpdateUserDefaultLearningLanguage, UpdateUserLearningLanguageList } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
-import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 
 export default function AddLearningLanguage() {
 
@@ -29,14 +27,6 @@ export default function AddLearningLanguage() {
       navigation.navigate('Home');
     }
   }, [isOnBoarding, user?.defaultLearningLanguage]);
-
-  useEffect(() => {
-    console.log(user)
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(isOnBoarding, 'on boarding update')
-  // }, [isOnBoarding]);
 
   return (
     <MainLayout title='Available languages'>

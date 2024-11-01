@@ -29,8 +29,6 @@ export default function Results() {
 
   // Derived data
 
-  // const updatedBatchIsCorrect = updatedBatch.tableList[0].correct
-
   // Functions
   const getLastBatchAdded = () : Batch => {
     return batchList[batchList.length - 1]
@@ -85,18 +83,18 @@ function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
         {/* Encouraging message */}
         <View style={[globalstyles.flexRow]}>
             {
-                isCorrect ?
-                    <>
-                        <MaterialIcons name={'check'} size={35}  color={Colors.success}/>
-                        <Text style={{color: Colors.success, flex: 1}}>Well done! You've progressed to <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text></Text>
-                    </>
-                    :
-                    <>
-                        <MaterialIcons name={'loop'} size={35}  color={Colors.error}/>
-                        <Text style={{color: Colors.error, flex: 1}}>
-                            Some answers weren’t quite right. Repeat <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text> tomorrow. You’ll get it!
-                        </Text>
-                    </>
+              isCorrect ?
+                <>
+                    <MaterialIcons name={'check'} size={35}  color={Colors.success}/>
+                    <Text style={{color: Colors.success, flex: 1}}>Well done! You've progressed to <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text></Text>
+                </>
+                :
+                <>
+                    <MaterialIcons name={'loop'} size={35}  color={Colors.error}/>
+                    <Text style={{color: Colors.error, flex: 1}}>
+                        Some answers weren’t quite right. Repeat <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text> tomorrow. You’ll get it!
+                    </Text>
+                </>
             }
         </View>
 

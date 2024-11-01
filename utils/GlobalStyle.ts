@@ -62,6 +62,11 @@ export const globalstyles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-end'
     },
+    flexStart: {
+        display: 'flex',
+        // alignItems: 'flex-start',
+        justifyContent: 'flex-start'
+    },
     input: {
         padding: 10,
         borderWidth: 1,

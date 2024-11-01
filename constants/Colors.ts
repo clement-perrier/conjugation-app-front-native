@@ -1,6 +1,7 @@
 export default {
   primary: '#1ABC9C', // Bright teal
   secondary: '#B0BEC5', // Medium gray
+  secondaryT: 'rgba(176, 190, 197, 0.5)',
   tertiary: '#dee6eb',
   primaryShiny: '#1fe7c0',
   accent: '#34495E',   // Navy blue

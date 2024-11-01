@@ -27,7 +27,7 @@ export const store = configureStore({
     BatchList: BatchListSlice.reducer,
     IsOnBoarding: IsOnBoardingSlice.reducer,
     IsAuthenticated: IsAuthenticated.reducer,
-    IsNewBatchAdded: IsNewBatchAdded.reducer
+    IsNewBatchAdded: IsNewBatchAdded.reducer,
   }
 })
 

@@ -16,16 +16,16 @@ import { formatDateAsISO } from '@/utils/Date';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { handleSuccess } from '@/utils/Messages';
 import { useEffect, useState } from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, BackHandler } from 'react-native';
 
 export default function BatchProgress() {
 
   const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
 
   // Selectors
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
-  const batchList = useAppSelector(state => state.BatchList.value)
   const user = useAppSelector(state => state.User.value)
 
   //  Derived data
@@ -75,22 +75,29 @@ export default function BatchProgress() {
   // States
   const [loading, setLoading] = useState(false)
 
+  // Effects
   useEffect(() => {
-    console.log(selectedTableList)
-  },[selectedTableList])
+    
+    return () => backHandler.remove()
+  }, [])
 
   // Buttons
   const buttons: LayoutButton[] = [
     {
       label: 'ADD MORE',
-      onPress: () => navigation.push('Tense(s) selection'),
+      onPress: () => {
+        backHandler.remove()
+        navigation.push('Tense(s) selection')
+      },
       disabled: isSetLimitReached
     },
     {
       label: 'CREATE SET',
       disabled: selectedTableList.length < 1,
-      onPress: handleCreateSet,
-        
+      onPress: () => {
+        backHandler.remove()
+        handleCreateSet()
+      }
     }
   ]
 
@@ -102,7 +109,7 @@ export default function BatchProgress() {
     <MainLayout buttons={buttons} title='your set'>
       
       <>
-      
+
         <CustomFlatList
           isLoading={false}
           emptyMessage='Selection is empty'

@@ -20,7 +20,7 @@ export default function TableView({table, isResult} : TableViewProps){
         <View>        
 
             {/* Conjugation table title */}
-            <Text style={[globalstyles.text, globalstyles.uppercase, {color: Colors.textSecondary}]}>{table.tense.name} - {table.verb.name}</Text>
+            <Text style={[globalstyles.text, globalstyles.uppercase, styles.title]}>{table.tense.name} - {table.verb.name}</Text>
 
             {/* Conjugation lines */}
             <View style={{width:'100%'}}>
@@ -61,5 +61,9 @@ const styles = StyleSheet.create({
     },
     tableIncorrect: {
         backgroundColor: Colors.errorBg
+    },
+    title: {
+        color: Colors.textSecondary, 
+        marginBottom: 10
     }
 });

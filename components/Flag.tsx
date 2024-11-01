@@ -10,14 +10,14 @@ const flags: any = {
   // Add more countries as needed
 };
 
-export default function PageTemplate({countryName, onPress} : {countryName: string, onPress: () => void}) {
+export default function Flag({countryName, onPress} : {countryName: string, onPress: () => void}) {
 
   const navigation = useAppNavigation()
 
   const dispatch = useAppDispatch();
 
   const flagSource = flags[countryName]
-  
+
   return (
     <Pressable onPress={onPress}>
       <Image 

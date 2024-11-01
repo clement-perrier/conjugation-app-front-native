@@ -1,3 +1,4 @@
+
 import CustomFlatList from "@/components/layout/CustomFlatList";
 import MainLayout from "@/components/layout/MainLayout";
 import TableView from "@/components/table/TableView";
@@ -7,7 +8,7 @@ import { useAppSelector } from "@/state/hooks";
 import { LayoutButton } from "@/types/LayoutButton";
 import { formatBatchTitle } from "@/utils/Date";
 import { globalstyles } from "@/utils/GlobalStyle";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 export default function BatchCreated() {
 
@@ -23,24 +24,22 @@ export default function BatchCreated() {
       onPress:() => navigation.navigate('Question')
     }
   ]
-
+  
   return (
     <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
-
       <CustomFlatList
           data={selectedBatch.tableList}
           isLoading={false}
           emptyMessage=""
           renderItem={({item, index}) => {
-              return (
-                  <View style={[globalstyles.tableContainer, styles.tableContainer]}>
-                      <TableView table={item} isResult={false} key={index}/>
-                  </View>
-              )
+            return (
+              <View style={[globalstyles.tableContainer, styles.tableContainer]}>
+                <TableView table={item} isResult={false} key={index}/>
+              </View>
+            )
           }}
       >
       </CustomFlatList>
-        
     </MainLayout>
   );
 }

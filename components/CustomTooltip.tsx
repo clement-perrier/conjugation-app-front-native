@@ -1,32 +1,32 @@
 import Colors from '@/constants/Colors';
-import { Modal, StyleSheet, View, Text, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Modal, StyleSheet, View, Text, TouchableWithoutFeedback, ViewStyle, Animated } from 'react-native';
 
 interface CustomTooltipProps {
   label: string,
-  visible: boolean, 
-  setVisible: () => void,
+  visible?: boolean, 
+  setVisible?: () => void,
   position: {},
-  size: {}
+  height?: number,
+  manual: boolean
 }
 
-export default function CustomTooltip({label, visible, setVisible, position, size} : CustomTooltipProps) {
-
-  // States
-  // const [modalVisible, setModalVisible] = useState(false);
-
-  // Derived data
-
-  // Functions
-
-  // Handlers
+export default function CustomTooltip({label, visible, setVisible, position, height = 45, manual} : CustomTooltipProps) {
 
   return (
     visible &&
+    <>
+    {/* <View style={{backgroundColor:'black', opacity: 0.1, position: 'absolute', width: '100%', height: '100%', zIndex: 1}}></View> */}
       <TouchableWithoutFeedback onPress={setVisible}> 
-          <View style={[styles.tooltip, {...position, ...size, width: label.length * 7, height: 45}]}>
+          <View style={[styles.tooltip, {
+            ...position, 
+            width: label.length * 7, 
+            height
+          }]}>
             <Text style={{color: Colors.textPrimary}}>{label}</Text>
           </View>
       </TouchableWithoutFeedback>
+      </>
   );
 }
 
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.tertiary,
     borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 2
   }
 });

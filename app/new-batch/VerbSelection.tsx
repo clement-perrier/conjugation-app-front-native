@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, useWindowDimensions, TextInput } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, TextInput } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addSelectedTable } from '@/state/slices/SelectedTableListSlice';
@@ -13,9 +13,9 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import TextIconButton from '@/components/buttons/TextIconButton';
 import Colors  from '@/constants/Colors';
-import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 import { CustomAlert } from '@/utils/CustomAlert';
 import Styles from '@/constants/Styles';
+import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 
 export default function VerbSelection() {
 
@@ -32,21 +32,13 @@ export default function VerbSelection() {
   const verbListLoading = useAppSelector(state => state.verbList.loading);
   const batchList = useAppSelector(state => state.BatchList.value);
 
-  // const calcNumColumns = useCallback(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [])
-
   // States
-  // const [numColumns, setNumColumns] = useState(() => calcNumColumns());
   const [searchedText, setSearchText] = useState('');
   const [selectedVerbList, setSelectedVerbList] = useState<Verb[]>([]);
   const numColumns = useMemo(() => Math.floor(screenWidth / (styles.buttonWidth.width + styles.selectedVerb.marginHorizontal + 10)), [screenWidth]);
   const [isFocused, setIsFocused] = useState(false);
 
   // Functions
-
-  // const textFilter = useCallback((text: string) => {
-  //   return unselectedVerbList.filter(verb => verb.name.includes(text));
-  // }, [unselectedVerbList]);
-
   const removeSelectedVerb = useCallback((selectedVerb: Verb) => {
     setSelectedVerbList(prevList => prevList.filter(verb => verb.id !== selectedVerb.id));
   }, []);
@@ -82,7 +74,8 @@ export default function VerbSelection() {
 
   const allTableList = useMemo(() => batchList.flatMap(batch => batch.tableList).concat(selectedTableList), [batchList, selectedTableList]);
 
-  // Buttons
+  
+  // Main layout buttons
   const buttons: LayoutButton[] = [
     {
       label: 'ADD TO SET',
@@ -92,6 +85,10 @@ export default function VerbSelection() {
           CustomAlert('Set limit reached', 'You\'ve reached the limit of 5 verbs per repetition set to keep the learning manageable. Please remove some verbs from the set to continue.')
         } else {
           dispatch(addSelectedTable(getSelectedConjugationTableList()))
+          // navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: 'Batch progress' }],
+          // });
           navigation.navigate('Batch progress')
         }
       },
@@ -100,12 +97,13 @@ export default function VerbSelection() {
   ]
 
   return (
-    
-    <MainLayout buttons={buttons} title={selectedTense ? `Select a verb in ${selectedTense.name}` : ''}>
+    <>
+    <MainLayout buttons={buttons} title={selectedTense ? `Select verb(s) in ${selectedTense.name}` : ''}>
 
       <>
 
         {/* SEARCH INPUT */}
+        
         <View style={styles.inputContainer}>
 
           <IconButton style={styles.searchButton} size={25} icon={'search'}/>
@@ -160,10 +158,8 @@ export default function VerbSelection() {
               data={filteredVerbList}
               isLoading={verbListLoading}
               emptyMessage='No verbs found'
-              // numColumns={numColumns}
               key={numColumns}
               keyExtractor={(item: Verb) => item.id.toString()}
-              // columnWrapperStyle={numColumns > 1 && styles.columnWrapperStyle}
               style={[{flex: 1}, globalstyles.flatList]}
               renderItem={({item}) => 
                 <ListButton
@@ -180,7 +176,7 @@ export default function VerbSelection() {
       </>
 
     </MainLayout>
-
+    </>
   );
 }
 
@@ -224,9 +220,5 @@ const styles = StyleSheet.create({
     top: 12,
     right: 10,
     zIndex: 10
-  },
-  columnWrapperStyle: {
-    justifyContent: 'space-evenly',
-    columnGap: 5
   }
 });

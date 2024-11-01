@@ -23,8 +23,6 @@ export default function IconButton({ icon, onPress, style, color, size }: IconBu
     <Pressable 
       style={({pressed}) => [styles.iconButton, style, {opacity: pressed ? 0.7 : 1}]} 
       onPress={onPress}
-      // onFocus={() => setIspressed(true)}
-      // onBlur={() => setIspressed(false)}
     >
 
       <MaterialIcons 

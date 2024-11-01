@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Modal, StatusBar, Alert } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -19,8 +19,12 @@ import { CustomAlert } from '@/utils/CustomAlert';
 import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
 import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
-import Styles from '@/constants/Styles';
 import { requestNotificationPermission } from '@/services/NotificationService';
+import Styles from '@/constants/Styles';
+import CustomButton from '@/components/buttons/CustomButton';
+import { TutorialButton } from '@/components/buttons/TutorialButton';
+import { COPILOT_STEPS_COUNT_HOME } from '@/constants/Configuration';
+import CopilotModal from '@/components/CopilotModal';
 
 export default function Home() {
 
@@ -38,12 +42,10 @@ export default function Home() {
   // Derived data
   // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
-    console.log('batchList updated', batchList)
     return batchList.slice().sort((a, b) => 
       new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf() ||
       a.dayNumber - b.dayNumber
     ) 
-      
   }, [batchList])
 
   // Effects
@@ -62,15 +64,8 @@ export default function Home() {
   // Buttons
   const buttons: LayoutButton[] = [
     {
-      // onPress: () => navigation.navigate('Tense(s) selection'),
       onPress: () => navigation.navigate('Tense(s) selection'),
       icon: 'add',
-      iconOnly: true
-    },
-    {
-      // onPress: () => navigation.navigate('Tense(s) selection'),
-      onPress: () => user && requestNotificationPermission(user.id),
-      icon: 'interests',
       iconOnly: true
     }
   ]
@@ -80,18 +75,13 @@ export default function Home() {
   }
 
   return (
-
     <>
-    
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
-        
-        {/* Learning language flag */}
-        {
-          user &&
+      { 
+        user &&
           <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
-        }
-
+      }
         <IconButton  
           icon='logout' 
           size={35}
@@ -100,76 +90,62 @@ export default function Home() {
             'Are you sure you want to logout ?',
             async () => {
                 setLoading(true)
-              // const response = await AuthLogout(user.email)
-              // if(response){
                 await AppSecureStore.SaveItemAsync('access_token', '');
                 await AppSecureStore.SaveItemAsync('refresh_token', '');
                 dispatch(updateIsAuthenticated(false))
-                // navigation.navigate('Log in')
-              // }
             }
             )}
           />
-
       </View>
 
       {/* Batches list */}
-      <MainLayout buttons={buttons}>
+      <MainLayout  buttons={buttons}>
+        <>
           <CustomFlatList
-              data={sortedBatchList}
-              isLoading={batchListLoading}
-              emptyMessage="Create a repetition set to start learning"
-              itemSeparatorHeight={15}
-              renderItem={({ item, index } : {item: Batch, index: number}) => (
-                <>
-                  {/* Padding top */}
-                  {index === 0 && <View style={{height: Styles.mainPadding}}></View>}
+            data={sortedBatchList}
+            isLoading={batchListLoading}
+            emptyMessage="Create a repetition set to start learning"
+            itemSeparatorHeight={15}
+            renderItem={({ item, index } : {item: Batch, index: number}) => (
+              <>
+                {/* Padding top */}
+                {index === 0 && <View style={{height: Styles.mainPadding}}></View>}
 
-                  {/* Button */}
-                  <ListButton 
-                    key={item.id}
-                    label={formatBatchTitle(item)}
-                    onPress={() => {
-                      dispatch(updateSelectedBatch(item));
-                      navigation.navigate('Start');
-                    }}
-                    // icon='chevron-right'
-                    focus={new Date(item.reviewingDate) <= new Date()}
-                  />
+                {/* Button */}
+                <ListButton 
+                  key={item.id}
+                  label={formatBatchTitle(item)}
+                  onPress={() => {
+                    dispatch(updateSelectedBatch(item));
+                    navigation.navigate('Start')
+                  }}
+                  // icon='chevron-right'
+                  focus={new Date(item.reviewingDate) <= new Date()}
+                />
 
-                  <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
-                    {
-                      item.tableList.map((table, index) => 
-                        
-                        <Text style={[globalstyles.text, globalstyles.uppercase, {margin: 1, fontSize: 11, fontStyle: 'italic', padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8}]} key={index}>
-                            {table.verb.name} - {table.tense.name}
-                            {/* {index != item.tableList.length - 1 && ', '} */}
-                        </Text>
-                      )
-                    }
-                  </View>
+                <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
+                  {
+                    item.tableList.map((table, index) => 
+                      
+                      <Text style={[globalstyles.text, globalstyles.uppercase, {margin: 1, fontSize: 11, fontStyle: 'italic', padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8}]} key={index}>
+                          {table.verb.name} - {table.tense.name}
+                      </Text>
+                    )
+                  }
+                </View>
 
-                  {/* Padding bottom */}
-                  {index === sortedBatchList.length - 1 && <View style={{height: Styles.mainPadding}}></View>}
-                </>
-              )}
-            />
-        
+                {/* Padding bottom */}
+                {index === sortedBatchList.length - 1 && <View style={{height: Styles.mainPadding}}></View>}
+              </>
+            )}
+          />
+          </>
       </MainLayout>
-      
     </>
-    
   );
 }
 
 const styles = StyleSheet.create({
-  buttonPressed: {
-    backgroundColor: '#DDDDDD', // Background color when pressed
-  },
-  flagImage: {
-    width: 40,
-    height: 30
-  },
   header: {
     justifyContent: 'space-between',
     height: 'auto',

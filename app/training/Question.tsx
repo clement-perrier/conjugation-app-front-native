@@ -104,7 +104,6 @@ export default function Question() {
   useEffect(() => {
     if (shouldFocus && inputRef.current) {
       inputRef.current.focus();
-      // Keyboard.show();
     }
   }, [shouldFocus]);
 
@@ -144,7 +143,6 @@ export default function Question() {
     )
       correct = false
     }
-    console.log(conjugationList);
     userAnswer 
       ? dispatch(updateWithResult({id: currentConjugation.id, correct: correct, userAnswer}))
       : dispatch(updateWithResult({id: currentConjugation.id, correct: correct}))
@@ -303,7 +301,7 @@ export default function Question() {
                   visible={tooltipVisible} 
                   setVisible={() => setTooltipVisible(false)}
                   position={{ top: 0, right: 30, bottom: 0}}
-                  size={{}}
+                  manual={true}
                 />
                 
               </View>

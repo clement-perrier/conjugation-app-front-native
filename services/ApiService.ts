@@ -9,7 +9,7 @@ import { handleFail, handleSuccess } from '@/utils/Messages';
 // Axios configuration
 const local = '192.168.1.181:8080'
 const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
-const API_BASE_URL = `http://${local}`
+const API_BASE_URL = `http://${aws}`
 
 const apiService = axios.create({
     baseURL: API_BASE_URL

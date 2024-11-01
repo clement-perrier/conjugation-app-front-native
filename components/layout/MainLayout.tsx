@@ -5,34 +5,49 @@ import BottomButton from '../buttons/BottomButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import Styles from '@/constants/Styles';
 
+interface MainLayoutProps {
+    children: ReactElement,
+    buttons?: LayoutButton[],
+    title?: string
+}
 
-export default function MainLayout({children, buttons, title} : {children: ReactElement, buttons?: LayoutButton[], title?: string}){
+export default function MainLayout({children, buttons, title} : MainLayoutProps){
     
     return (
         <View style={[globalstyles.container]}>
 
-            { title && <Text style={globalstyles.title}>{title}</Text> }
+            { 
+                title && 
+                    <Text style={globalstyles.title}>{title}</Text> 
+
+            }
 
             <View style={styles.content}>
                {children}
             </View>
 
             <View style={[styles.buttonsContainer]}>
+
                 {buttons?.map((button, index) => 
+
                     <View key={index} style={globalstyles.flexColumn}>
+
                         { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
-                        <BottomButton 
-                            key={index}
-                            label={button.label}
-                            onPress={button.onPress}
-                            icon={button.icon}
-                            iconSize={button.iconSize}
-                            color={button.color}
-                            disabled={button.disabled}
-                            iconOnly={button.iconOnly}
-                        />
+
+                            <BottomButton 
+                                key={index}
+                                label={button.label}
+                                onPress={button.onPress}
+                                icon={button.icon}
+                                iconSize={button.iconSize}
+                                color={button.color}
+                                disabled={button.disabled}
+                                iconOnly={button.iconOnly}
+                            />
+
                     </View>
                 )}
+
             </View>
 
         </View>

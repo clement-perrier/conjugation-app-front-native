@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { Platform, StatusBar, View } from "react-native";
+import { StatusBar, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -17,20 +17,20 @@ import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from "react";
-import AppSecureStore from "@/state/SecureStore";
 import LogIn from "./authentication/LogIn";
 import SignUp from "./authentication/SignUp";
 import NewPassword from "./authentication/NewPassword";
-import { updateIsAuthenticated } from "@/state/slices/isAuthtenticated";
 import { updateIsOnBoarding } from "@/state/slices/isOnBoardingSlice";
-import { checkAuth, loadInitialData } from "@/services/AuthenticationService";
+import { checkAuth } from "@/services/AuthenticationService";
 import Spinner from "@/components/layout/Spinner";
 import PasswordResetRequest from "./authentication/PasswordResetRequest";
 import NetInfo, { NetInfoChangeHandler, NetInfoState } from "@react-native-community/netinfo";
 import { CustomAlert } from "@/utils/CustomAlert";
 import { requestNotificationPermission, updateDeviceToken } from "@/services/NotificationService";
 import Offline from "./Offline";
-import Styles from "@/constants/Styles";
+import TutorialScreen from "./tutorial/Tutorial";
+import {firebase} from "@react-native-firebase/messaging";
+import { FIREBASE_CONFIG } from "@/constants/Configuration";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -38,6 +38,8 @@ const Stack = createNativeStackNavigator();
 export default function AppNavigator() {
 
   const dispatch = useAppDispatch()
+
+  
 
   // States
   const [isOffline, setIsOffline] = useState(false)
@@ -90,6 +92,9 @@ export default function AppNavigator() {
   // Effects
   useEffect(() => {
 
+    // Initialize Firebase
+    firebase.initializeApp(FIREBASE_CONFIG);
+
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
 
     //  Check if user already connected
@@ -111,10 +116,6 @@ export default function AppNavigator() {
     }
   }, [user]);
 
-  /* if(!connectionStatus) {
-    return <NetworkCheck status={connectionStatus} type={connectionType} />
-  }
-  else  */
   if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
     return <Spinner text={isAuthenticated === null ? 'Authenticating' : 'Loading user'}/>
   }
@@ -122,11 +123,13 @@ export default function AppNavigator() {
   return (
    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
+
       <View style={{flex: 1}}>
           {
             isAuthenticated ? (
               user?.defaultLearningLanguage ? (
                 <Stack.Navigator initialRouteName="Home">
+                {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
                   <Stack.Screen  name="Home" component={Home} options={{ headerShown: false}} />
                   <Stack.Screen 
                     name="Learning language list"
@@ -185,11 +188,18 @@ export default function AppNavigator() {
                           options={getOptions()}
                         />
                       :
-                        <Stack.Screen 
-                          name="On boarding learning language"
-                          component={AddLearningLanguage}
-                          options={getOptions()}
-                        />
+                        <>
+                          <Stack.Screen 
+                            name="Tutorial"
+                            component={TutorialScreen}
+                            options={getOptions()}
+                          />
+                          <Stack.Screen 
+                            name="On boarding learning language"
+                            component={AddLearningLanguage}
+                            options={getOptions()}
+                          />
+                        </>
                   }
                 </Stack.Navigator>
               )
