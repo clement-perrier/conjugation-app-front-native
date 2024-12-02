@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+# Conjugation App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile app designed to help users learn and practice foreign language conjugations through a **spaced repetition** technique, optimizing retention and making language learning fun and effective.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Spaced Repetition Learning**: Reinforces conjugations at optimal intervals for better memory retention.
+- **Customizable Practice**: Choose specific verbs, tenses, and pronouns for tailored practice sessions.
+- **Progress Tracking**: Monitor your improvements over time with detailed stats.
+- **Push Notifications**: Receive reminders to practice at the right time for maximum retention.
+- **User-Friendly Interface**: Simple and intuitive design for a smooth learning experience.
 
-   ```bash
+## Tech Stack
+
+- **Front-end**: React Native, Expo
+- **Back-end**: Spring Boot, MySQL
+- **Hosting**: AWS
+- **State Management**: Redux
+- **Network Handling**: Axios, NetInfo
+- **Notifications**: Firebase Cloud Messaging
+
+## Installation and Setup
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/clement-perrier/conjugation-app-front-native.git
+2. Install dependencies:
+   ```
    npm install
+3. Start the development server
    ```
+   npx expo start
+4. Follow the instructions in the Expo CLI to run the app on your device or emulator.
 
-2. Start the app
+## API Setup
 
-   ```bash
-    npx expo start
+1. Clone the backend repository
    ```
+   git clone https://github.com/clement-perrier/conjugation-app-back.git
+2. Follow the setup instructions in the back-end repository README
 
-In the output, you'll find options to open the app in a
+## Usage
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Register or log in to the app.
+2. Select a Set of verbs and tenses to start practicing.
+3. Answer conjugation questions and get instant feedback.
+4. Track your progress and revisit past mistakes.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Contact
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For questions or support, please contact:
+- Author: Clément Perrier
+- Email: clement.perrier25@gmail.com
+- LinkedIn: https://www.linkedin.com/in/cl%C3%A9ment-perrier-a5173a152
