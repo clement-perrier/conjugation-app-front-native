@@ -3,7 +3,7 @@ import VerbSelection from "./new-batch/VerbSelection";
 import BatchProgress from "./new-batch/BatchProgress";
 import BatchCreated from "./new-batch/BatchCreated";
 import Home from "./Home";
-import { StatusBar, View } from "react-native";
+import { Linking, Platform, StatusBar, View } from "react-native";
 import Question from "./training/Question";
 import Results from "./training/Results";
 import Start from "./training/Start";
@@ -15,6 +15,7 @@ import RemoveBatchButton from "@/components/buttons/RemoveBatchButton";
 import { StyleSheet } from "react-native";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { clearSelectedTableList } from "@/state/slices/SelectedTableListSlice";
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect, useState } from "react";
 import LogIn from "./authentication/LogIn";
@@ -29,8 +30,11 @@ import { CustomAlert } from "@/utils/CustomAlert";
 import { requestNotificationPermission, updateDeviceToken } from "@/services/NotificationService";
 import Offline from "./Offline";
 import TutorialScreen from "./tutorial/Tutorial";
-import {firebase} from "@react-native-firebase/messaging";
-import { FIREBASE_CONFIG } from "@/constants/Configuration";
+// import {firebase} from "@react-native-firebase/messaging";
+// import { FIREBASE_CONFIG } from "@/constants/Configuration";
+import React from "react";
+import Constants from "expo-constants";
+import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -38,8 +42,6 @@ const Stack = createNativeStackNavigator();
 export default function AppNavigator() {
 
   const dispatch = useAppDispatch()
-
-  
 
   // States
   const [isOffline, setIsOffline] = useState(false)
@@ -82,22 +84,21 @@ export default function AppNavigator() {
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
                     />,
+                    contentStyle: {padding: 20, backgroundColor: 'white'},
       transitionSpec: {
         open: config,
         close: config
       }
     }
   }
-
+  const test = getOptions()
   // Effects
   useEffect(() => {
 
-    // Initialize Firebase
-    firebase.initializeApp(FIREBASE_CONFIG);
-
+    // Initialize network listener (checking if online/offline)
     const netInfoSubscription = NetInfo.addEventListener(handleNetworkChange);
 
-    //  Check if user already connected
+    // Check if user already connected
     checkAuth(dispatch);  
 
     return () => {
@@ -127,10 +128,13 @@ export default function AppNavigator() {
       <View style={{flex: 1}}>
           {
             isAuthenticated ? (
+              // User authenticated
               user?.defaultLearningLanguage ? (
-                <Stack.Navigator initialRouteName="Home">
+                // At least one learning language selected
+                <Stack.Navigator 
+                initialRouteName="Home">
                 {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
-                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false}} />
+                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false, contentStyle: {padding: 20, backgroundColor: 'white'}}} />
                   <Stack.Screen 
                     name="Learning language list"
                     component={LearningLanguageList}
@@ -178,7 +182,8 @@ export default function AppNavigator() {
                   /> 
                 </Stack.Navigator>
               ) : (
-                <Stack.Navigator>
+                // No learning language selected
+                <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'}>
                   {
                     isOffline 
                       ?
@@ -204,6 +209,7 @@ export default function AppNavigator() {
                 </Stack.Navigator>
               )
             ) : (
+              // User not authenticated
               <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'}>
                 <Stack.Screen 
                   name="Log in" 

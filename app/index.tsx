@@ -13,7 +13,7 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <View style={[{flex: 1, padding: Styles.mainPadding}, globalstyles.backgroundColor]}>
+        <View style={[{flex: 1}, globalstyles.backgroundColor]}>
           {/* <StatusBar barStyle="dark-content" translucent backgroundColor={'white'} /> */}
           <AppNavigator/>
           <Toast/>
@@ -23,5 +23,3 @@ export default function Index() {
   );
   
 }
-
-

@@ -6,7 +6,10 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "module": "es2020", // or "esnext" or "commonjs"
+    "target": "es2020", // Ensure the target is compatible as well
+    "moduleResolution": "node",
   },
   "include": [
     "**/*.ts",

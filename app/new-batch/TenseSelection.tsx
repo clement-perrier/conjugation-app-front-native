@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
@@ -16,7 +16,6 @@ export default function TenseSelection() {
   const tenseListLoading = useAppSelector(state => state.tenseList.loading)
 
   return (
-
     <MainLayout title='Select a tense'>
 
       <CustomFlatList
@@ -35,7 +34,6 @@ export default function TenseSelection() {
       />
 
     </MainLayout>
-
   );
 }
 

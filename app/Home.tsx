@@ -23,8 +23,6 @@ import { requestNotificationPermission } from '@/services/NotificationService';
 import Styles from '@/constants/Styles';
 import CustomButton from '@/components/buttons/CustomButton';
 import { TutorialButton } from '@/components/buttons/TutorialButton';
-import { COPILOT_STEPS_COUNT_HOME } from '@/constants/Configuration';
-import CopilotModal from '@/components/CopilotModal';
 
 export default function Home() {
 
@@ -150,6 +148,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 'auto',
     backgroundColor: 'white',
-    paddingBottom: Styles.mainPadding
+    paddingBottom: Styles.mainPadding,
   }
 });

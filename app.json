@@ -19,6 +19,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.clement.conjugationapp",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Your message here",
@@ -40,7 +41,7 @@
       ],
       "blockedPermissions": [
         "com.google.android.gms.permission.AD_ID",
-        "android.permission.READ_MEDIA_IMAGES", 
+        "android.permission.READ_MEDIA_IMAGES",
         "android.permission.READ_MEDIA_VIDEO"
       ],
       "adaptiveIcon": {
@@ -72,7 +73,17 @@
     "plugins": [
       "expo-router",
       "expo-image-picker",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.4",
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -41,7 +41,7 @@ export const Login = async (dispatch: any, email: string, password: string, sign
       }
 }
 
-export const  loadInitialData = async (dispatch: any, userId: number) => {
+export const loadInitialData = async (dispatch: any, userId: number) => {
   await dispatch(FetchUser(userId))
   const user = store.getState().User.value
   if (user){
