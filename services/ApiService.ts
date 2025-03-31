@@ -7,9 +7,9 @@ import CustomError from '@/utils/CustomError';
 import { handleFail, handleSuccess } from '@/utils/Messages';
 
 // Axios configuration
-const local = '192.168.1.181:8080'
+const local = 'localhost:8080'
 const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
-const API_BASE_URL = `http://${aws}`
+const API_BASE_URL = `http://${local}`
 
 const apiService = axios.create({
     baseURL: API_BASE_URL
@@ -28,8 +28,6 @@ function isAccessTokenExpired(token: string | null): boolean {
     } catch (error) {
         return true
     }
-    
-    
 }
 
 async function isRefreshTokenExpired(){
@@ -53,11 +51,12 @@ async function refreshToken() {
         try {
             // const response = await apiService.post('auth/refreshToken', { token: refreshToken });
             const response = await AuthRefreshToken(refreshToken)
-            const { accessToken, refreshToken: newRefreshToken } = response;
+            const { accessToken, refreshToken: newRefreshToken, refreshTokenExpiryDate } = response;
             
             // Update the secure store with the new tokens
             await AppSecureStore.SaveItemAsync('access_token', accessToken);
             await AppSecureStore.SaveItemAsync('refresh_token', newRefreshToken);
+            await AppSecureStore.SaveItemAsync('refresh_token_expiry_date', refreshTokenExpiryDate);
 
             return accessToken;
         } catch (error) {
