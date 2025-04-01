@@ -50,12 +50,12 @@ export const globalstyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         alignContent: 'center',
-        columnGap: 10
+        columnGap: 15
     },
     flexColumn: {
         display: 'flex',
         flexDirection: 'column',
-        rowGap: 20
+        rowGap: 15
     },
     flexEnd: {
         display: 'flex',

@@ -8,10 +8,11 @@ import Styles from '@/constants/Styles';
 interface MainLayoutProps {
     children: ReactElement,
     buttons?: LayoutButton[],
+    buttonsHorizontal?: boolean,
     title?: string
 }
 
-export default function MainLayout({children, buttons, title} : MainLayoutProps){
+export default function MainLayout({children, buttons, buttonsHorizontal, title} : MainLayoutProps){
     
     return (
         <View style={[globalstyles.container]}>
@@ -26,24 +27,30 @@ export default function MainLayout({children, buttons, title} : MainLayoutProps)
                {children}
             </View>
 
-            <View style={[styles.buttonsContainer]}>
+            <View style={[styles.buttonsContainer, buttonsHorizontal ? globalstyles.flexRow : globalstyles.flexColumn]}>
 
                 {buttons?.map((button, index) => 
 
-                    <View key={index} style={[globalstyles.flexColumn, {alignItems: 'center'}]}>
+                    <View key={index}
+                        style={[
+                            {maxWidth: 500, width: buttonsHorizontal ? '50%' : '100%'}
+                            // buttonsHorizontal ? globalstyles.flexRow : globalstyles.flexColumn, 
+                            // {alignItems: 'center', justifyContent: 'center'}
+                        ]}
+                    >
 
                         { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
 
-                            <BottomButton 
-                                key={index}
-                                label={button.label}
-                                onPress={button.onPress}
-                                icon={button.icon}
-                                iconSize={button.iconSize}
-                                color={button.color}
-                                disabled={button.disabled}
-                                iconOnly={button.iconOnly}
-                            />
+                        <BottomButton 
+                            key={index}
+                            label={button.label}
+                            onPress={button.onPress}
+                            icon={button.icon}
+                            iconSize={button.iconSize}
+                            color={button.color}
+                            disabled={button.disabled}
+                            iconOnly={button.iconOnly}
+                        />
 
                     </View>
                 )}
@@ -75,10 +82,10 @@ const styles = StyleSheet.create({
         flex: 1
     },
     buttonsContainer: {
-        display: 'flex', 
-        rowGap: 15,
         justifyContent: 'center',
+        alignItems: 'center',
         paddingTop: Styles.mainPadding,
         width: '100%'
     }
+
   });

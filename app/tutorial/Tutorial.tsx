@@ -148,9 +148,14 @@ const TutorialScreen = () => {
     ];
 
     // Derived data
+    const isFirstStep = step === 0
     const isLastStep = step === tutorialContent.length - 1
 
     // Handles
+    const backStep = () => {
+        setStep(step - 1);
+    };
+
     const nextStep = () => {
         if (!isLastStep) {
         setStep(step + 1);
@@ -164,12 +169,21 @@ const TutorialScreen = () => {
             label: !isLastStep ? 'NEXT' : 'OK', 
             onPress: nextStep,
             // icon: 'arrow-forward',
-            iconSize: !isLastStep ? 28 : 0,
+            // iconSize: !isLastStep ? 28 : 0,
         }
     ]
 
+    !isFirstStep && buttons.unshift(
+        {
+            label: 'BACK',
+            onPress: backStep,
+            // icon: 'arrow-forward',
+            // iconSize: !isLastStep ? 28 : 0,
+        }
+    )
+
     return (
-        <MainLayout title={tutorialContent[step].title} buttons={buttons}>
+        <MainLayout title={tutorialContent[step].title} buttons={buttons} buttonsHorizontal={true}>
             <CustomFlatList
                 data={tutorialContent[step].contentList}
                 itemSeparatorHeight={15}
