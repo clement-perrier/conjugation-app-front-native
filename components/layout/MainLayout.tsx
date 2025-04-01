@@ -30,7 +30,7 @@ export default function MainLayout({children, buttons, title} : MainLayoutProps)
 
                 {buttons?.map((button, index) => 
 
-                    <View key={index} style={globalstyles.flexColumn}>
+                    <View key={index} style={[globalstyles.flexColumn, {alignItems: 'center'}]}>
 
                         { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
 

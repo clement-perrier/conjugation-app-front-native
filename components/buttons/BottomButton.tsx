@@ -1,4 +1,5 @@
 import Colors from "@/constants/Colors";
+import Styles from "@/constants/Styles";
 import { LayoutButton } from "@/types/LayoutButton";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -28,7 +29,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        backgroundColor: '#4A90E2'
+        backgroundColor: '#4A90E2',
+        width: '100%',
+        maxWidth: Styles.maxWidth
     },
     widthFitContent: {
         width: 50

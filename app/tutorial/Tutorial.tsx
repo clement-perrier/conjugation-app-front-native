@@ -163,7 +163,7 @@ const TutorialScreen = () => {
         {
             label: !isLastStep ? 'NEXT' : 'OK', 
             onPress: nextStep,
-            icon: 'arrow-forward',
+            // icon: 'arrow-forward',
             iconSize: !isLastStep ? 28 : 0,
         }
     ]
