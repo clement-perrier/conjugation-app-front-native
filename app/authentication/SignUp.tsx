@@ -8,6 +8,7 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import { validateEmail } from '@/utils/ValidateEmail';
 import PasswordInput from '@/components/layout/PasswordInput';
 import BottomButton from '@/components/buttons/BottomButton';
+import Spinner from '@/components/layout/Spinner';
 
 export default function SignUp() {
 
@@ -20,14 +21,11 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const [passwordsEqual, setPasswordsEqual] = useState(true);
 
   // Derived data
-
-  // Functions
-  const arePasswordsEqual = () => {
-    return password === passwordConfirmation
-  }
+  const havePasswordsMinLength = password.length >=6 && passwordConfirmation.length >=6 
+  const arePasswordsEqual = password === passwordConfirmation && havePasswordsMinLength
+  const isPasswordError = !arePasswordsEqual && havePasswordsMinLength
 
   // Handlers
   const handleSignup = async () => {
@@ -42,26 +40,21 @@ export default function SignUp() {
     }
   }
 
+  // **** TODO ****
+  const handleGuest = () => {
+
+  }
+
   const handleBlurEmail = () => {
     setIsEmailValid(validateEmail(email));
   };
 
-  // Effects
-  useEffect(() => {
-    // useEffect to validate passwords whenever they change
-    setPasswordsEqual(arePasswordsEqual());
-  }, [password, passwordConfirmation]); // Depend on both password states
-
-  // return (      
-  //   <AuthenticationLayout 
-  //     isLogin={false} 
-  //     onPrimaryPress={handleSignup}
-  //     isLoading={isLoading}
-  //   />
-  // );
+  if(isLoading){
+    return <Spinner text={'Signing up'}/>
+  }
 
   return (
-      <View style={[globalstyles.flexColumn, globalstyles.container]}>
+      <View style={[globalstyles.flexColumn, globalstyles.container, globalstyles.flexCenter]}>
   
         <Text style={[globalstyles.title, globalstyles.text]}>Sign up</Text>
   
@@ -71,7 +64,7 @@ export default function SignUp() {
           value={email}
           onChangeText={setEmail}
           onBlur={handleBlurEmail}
-          style={globalstyles.input}
+          style={[globalstyles.input, !isEmailValid && globalstyles.invalidInput]}
         />
   
         {!isEmailValid && <Text style={globalstyles.invalidEmailText}>Invalid email address</Text>}
@@ -81,35 +74,50 @@ export default function SignUp() {
           placeholder={'Password (minimum 6 characters)'}
           password={password}
           handlePassword={setPassword}
+          isError={isPasswordError}
         />
 
         <PasswordInput
             placeholder={'Confirm password'}
             password={passwordConfirmation}
             handlePassword={setPasswordConfirmation}
+            isError={isPasswordError}
         />
 
         {/* Display password mismatch message */}
-        {!passwordsEqual && password && passwordConfirmation && (
+        {isPasswordError && (
           <Text style={globalstyles.invalidEmailText}>Passwords are different</Text>
         )}
   
-        {/* Main button */}
-        <BottomButton 
-          label={'Signup'}
-          onPress={handleSignup} 
-          disabled={password.length < 6 || !validateEmail(email) || !arePasswordsEqual()}
-        />
-  
-        {/* Bottom Text */}
-        <View style={[globalstyles.flexRow, globalstyles.text]}>
-          <Text>{'Already have an account?'}</Text>
-          <Text 
-            style={styles.bottomText}
-            onPress={() => navigation.navigate('Log in')}
-          >
-            {'Log in'}
-          </Text>
+        {/* Buttons */}
+        <View style={[globalstyles.flexColumn, globalstyles.flexCenter, {width: '100%'}]}>
+
+          {/* Sign Up Button */}
+          <BottomButton 
+            label={'Signup'}
+            onPress={handleSignup} 
+            disabled={password.length < 6 || !validateEmail(email) || !arePasswordsEqual}
+            />
+
+          {/* Bottom Text */}
+          <View style={[globalstyles.flexRow, globalstyles.text, {columnGap: 10}]}>
+            <Text>{'Already have an account ?'}</Text>
+            <Text 
+              style={styles.bottomText}
+              onPress={() => navigation.navigate('Log in')}
+            >
+              {'Log in'}
+            </Text>
+          </View>
+
+          <Text style={globalstyles.text}>OR</Text>
+
+          {/* Continue As Guest Button */}
+          <BottomButton 
+            label={'CONTINUE AS GUEST'}
+            onPress={handleGuest} 
+          />
+
         </View>
   
       </View>

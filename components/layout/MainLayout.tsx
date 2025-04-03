@@ -17,27 +17,17 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title}
     return (
         <View style={[globalstyles.container]}>
 
-            { 
-                title && 
-                    <Text style={globalstyles.title}>{title}</Text> 
-
-            }
+            { title && <Text style={globalstyles.title}>{title}</Text>  }
 
             <View style={styles.content}>
                {children}
             </View>
 
-            <View style={[styles.buttonsContainer, buttonsHorizontal ? globalstyles.flexRow : globalstyles.flexColumn]}>
+            <View style={[styles.buttonsContainer, globalstyles.flexColumn]}>
 
                 {buttons?.map((button, index) => 
 
-                    <View key={index}
-                        style={[
-                            {maxWidth: 500, width: buttonsHorizontal ? '50%' : '100%'}
-                            // buttonsHorizontal ? globalstyles.flexRow : globalstyles.flexColumn, 
-                            // {alignItems: 'center', justifyContent: 'center'}
-                        ]}
-                    >
+                    <View key={index} style={{width: '100%'}}>
 
                         { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
 

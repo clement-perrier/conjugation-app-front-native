@@ -3,5 +3,5 @@ export default {
     secondaryRadius: 10,
     itemSeparatorHeight: 20,
     mainPadding: 20,
-    maxWidth: 500
+    maxWidth: 800
 }

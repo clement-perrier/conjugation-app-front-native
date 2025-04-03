@@ -7,6 +7,7 @@ import { Conjugation } from "@/types/Conjugation";
 import { Table } from "@/types/Table";
 import CustomProgressSteps from "../CustomProgressSteps";
 import ConjugationLineView from "./ConjugationLineView";
+import Styles from "@/constants/Styles";
 
 interface TableViewProps {
     table: Table,
@@ -47,11 +48,12 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     table: {
-        padding: 20,
-        borderRadius: 10,
-        alignItems: 'center',
-        maxWidth: 430,
-        width: '100%'
+        // paddingVertical: 20,
+        // paddingHorizontal: 50,
+        // borderRadius: 10,
+        // alignItems: 'center',
+        // maxWidth: 1000,
+        // width: '100%'
     },
     tableNormal: {
         backgroundColor: Colors.secondary
@@ -64,6 +66,6 @@ const styles = StyleSheet.create({
     },
     title: {
         color: Colors.textSecondary, 
-        marginBottom: 10
+        marginBottom: 15
     }
 });

@@ -57,6 +57,10 @@ export const globalstyles = StyleSheet.create({
         flexDirection: 'column',
         rowGap: 15
     },
+    flexCenter: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     flexEnd: {
         display: 'flex',
         alignItems: 'flex-end',
@@ -68,20 +72,29 @@ export const globalstyles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     input: {
-        padding: 10,
+        height: 50,
+        paddingHorizontal: 10,
         borderWidth: 1,
         borderColor: Colors.secondary,
-        borderRadius: 8
+        borderRadius: 8,
+        width: '100%',
+        maxWidth: Styles.maxWidth
     },
     invalidEmailText: {
-      marginTop: -15,
-      color: 'red'
+      marginTop: -10,
+      color: Colors.error
+    },
+    invalidInput: {
+        borderColor: Colors.error
     },
     tableContainer: {
-        width: '100%',
-        padding: Styles.mainPadding,
+        // width: '100%',
+        padding: 30,
         borderRadius: 10,
-        maxWidth: 430
+        justifyContent: 'center'
+        // maxWidth: 500,
+        // paddingVertical: 20,
+        // paddingHorizontal: 50,
     },
     headerButton: {
         // height: '100%',

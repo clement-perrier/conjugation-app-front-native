@@ -14,6 +14,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { formatDateAsLong } from '@/utils/Date';
 import { ScrollView } from 'react-native';
 import Styles from '@/constants/Styles';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React from 'react';
 
 export default function Results() {
 
@@ -54,21 +56,16 @@ export default function Results() {
   return (
 
     <MainLayout buttons={buttons} title='Results'>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-
-        <View style={[globalstyles.flexColumn, {paddingVertical: Styles.mainPadding}]}>
-
-          {/* When batch is split between correct and wrong table(s) => displaying wrong table first */}
-          { isNewBatchAdded && <Result batch={getLastBatchAdded()} isCorrect={false}/> }
-
-          {/* Displaying either all wrong/all correct table */}
-          <Result batch={updatedBatch} isCorrect={isUpdatedBatchCorrect()}/>
-
-        </View>
-
+        {/* <View style={{flex: 1, alignItems: 'center'}}> */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+          <View style={[globalstyles.flexColumn, {flex: 1, paddingVertical: Styles.mainPadding}]}>
+            {/* When batch is split between correct and wrong table(s) => displaying wrong table first */}
+            { isNewBatchAdded && <Result batch={getLastBatchAdded()} isCorrect={false}/> }
+            {/* Displaying either all wrong/all correct table */}
+            <Result batch={updatedBatch} isCorrect={isUpdatedBatchCorrect()}/>
+          </View>
       </ScrollView>
-
+        {/* </View> */}
     </MainLayout>
 
   );
@@ -107,7 +104,10 @@ function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
         {/* Table List */}
         {
             batch.tableList.map((item, index) => 
-              <TableView table={item} isResult={true} key={index}/>
+              <View>
+                <View style={{height: 15}}></View>
+                <TableView table={item} isResult={true} key={index}/>
+              </View>
             )
         }
 

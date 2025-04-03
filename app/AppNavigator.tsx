@@ -35,6 +35,7 @@ import TutorialScreen from "./tutorial/Tutorial";
 import React from "react";
 import Constants from "expo-constants";
 import { NavigationContainer } from "@react-navigation/native";
+import Styles from "@/constants/Styles";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -84,7 +85,7 @@ export default function AppNavigator() {
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
                     />,
-                    contentStyle: {padding: 20, backgroundColor: 'white'},
+                    // contentStyle: {padding: 20, backgroundColor: 'white', alignItems: 'center'},
       transitionSpec: {
         open: config,
         close: config
@@ -125,7 +126,8 @@ export default function AppNavigator() {
    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
 
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, alignItems: 'center', padding: Styles.mainPadding}}>
+        <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
           {
             isAuthenticated ? (
               // User authenticated
@@ -134,7 +136,8 @@ export default function AppNavigator() {
                 <Stack.Navigator 
                 initialRouteName="Home">
                 {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
-                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false, contentStyle: {padding: 20, backgroundColor: 'white'}}} />
+                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false, contentStyle: {backgroundColor: 'white'}}} />
+                  {/* padding: 20,  */}
                   <Stack.Screen 
                     name="Learning language list"
                     component={LearningLanguageList}
@@ -234,6 +237,7 @@ export default function AppNavigator() {
               </Stack.Navigator>
             )
           }
+        </View>
       </View>
     </>
   );

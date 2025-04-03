@@ -1,3 +1,4 @@
+import BottomButton from '@/components/buttons/BottomButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import MainLayout from '@/components/layout/MainLayout';
 import Colors from '@/constants/Colors';
@@ -183,13 +184,14 @@ const TutorialScreen = () => {
     )
 
     return (
-        <MainLayout title={tutorialContent[step].title} buttons={buttons} buttonsHorizontal={true}>
+        <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center'}} >
+            <Text style={globalstyles.title}>{tutorialContent[step].title}</Text> 
             <CustomFlatList
                 data={tutorialContent[step].contentList}
                 itemSeparatorHeight={15}
                 renderItem={({ item, index } : {item: ContentProps, index: number}) => (
                     <View style={globalstyles.flexColumn}>
-                        <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'left', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
+                        <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'center', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
                         {
                             item.image && 
                                 <Image 
@@ -203,14 +205,60 @@ const TutorialScreen = () => {
                             <Image 
                                 source={item.image2.source} 
                                 style={[styles.image, {height: item.image2.height}]} 
-                                resizeMode="contain" 
+                                resizeMode="contain"
                             />
                         }
                         
                     </View>
                 )}
             />
-        </MainLayout>
+
+            <View style={[{width: '100%'}, globalstyles.flexRow, globalstyles.flexCenter]}>
+                {buttons?.map((button, index) => 
+                    <View style={[isFirstStep ? {width: '100%'} : {width: '50%'}, {alignItems: 'center'}]}>
+                        <BottomButton 
+                            key={index}
+                            label={button.label}
+                            onPress={button.onPress}
+                            icon={button.icon}
+                            iconSize={button.iconSize}
+                            color={button.color}
+                            disabled={button.disabled}
+                            iconOnly={button.iconOnly}
+                        />
+                    </View>
+                )}
+            </View>
+            
+        </View>
+        // <MainLayout title={tutorialContent[step].title} buttons={buttons}>
+        //     <CustomFlatList
+        //         data={tutorialContent[step].contentList}
+        //         itemSeparatorHeight={15}
+        //         renderItem={({ item, index } : {item: ContentProps, index: number}) => (
+        //             <View style={globalstyles.flexColumn}>
+        //                 <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'center', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
+        //                 {
+        //                     item.image && 
+        //                         <Image 
+        //                             source={item.image.source} 
+        //                             style={[styles.image, {height: item.image.height}]} 
+        //                             resizeMode="contain" 
+        //                         />
+        //                 }
+        //                 {
+        //                     item.image2 &&
+        //                     <Image 
+        //                         source={item.image2.source} 
+        //                         style={[styles.image, {height: item.image2.height}]} 
+        //                         resizeMode="contain"
+        //                     />
+        //                 }
+                        
+        //             </View>
+        //         )}
+        //     />
+        // </MainLayout>
     );
 };
 

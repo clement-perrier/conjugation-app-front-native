@@ -10,21 +10,22 @@ interface PasswordInputProps {
   handlePassword: (React.Dispatch<React.SetStateAction<string>>),
   disable?: boolean,
   onBlur?: () => void
+  isError?: boolean
 }
 
-export default function PasswordInput({placeholder, password, handlePassword, disable, onBlur} : PasswordInputProps) {
+export default function PasswordInput({placeholder, password, handlePassword, disable, onBlur, isError} : PasswordInputProps) {
 
   // States
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
-    <View style={[{position: 'relative'}, disable && styles.disable]}>
+    <View style={[{position: 'relative', width: '100%', maxWidth: Styles.maxWidth}, disable && styles.disable]}>
       <TextInput
         placeholder={placeholder}
         value={password}
         onChangeText={handlePassword}
         secureTextEntry={!isPasswordVisible}
-        style={globalstyles.input}
+        style={[globalstyles.input, isError && globalstyles.invalidInput]}
         editable={!disable}
         onBlur={onBlur}
       />

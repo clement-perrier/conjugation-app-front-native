@@ -8,6 +8,8 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import { validateEmail } from '@/utils/ValidateEmail';
 import PasswordInput from '@/components/layout/PasswordInput';
 import BottomButton from '@/components/buttons/BottomButton';
+import Spinner from '@/components/layout/Spinner';
+import Styles from '@/constants/Styles';
 
 export default function LogIn() {
 
@@ -18,9 +20,7 @@ export default function LogIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const [passwordsEqual, setPasswordsEqual] = useState(true);
 
   // Handlers
   const handleLogin = async () => {
@@ -35,100 +35,77 @@ export default function LogIn() {
     setIsEmailValid(validateEmail(email));
   };
 
-  // Functions
-  const arePasswordsEqual = () => {
-    return password === passwordConfirmation
+  if(isLoading){
+    return <Spinner text={'Logging in'}/>
   }
 
-  // useEffect to validate passwords whenever they change
-  useEffect(() => {
-    setPasswordsEqual(arePasswordsEqual());
-  }, [password, passwordConfirmation]); // Depend on both password states
+  return (
+    <View style={[globalstyles.flexColumn, globalstyles.container, globalstyles.flexCenter]}>
 
-  // return (
-  
-    // <AuthenticationLayout 
-    //   isLogin={true} 
-    //   onPrimaryPress={handleLogin} 
-    //   isLoading={isLoading}
-    // />
-  // )
+      <Text style={[globalstyles.title, globalstyles.text]}>{'Log in'}</Text>
 
-    return (
-      <View style={[globalstyles.flexColumn, globalstyles.container]}>
-  
-        <Text style={[globalstyles.title, globalstyles.text]}>{'Log in'}</Text>
-  
-        {/* Email input */}
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          onBlur={handleBlurEmail}
-          style={globalstyles.input}
-        />
-  
-        {!isEmailValid && <Text style={globalstyles.invalidEmailText}>Invalid email address</Text>}
-  
-        {/* Password input */}
-        <PasswordInput
-          placeholder={'Password'}
-          password={password}
-          handlePassword={setPassword}
-        />
+      {/* Email input */}
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        onBlur={handleBlurEmail}
+        style={[globalstyles.input, !isEmailValid && globalstyles.invalidInput]}
+      />
 
-        {/* Display password mismatch message */}
-        {!passwordsEqual && password && passwordConfirmation && (
-          <Text style={globalstyles.invalidEmailText}>Passwords are different</Text>
-        )}
-  
-        {/* Forgot password */}
-        <View style={styles.forgotPasswordContainer}>
-          <Text 
-            onPress={() => navigation.navigate('Reset password request')} 
-            style={styles.forgotPassword}
-          >
-            Forgot your password?
-          </Text>
-        </View>
-  
-        {/* Main button */}
-        <BottomButton 
-          label={'Login'}
-          onPress={handleLogin} 
-          disabled={password.length < 6 || !validateEmail(email)}
-        />
-  
-        {/* Bottom Text */}
-        <View style={[globalstyles.flexRow, globalstyles.text]}>
-          <Text>{`Don't have an account?`}</Text>
-          <Text 
-            style={styles.bottomText}
-            onPress={() => navigation.navigate('Sign up')}
-          >
-            Sign up
-          </Text>
-        </View>
-  
+      {!isEmailValid && <Text style={globalstyles.invalidEmailText}>Invalid email address</Text>}
+
+      {/* Password input */}
+      <PasswordInput
+        placeholder={'Password'}
+        password={password}
+        handlePassword={setPassword}
+      />
+
+      {/* Forgot password */}
+      <View style={styles.forgotPasswordContainer}>
+        <Text 
+          onPress={() => navigation.navigate('Reset password request')} 
+          style={styles.forgotPassword}
+        >
+          Forgot your password?
+        </Text>
       </View>
-    );
+
+      {/* Main button */}
+      <BottomButton 
+        label={'Login'}
+        onPress={handleLogin} 
+        disabled={password.length < 6 || !validateEmail(email)}
+      />
+
+      {/* Bottom Text */}
+      <View style={[globalstyles.flexRow, globalstyles.text, {columnGap: 5}]}>
+        <Text>{`Don't have an account ?`}</Text>
+        <Text 
+          style={styles.bottomText}
+          onPress={() => navigation.navigate('Sign up')}
+        >
+          Sign up
+        </Text>
+      </View>
+
+    </View>
+  );
       
 }
-
 
 const styles = StyleSheet.create({
   bottomText: {
     fontWeight: 'bold',
-    marginLeft: -4
-    // marginLeft: 1
   },
   forgotPasswordContainer: {
-    alignSelf: 'flex-end',
-    marginTop: -20,
-    marginRight: -10
+    width: '100%', 
+    maxWidth: Styles.maxWidth,
+    marginBottom: 10
   },
   forgotPassword: {
     fontWeight: 'bold',
-    padding: 10
+    textAlign: 'right'
   }
 })

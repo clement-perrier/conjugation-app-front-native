@@ -9,6 +9,7 @@ import { formatBatchTitle } from '@/utils/Date';
 import Colors from '@/constants/Colors';
 import CustomProgressSteps from '@/components/CustomProgressSteps';
 import Styles from '@/constants/Styles';
+import React from 'react';
 
 export default function Start() {
 

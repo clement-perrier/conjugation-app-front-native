@@ -33,11 +33,14 @@ export default function BatchCreated() {
           emptyMessage=""
           renderItem={({item, index}) => {
             return (
-              <View style={[globalstyles.tableContainer, styles.tableContainer]}>
-                <TableView table={item} isResult={false} key={index}/>
-              </View>
+            //  <View style={{alignItems: 'center'}}>
+                <View style={[globalstyles.tableContainer, styles.tableContainer]}>
+                  <TableView table={item} isResult={false} key={index}/>
+                </View>
+            //  </View>
             )
           }}
+          // contentContainerStyle={{alignItems: 'center', width: '100%'}}
       >
       </CustomFlatList>
     </MainLayout>
@@ -46,6 +49,7 @@ export default function BatchCreated() {
 
 const styles = StyleSheet.create({
   tableContainer: {
-    backgroundColor: Colors.secondary
+    backgroundColor: Colors.secondary,
+    width: '100%'
   },
 })
