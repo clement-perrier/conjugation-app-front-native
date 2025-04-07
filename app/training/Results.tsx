@@ -56,16 +56,21 @@ export default function Results() {
   return (
 
     <MainLayout buttons={buttons} title='Results'>
-        {/* <View style={{flex: 1, alignItems: 'center'}}> */}
+
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+
           <View style={[globalstyles.flexColumn, {flex: 1, paddingVertical: Styles.mainPadding}]}>
+
             {/* When batch is split between correct and wrong table(s) => displaying wrong table first */}
             { isNewBatchAdded && <Result batch={getLastBatchAdded()} isCorrect={false}/> }
+            
             {/* Displaying either all wrong/all correct table */}
             <Result batch={updatedBatch} isCorrect={isUpdatedBatchCorrect()}/>
+
           </View>
+
       </ScrollView>
-        {/* </View> */}
+
     </MainLayout>
 
   );

@@ -12,7 +12,10 @@ const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
 const API_BASE_URL = `http://${local}`
 
 const apiService = axios.create({
-    baseURL: API_BASE_URL
+    baseURL: API_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json'
+    }
   });
 
 // Functions
@@ -271,6 +274,16 @@ export const AuthLogin = async(loginUser: LoginUser) => {
     
 }
 
+export const AuthLoginAsGuest = async(userId: number) => {
+    try {
+        const response = await apiService.post('auth/loginAsGuest', userId);
+        return response.data;
+    } catch (error) {
+        handleRequestError('Guest login failed', error)
+    }
+    
+}
+
 export const AuthSignup = async(loginUser: LoginUser) => {
     try {
         const response = await apiService.post('auth/signup', loginUser);
@@ -290,6 +303,25 @@ export const AuthSignup = async(loginUser: LoginUser) => {
             // Handle other errors
             handleFail('Error', 'Something went wrong. Please try again.')
           }
+    }
+    
+}
+
+export const AuthSignupAsGuest = async() => {
+    try {
+        const response = await apiService.post('auth/signupAsGuest');
+        return response.data;
+    } catch (error: any) {
+        if (error.response) {
+            // Handle HTTP errors
+            handleFail('Signup Error', error.response.data.detail || 'An unexpected error occurred.')
+        } else if (error.request) {
+            // Handle network errors
+            handleFail('Network Error', 'No response from server. Please check your network connection.')
+        } else {
+            // Handle other errors
+            handleFail('Error', 'Something went wrong. Please try again.')
+        }
     }
     
 }

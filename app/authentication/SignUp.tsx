@@ -1,14 +1,16 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch } from '@/state/hooks';
 import {  StyleSheet, View, Text, TextInput } from 'react-native';
-import { AuthSignup } from '@/services/ApiService';
-import { useEffect, useState } from 'react';
-import { Login } from '@/services/AuthenticationService';
+import {  useState } from 'react';
+import * as AuthenticationService from '@/services/AuthenticationService';
+import * as ApiService from '@/services/ApiService';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { validateEmail } from '@/utils/ValidateEmail';
 import PasswordInput from '@/components/layout/PasswordInput';
 import BottomButton from '@/components/buttons/BottomButton';
 import Spinner from '@/components/layout/Spinner';
+import { JwtResponse } from '@/types/JwtResponse';
+import { User } from '@/types/User';
 
 export default function SignUp() {
 
@@ -31,18 +33,20 @@ export default function SignUp() {
   const handleSignup = async () => {
     setIsLoading(true)
     const emailTrimmed = email.trim()
-    const registeredUser = await AuthSignup({email: emailTrimmed, password})
+    const registeredUser = await ApiService.AuthSignup({email: emailTrimmed, password})
     if(registeredUser){
-      Login(dispatch, emailTrimmed, password, true)
-    } else {
-      setIsLoading(false)
-      // handleFail('Sign up failed', 'Something went wrong') 
+      AuthenticationService.Login(dispatch, emailTrimmed, password, true)
     }
+    setIsLoading(false)
   }
 
-  // **** TODO ****
-  const handleGuest = () => {
-
+  const handleGuest = async () => {
+    setIsLoading(true)
+    const registeredUser: User = await ApiService.AuthSignupAsGuest()
+    const jwtResponse: JwtResponse = await ApiService.AuthLoginAsGuest(registeredUser.id)
+    AuthenticationService.SaveJwtInfoLocally(jwtResponse)
+    AuthenticationService.LoadInitialData(dispatch, registeredUser.id)
+    setIsLoading(false)
   }
 
   const handleBlurEmail = () => {

@@ -125,7 +125,7 @@ const TutorialScreen = () => {
         title: 'RESULTS OF PRACTICING',
         contentList: [
             {
-                text: 'There are three possibilities when you finish revising a set of tables:',
+                text: 'There are three possibilities when you finish reviewing a set of tables:',
             },
             {
                 text: '1. You recalled all the tables correctly, and the set moves to the next repetition level.',
@@ -135,14 +135,14 @@ const TutorialScreen = () => {
                 }
             },
             {
-                text: '2. You did not recall any tables correctly; in this case, the revision will be postponed to the next day until you recall them correctly.',
+                text: '2. You did not recall any tables correctly; in this case, the reviewing will be postponed to the next day until you recall them correctly.',
                 image2: {
                     source: require('../../assets/images/tutorial/results_wrong.png'),
                     height: 280
                 }
             },
             {
-                text: '3. You recalled some tables correctly and some incorrectly; two sets will be created: one for correct tables that move to the next level (as case 1.) and another for incorrect tables that need revision the next day (as case 2.).',
+                text: '3. You recalled some tables correctly and some incorrectly; two sets will be created: one for correct tables that move to the next level (as case 1.) and another for incorrect tables that need to be reviewed the next day (as case 2.).',
             }
         ]
         },
