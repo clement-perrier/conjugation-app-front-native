@@ -3,6 +3,8 @@ import { StyleSheet, TextInput, Text } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useState } from 'react';
 import { validateEmail } from '@/utils/ValidateEmail';
+import React from 'react';
+import Colors from '@/constants/Colors';
 
 interface EmailInputProps {
   value: string,
@@ -23,6 +25,7 @@ export default function EmailInput({value, handleValue} : EmailInputProps) {
     <>
       <TextInput
         placeholder='Email'
+        placeholderTextColor={Colors.textPrimary}
         value={value}
         onChangeText={handleValue}
         onBlur={handleBlur}

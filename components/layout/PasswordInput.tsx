@@ -3,6 +3,7 @@ import IconButton from '../buttons/IconButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { useState } from 'react';
 import Styles from '@/constants/Styles';
+import Colors from '@/constants/Colors';
 
 interface PasswordInputProps {
   placeholder: string,
@@ -22,6 +23,7 @@ export default function PasswordInput({placeholder, password, handlePassword, di
     <View style={[{position: 'relative', width: '100%', maxWidth: Styles.maxWidth}, disable && styles.disable]}>
       <TextInput
         placeholder={placeholder}
+        placeholderTextColor={Colors.textPrimary}
         value={password}
         onChangeText={handlePassword}
         secureTextEntry={!isPasswordVisible}

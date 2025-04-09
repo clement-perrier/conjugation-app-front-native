@@ -64,6 +64,7 @@ export default function AppNavigator() {
     }
   };
 
+  // Constants
   const config = {
     animation: 'spring',
     config: {
@@ -76,16 +77,26 @@ export default function AppNavigator() {
     },
   };
 
+  const contentStyle = {backgroundColor: 'white', padding: 20}
+
   // Functions
-  const getOptions = (previousButton?: boolean, cancelButton?: boolean, selectionToBeCleared?: boolean, removeBatchButton?: boolean) => {
+  const getOptions = (
+                        previousButton?: boolean, 
+                        cancelButton?: boolean, 
+                        selectionToBeCleared?: boolean, 
+                        removeBatchButton?: boolean,
+                        headerPaddingBottom?: boolean
+                      ) => {
     return {
       header: () => <CustomHeader 
                       previousButton={previousButton}
                       cancelButton={cancelButton}
                       selectionToBeCleared={selectionToBeCleared}
                       removeBatchButton={removeBatchButton}
+                      headerPaddingBottom={headerPaddingBottom}
                     />,
                     // contentStyle: {padding: 20, backgroundColor: 'white', alignItems: 'center'},
+                    // contentStyle: {padding: 20}, 
       transitionSpec: {
         open: config,
         close: config
@@ -126,17 +137,16 @@ export default function AppNavigator() {
    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
 
-      <View style={{flex: 1, alignItems: 'center', padding: Styles.mainPadding}}>
-        <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
+      <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
+        {/* <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth, padding: Styles.mainPadding}}> */}
           {
             isAuthenticated ? (
               // User authenticated
               user?.defaultLearningLanguage ? (
                 // At least one learning language selected
-                <Stack.Navigator 
-                initialRouteName="Home">
+                <Stack.Navigator initialRouteName="Home" screenOptions={{contentStyle}}>
                 {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
-                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false, contentStyle: {backgroundColor: 'white'}}} />
+                  <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
                   {/* padding: 20,  */}
                   <Stack.Screen 
                     name="Learning language list"
@@ -186,7 +196,7 @@ export default function AppNavigator() {
                 </Stack.Navigator>
               ) : (
                 // No learning language selected
-                <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'}>
+                <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'} screenOptions={{contentStyle}}>
                   {
                     isOffline 
                       ?
@@ -213,7 +223,7 @@ export default function AppNavigator() {
               )
             ) : (
               // User not authenticated
-              <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'}>
+              <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'} screenOptions={{contentStyle}}>
                 <Stack.Screen 
                   name="Log in" 
                   component={LogIn}
@@ -237,19 +247,31 @@ export default function AppNavigator() {
               </Stack.Navigator>
             )
           }
-        </View>
       </View>
     </>
   );
 }
 
 export function CustomHeader(
-  {previousButton, cancelButton, selectionToBeCleared, removeBatchButton} : 
-  {previousButton?: boolean, cancelButton?: boolean, selectionToBeCleared?: boolean, removeBatchButton?: boolean}
+  {
+    previousButton, 
+    cancelButton, 
+    selectionToBeCleared, 
+    removeBatchButton,
+    headerPaddingBottom
+  } 
+    :
+  {
+    previousButton?: boolean,
+    cancelButton?: boolean,
+    selectionToBeCleared?: boolean, 
+    removeBatchButton?: boolean,
+    headerPaddingBottom?: boolean
+  }
 ){
 
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, headerPaddingBottom && {paddingBottom: 15}]}>
       {previousButton ? <BackButton/> : <View/>}
       {!cancelButton && removeBatchButton && <RemoveBatchButton/>}
       {cancelButton && <CancelStackButton selectionToBeCleared={selectionToBeCleared}/>}
@@ -304,6 +326,5 @@ const styles = StyleSheet.create({
     elevation: 0, // Remove elevation (for Android)
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 15
   }
 })

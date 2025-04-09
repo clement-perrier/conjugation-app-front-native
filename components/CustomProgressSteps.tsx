@@ -14,13 +14,14 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
   
   // Data
   const steps = [...dayNumberList];
+  const stepsLength = steps.length
   
   const circleSize = 29
 
-  let { width: screenWidth } = Dimensions.get('window');
-  screenWidth = screenWidth - Styles.mainPadding * 2
+  // let { width: screenWidth } = Dimensions.get('window');
+  // screenWidth = screenWidth - Styles.mainPadding * 2
 
-  const lineWidth = (screenWidth - steps.length * circleSize) / (steps.length - 1);
+  // const lineWidth = (screenWidth - steps.length * circleSize) / (steps.length - 1);
 
   // Functions
   // Function to dynamically calculate font size based on circle size and text length
@@ -35,11 +36,12 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
     <View style={styles.progressContainer}>
       {steps.map((step, index) => {
 
+        const label = step < 7 ? 'D' + step : (step < 30 ? 'S' + Math.floor(step / 7) : 'M' + step / 30)
         const isActive = step < currentStep;
         const isCurrent = step === currentStep
         const isNext = step === getNextDayNumber(currentStep)
         const isPrevious = step === getPreviousDayNumber(currentStep)
-        const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
+        // const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
 
         const isNotDisplayed = isResult && (
                                 !isCurrent ||
@@ -55,7 +57,7 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
 
         return (
           isDisplayed && 
-            <View key={index} style={styles.stepContainer}>
+            <View key={index} style={[styles.stepContainer, index < steps.length - 1 && {flex: 1}]}>
               {/* Circle */}
               <View
                 style={[
@@ -67,10 +69,10 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
                 <Text 
                   style={[
                     styles.circleText, 
-                    {fontSize: fontSize},
+                    {fontSize: 13},
                     isActive ? styles.activeCircleText : styles.circleText
                   ]}>
-                    D{step}
+                    { label }
                   </Text>
               </View>
 
@@ -82,7 +84,7 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
                     style={[
                       styles.line,
                       isActive ? styles.activeLine : styles.inactiveLine,
-                      {width: lineWidth}
+                      // {width: lineWidth}
                     ]}
                   />
                   <Text></Text>
@@ -101,12 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%'
     // marginVertical: Styles.mainPadding
   },
   stepContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   circle: {
     justifyContent: 'center',
@@ -143,6 +146,8 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 2,
+    // width: '100%'
+    flexGrow: 1,
   },
   activeLine: {
     backgroundColor: Colors.success,

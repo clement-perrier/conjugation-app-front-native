@@ -74,6 +74,7 @@ export default function Home() {
 
   return (
     <>
+    {/* <View style={{flex: 1, padding: 20}}> */}
       {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
       { 
@@ -139,6 +140,7 @@ export default function Home() {
           />
           </>
       </MainLayout>
+    {/* </View> */}
     </>
   );
 }

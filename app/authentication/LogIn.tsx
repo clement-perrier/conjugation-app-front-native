@@ -1,8 +1,7 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch } from '@/state/hooks';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
-import { useEffect, useState } from 'react';
-import AuthenticationLayout from '@/components/layout/AuthenticationLayout';
+import { StyleSheet, View, Text } from 'react-native';
+import { useState } from 'react';
 import { Login } from '@/services/AuthenticationService';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { validateEmail } from '@/utils/ValidateEmail';
@@ -10,6 +9,7 @@ import PasswordInput from '@/components/layout/PasswordInput';
 import BottomButton from '@/components/buttons/BottomButton';
 import Spinner from '@/components/layout/Spinner';
 import Styles from '@/constants/Styles';
+import EmailInput from '@/components/layout/EmailInput';
 
 export default function LogIn() {
 
@@ -20,19 +20,18 @@ export default function LogIn() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
 
   // Handlers
   const handleLogin = async () => {
     setIsLoading(true)
-    const token = await Login(dispatch, email.trim() , password, false)
-    if(!token){
-      setIsLoading(false)
+    try {
+      const token = await Login(dispatch, email.trim() , password, false)
+    } catch (error) {
+      console.error('Login.tsx - handleLogin() failed: ', error);
     }
-  };
-
-  const handleBlurEmail = () => {
-    setIsEmailValid(validateEmail(email));
+    // if(!token){
+      setIsLoading(false)
+    // }
   };
 
   if(isLoading){
@@ -40,20 +39,15 @@ export default function LogIn() {
   }
 
   return (
-    <View style={[globalstyles.flexColumn, globalstyles.container, globalstyles.flexCenter]}>
+    <View style={[globalstyles.flexColumn, globalstyles.container]}>
 
       <Text style={[globalstyles.title, globalstyles.text]}>{'Log in'}</Text>
 
       {/* Email input */}
-      <TextInput
-        placeholder="Email"
+      <EmailInput 
         value={email}
-        onChangeText={setEmail}
-        onBlur={handleBlurEmail}
-        style={[globalstyles.input, !isEmailValid && globalstyles.invalidInput]}
+        handleValue={setEmail}
       />
-
-      {!isEmailValid && <Text style={globalstyles.invalidEmailText}>Invalid email address</Text>}
 
       {/* Password input */}
       <PasswordInput
@@ -76,7 +70,7 @@ export default function LogIn() {
       <BottomButton 
         label={'Login'}
         onPress={handleLogin} 
-        disabled={password.length < 6 || !validateEmail(email)}
+        disabled={!email || password.length < 6 || !validateEmail(email)}
       />
 
       {/* Bottom Text */}

@@ -4,12 +4,13 @@ import { Batch } from '@/types/Batch';
 import AppSecureStore from '@/state/SecureStore';
 import { jwtDecode } from 'jwt-decode';
 import CustomError from '@/utils/CustomError';
-import { handleFail, handleSuccess } from '@/utils/Messages';
+import { consoleError, handleFail, handleSuccess } from '@/utils/Messages';
 
 // Axios configuration
 const local = 'localhost:8080'
+const localMobile = '10.0.0.222:8080'
 const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
-const API_BASE_URL = `http://${local}`
+const API_BASE_URL = `http://${localMobile}`
 
 const apiService = axios.create({
     baseURL: API_BASE_URL,
@@ -270,6 +271,8 @@ export const AuthLogin = async(loginUser: LoginUser) => {
         return response.data;
     } catch (error) {
         handleRequestError('Login failed', error)
+        console.error('ApiService - AuthLogin() failed: ', error)
+        throw error
     }
     
 }
@@ -303,6 +306,8 @@ export const AuthSignup = async(loginUser: LoginUser) => {
             // Handle other errors
             handleFail('Error', 'Something went wrong. Please try again.')
           }
+        console.error('ApiService - AuthSignup() failed', error)
+        throw error
     }
     
 }
@@ -322,6 +327,8 @@ export const AuthSignupAsGuest = async() => {
             // Handle other errors
             handleFail('Error', 'Something went wrong. Please try again.')
         }
+        console.error('ApiService - AuthSignupAsGuest() failed', error)
+        throw error
     }
     
 }
@@ -341,7 +348,10 @@ export const AuthPasswordResetRequest = async(email: string) => {
         handleSuccess(`A password reset code has been sent to ${email}.`)
         return response.data;
     } catch (error: any) {
-        handleRequestError('Password reset request error', error)
+        handleFail('Reset Code Request Error', 'The code couldn\'t be sent')
+        // handleRequestError('Password reset request error', error)
+        consoleError('ApiService', 'AuthPasswordResetRequest', error)
+        throw error
     }
 }
 

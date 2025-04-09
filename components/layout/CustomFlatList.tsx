@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle, Dimensions } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { Verb } from '@/types/Verb';
 import Spinner from './Spinner';
@@ -32,6 +32,17 @@ export default function CustomFlatList(
     }
 ){
 
+  const [bounces, setBounces] = useState(true); // Initially, enable bounce
+  
+  // Get screen height
+  const screenHeight = Dimensions.get('window').height;
+
+  // Track content size and set bounce conditionally
+  const onContentSizeChange = (contentWidth: number, contentHeight: number) => {
+    // If content height exceeds screen height, enable bouncing; otherwise, disable
+    setBounces(contentHeight + 240 > screenHeight);
+  };
+
   if (isLoading) {
     return <Spinner text={'Loading data'}/>
 
@@ -59,6 +70,8 @@ export default function CustomFlatList(
       windowSize={10} 
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
+      onContentSizeChange={onContentSizeChange}
+      bounces={bounces}
     />
   );
 };

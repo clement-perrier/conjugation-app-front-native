@@ -49,7 +49,7 @@ export default function BatchCreated() {
 
 const styles = StyleSheet.create({
   tableContainer: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.tertiary,
     width: '100%'
   },
 })

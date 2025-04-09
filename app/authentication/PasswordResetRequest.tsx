@@ -7,6 +7,7 @@ import { validateEmail } from '@/utils/ValidateEmail';
 import EmailInput from '@/components/layout/EmailInput';
 import { AuthPasswordResetRequest } from '@/services/ApiService';
 import Spinner from '@/components/layout/Spinner';
+import { consoleError } from '@/utils/Messages';
 
 export default function PasswordResetRequest() {
 
@@ -19,13 +20,13 @@ export default function PasswordResetRequest() {
   // Function to handle the reset password request
   const handleResetRequest = async () => {
     setIsLoading(true)
-    const resetPasswordResponse = await AuthPasswordResetRequest(email)
-    if(resetPasswordResponse){
-      navigation.navigate('New password')
-    } else {
-      setIsLoading(false)
+    try {
+      const resetPasswordResponse = await AuthPasswordResetRequest(email)
+      resetPasswordResponse && navigation.navigate('New password')
+    } catch (error) {
+      consoleError('PasswordResetRequest.tsx', 'handleResetRequest', error)
     }
-    // setIsLoading(false)
+    setIsLoading(false)
   };
 
   if(isLoading){
@@ -47,7 +48,7 @@ export default function PasswordResetRequest() {
       <BottomButton 
         label='Send reset code'
         onPress={handleResetRequest} 
-        disabled={!validateEmail(email)}
+        disabled={!email || !validateEmail(email)}
       />
 
     </View>

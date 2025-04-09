@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
   table: {
     backgroundColor: Colors.secondary,
     padding: 15,
-    borderRadius: 4
+    borderRadius: 5
   }
 });

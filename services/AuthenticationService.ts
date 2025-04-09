@@ -20,19 +20,17 @@ export const Login = async (dispatch: any, email: string, password: string, sign
   try {
       const jwtResponse: JwtResponse = await AuthLogin({email, password})
       SaveJwtInfoLocally(jwtResponse)
-      signupBefore ? handleSuccess('Sign up successful! You are now logged in.') : handleSuccess('You are now logged in!')
+      signupBefore 
+        ? handleSuccess('Sign up successful! You are now logged in.') 
+        : handleSuccess('You are now logged in!')
       LoadInitialData(dispatch, jwtResponse.userId)
       return jwtResponse
     } catch (error: any) {
       // Handle errors that occur during the API call
-      // console.log(error)
-      // console.error('Login failed:', error.response?.data || error.message);  
-      // handleFail('Login failed', error.response?.data.description || error.message);
-      
-      // You might throw the error again or handle it in another way
-      // throw new Error(error.response?.data?.message || 'Login failed, please try again.');
-      return null
-    }
+      console.error('Authentication Service - Login() failed:', error.response?.data || error.message);
+      throw error
+      // return null;  // Return null or fallback value
+  }
   }
   
   export const SaveJwtInfoLocally = async (jwtResponse: JwtResponse) => {

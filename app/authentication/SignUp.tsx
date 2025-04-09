@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch } from '@/state/hooks';
-import {  StyleSheet, View, Text, TextInput } from 'react-native';
+import {  StyleSheet, View, Text } from 'react-native';
 import {  useState } from 'react';
 import * as AuthenticationService from '@/services/AuthenticationService';
 import * as ApiService from '@/services/ApiService';
@@ -11,6 +11,7 @@ import BottomButton from '@/components/buttons/BottomButton';
 import Spinner from '@/components/layout/Spinner';
 import { JwtResponse } from '@/types/JwtResponse';
 import { User } from '@/types/User';
+import EmailInput from '@/components/layout/EmailInput';
 
 export default function SignUp() {
 
@@ -22,7 +23,6 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
 
   // Derived data
   const havePasswordsMinLength = password.length >=6 && passwordConfirmation.length >=6 
@@ -33,10 +33,14 @@ export default function SignUp() {
   const handleSignup = async () => {
     setIsLoading(true)
     const emailTrimmed = email.trim()
-    const registeredUser = await ApiService.AuthSignup({email: emailTrimmed, password})
-    if(registeredUser){
-      AuthenticationService.Login(dispatch, emailTrimmed, password, true)
+    try {
+      const registeredUser = await ApiService.AuthSignup({email: emailTrimmed, password})
+      registeredUser && AuthenticationService.Login(dispatch, emailTrimmed, password, true)
+    } catch (error) {
+      console.error('SignUp.tsx - handleSignup() failed', error)
     }
+    // if(registeredUser){
+    // }
     setIsLoading(false)
   }
 
@@ -49,29 +53,20 @@ export default function SignUp() {
     setIsLoading(false)
   }
 
-  const handleBlurEmail = () => {
-    setIsEmailValid(validateEmail(email));
-  };
-
   if(isLoading){
     return <Spinner text={'Signing up'}/>
   }
 
   return (
-      <View style={[globalstyles.flexColumn, globalstyles.container, globalstyles.flexCenter]}>
+      <View style={[globalstyles.flexColumn, globalstyles.container]}>
   
         <Text style={[globalstyles.title, globalstyles.text]}>Sign up</Text>
   
         {/* Email input */}
-        <TextInput
-          placeholder="Email"
+        <EmailInput 
           value={email}
-          onChangeText={setEmail}
-          onBlur={handleBlurEmail}
-          style={[globalstyles.input, !isEmailValid && globalstyles.invalidInput]}
+          handleValue={setEmail}
         />
-  
-        {!isEmailValid && <Text style={globalstyles.invalidEmailText}>Invalid email address</Text>}
   
         {/* Password input */}
         <PasswordInput
@@ -100,7 +95,7 @@ export default function SignUp() {
           <BottomButton 
             label={'Signup'}
             onPress={handleSignup} 
-            disabled={password.length < 6 || !validateEmail(email) || !arePasswordsEqual}
+            disabled={!email || password.length < 6 || !validateEmail(email) || !arePasswordsEqual}
             />
 
           {/* Bottom Text */}

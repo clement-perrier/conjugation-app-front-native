@@ -213,9 +213,10 @@ const TutorialScreen = () => {
                 )}
             />
 
-            <View style={[{width: '100%'}, globalstyles.flexRow, globalstyles.flexCenter]}>
+            <View style={[{width: '100%', marginTop: 20}, globalstyles.flexRow, globalstyles.flexCenter]}>
                 {buttons?.map((button, index) => 
-                    <View style={[isFirstStep ? {width: '100%'} : {width: '50%'}, {alignItems: 'center'}]}>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                    {/* <View style={[isFirstStep ? {width: '100%'} : {width: '50%'}, {flex: 1, alignItems: 'center'}]}> */}
                         <BottomButton 
                             key={index}
                             label={button.label}
