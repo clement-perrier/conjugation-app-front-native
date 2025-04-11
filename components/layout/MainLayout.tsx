@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, StyleProp, ViewStyle } from 'react-native';
 import type { ReactElement } from 'react';
 import { LayoutButton } from '@/types/LayoutButton';
 import BottomButton from '../buttons/BottomButton';
@@ -9,13 +9,14 @@ interface MainLayoutProps {
     children: ReactElement,
     buttons?: LayoutButton[],
     buttonsHorizontal?: boolean,
-    title?: string
+    title?: string,
+    customStyle?: StyleProp<ViewStyle>
 }
 
-export default function MainLayout({children, buttons, buttonsHorizontal, title} : MainLayoutProps){
+export default function MainLayout({children, buttons, buttonsHorizontal, title, customStyle} : MainLayoutProps){
     
     return (
-        <View style={[globalstyles.container]}>
+        <View style={[globalstyles.container, customStyle]}>
 
             { title && <Text style={globalstyles.title}>{title}</Text>  }
 

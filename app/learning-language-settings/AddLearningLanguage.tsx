@@ -9,6 +9,7 @@ import { addLearningLanguage, updateDefaultLearningLanguage } from '@/state/slic
 import { UpdateUserDefaultLearningLanguage, UpdateUserLearningLanguageList } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import React from 'react';
+import Styles from '@/constants/Styles';
 
 export default function AddLearningLanguage() {
 
@@ -30,7 +31,7 @@ export default function AddLearningLanguage() {
   }, [isOnBoarding, user?.defaultLearningLanguage]);
 
   return (
-    <MainLayout title='Available languages'>
+    <MainLayout title='Available languages' customStyle={isOnBoarding && {marginTop: Styles.mainPadding}}>
       <>
         <CustomFlatList
           data={learningLanguageList}

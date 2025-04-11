@@ -184,7 +184,7 @@ const TutorialScreen = () => {
     )
 
     return (
-        <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center'}} >
+        <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center', padding: 20}} >
             <Text style={globalstyles.title}>{tutorialContent[step].title}</Text> 
             <CustomFlatList
                 data={tutorialContent[step].contentList}
