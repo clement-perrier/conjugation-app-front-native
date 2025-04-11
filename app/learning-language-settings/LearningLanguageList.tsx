@@ -46,18 +46,19 @@ export default function LearningLanguageList() {
 
       <CustomFlatList
         data={learningLanguageList}
+        itemSeparatorHeight={30}
         renderItem={({item}) => 
-            <ListButton 
-              key={item.id}
-              label={item.name}
-              disabled={user?.defaultLearningLanguage.id === item.id}
-              onPress={() =>{
-                dispatch(updateDefaultLearningLanguage(item))
-                user && UpdateUserDefaultLearningLanguage(user.id, item.id)
-                navigation.navigate('Home')
-              }}
-              // icon='chevron-right'
-            />
+          <ListButton 
+            key={item.id}
+            label={item.name}
+            disabled={user?.defaultLearningLanguage.id === item.id}
+            onPress={() =>{
+              dispatch(updateDefaultLearningLanguage(item))
+              user && UpdateUserDefaultLearningLanguage(user.id, item.id)
+              navigation.navigate('Home')
+            }}
+            // icon='chevron-right'
+          />
         }
       >
 

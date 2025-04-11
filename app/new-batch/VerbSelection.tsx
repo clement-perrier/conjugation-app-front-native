@@ -16,6 +16,7 @@ import Colors  from '@/constants/Colors';
 import { CustomAlert } from '@/utils/CustomAlert';
 import Styles from '@/constants/Styles';
 import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
+import React from 'react';
 
 export default function VerbSelection() {
 
@@ -97,7 +98,6 @@ export default function VerbSelection() {
   ]
 
   return (
-    <>
     <MainLayout buttons={buttons} title={selectedTense ? `Select verb(s) in ${selectedTense.name}` : ''}>
 
       <>
@@ -161,6 +161,7 @@ export default function VerbSelection() {
               key={numColumns}
               keyExtractor={(item: Verb) => item.id.toString()}
               style={[{flex: 1}, globalstyles.flatList]}
+              itemSeparatorHeight={15}
               renderItem={({item}) => 
                 <ListButton
                   label={item.name}
@@ -176,7 +177,6 @@ export default function VerbSelection() {
       </>
 
     </MainLayout>
-    </>
   );
 }
 

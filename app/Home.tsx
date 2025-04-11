@@ -32,15 +32,15 @@ export default function Home() {
   // Selectors
   const user = useAppSelector(state => state.User.value)
   const batchList = useAppSelector(state => state.BatchList.value)
+  const batchListLearningLanguageId = useAppSelector(state => state.BatchList.learningLanguageId)
   const batchListLoading = useAppSelector(state => state.BatchList.loading)
 
   // States
   const [loading, setLoading] = useState(false)
 
-  // Derived data
   // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
-    return batchList.slice().sort((a, b) => 
+    return batchList.slice().sort((a: Batch, b: Batch) => 
       new Date(a.reviewingDate).valueOf() - new Date(b.reviewingDate).valueOf() ||
       a.dayNumber - b.dayNumber
     ) 
@@ -50,14 +50,17 @@ export default function Home() {
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
-      dispatch(FetchTenseList(languageId))
-      dispatch(FetchVerbList(languageId))
-      dispatch(FetchPronounList(languageId))
-      dispatch(FetchTableList(languageId))
-      dispatch(FetchBatchList({userId: user.id, languageId}))
-      dispatch(updateIsOnBoarding(false))
+      const alreadyLoaded = batchListLearningLanguageId === languageId
+      if (!alreadyLoaded && !batchListLoading){
+        dispatch(FetchTenseList(languageId))
+        dispatch(FetchVerbList(languageId))
+        dispatch(FetchPronounList(languageId))
+        dispatch(FetchTableList(languageId))
+        dispatch(FetchBatchList({userId: user.id, languageId}))
+        dispatch(updateIsOnBoarding(false))
+      }
     }
-  }, [user])
+  }, [])
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -76,15 +79,17 @@ export default function Home() {
     <>
       <View style={[globalstyles.flexRow, styles.header]}>
 
-      { 
-        user &&
-          <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
-      }
+        { 
+          user &&
+            <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
+        }
         <IconButton  
           icon='settings' 
           size={33}
           onPress={() => navigation.navigate('settings')}
+          style={globalstyles.headerButton}
           />
+
       </View>
 
       {/* Batches list */}
@@ -94,7 +99,7 @@ export default function Home() {
             data={sortedBatchList}
             isLoading={batchListLoading}
             emptyMessage="Create a repetition set to start learning"
-            itemSeparatorHeight={15}
+            itemSeparatorHeight={25}
             renderItem={({ item, index } : {item: Batch, index: number}) => (
               <>
                 {/* Padding top */}
@@ -137,8 +142,8 @@ export default function Home() {
 const styles = StyleSheet.create({
   header: {
     justifyContent: 'space-between',
-    height: 'auto',
-    backgroundColor: 'white',
-    paddingBottom: Styles.mainPadding,
+    // height: 'auto',
+    // backgroundColor: 'white',
+    // paddingBottom: Styles.mainPadding,
   }
 });

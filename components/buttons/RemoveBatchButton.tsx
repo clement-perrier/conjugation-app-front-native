@@ -15,6 +15,7 @@ export default function RemoveBatchButton() {
     // Selectors
     const selectedBatch = useAppSelector(state => state.SelectedBatch.value)
     
+    // Handlers
     const handlePress = () => {
         if (Platform.OS === 'web') {
             // Use a different method for web, such as the browser's confirm dialog
@@ -59,7 +60,7 @@ export default function RemoveBatchButton() {
             size={30}
             color={Colors.error}
             onPress={handlePress}
-            style={[globalstyles.headerButton, globalstyles.headerLefttButton]}
+            style={globalstyles.headerButton}
         />
     )
     

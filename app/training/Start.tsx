@@ -49,6 +49,7 @@ export default function Start() {
         </View>
         <CustomFlatList
           data={selectedBatch?.tableList}
+          itemSeparatorHeight={7}
           renderItem={({item}) => 
             <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
           }
@@ -61,8 +62,8 @@ export default function Start() {
 
 const styles = StyleSheet.create({
   table: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.tertiary,
     padding: 15,
-    borderRadius: 5
+    borderRadius: 8
   }
 });

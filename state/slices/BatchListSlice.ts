@@ -1,15 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AsyncListState } from '../interfaces/AsyncListState'
+import { AsyncBatchListState, AsyncListState } from '../interfaces/AsyncListState'
 import { Batch } from '@/types/Batch'
 import { FetchBatchList } from '@/services/ApiService'
 import { Table } from '@/types/Table'
 import addDays from '@/utils/AddDays'
 import { getIncrement, getNextDayNumber } from '@/types/DayNumber'
+import LearningLanguageListSlice from './LearningLanguageListSlice'
+import { defaultLearningLanguage } from '@/types/LearningLanguage'
+import UserSlice from './UserSlice'
+import { store } from '../store'
 
 // Define the initial state using that type
-const initialState: AsyncListState<Batch> = {
+const initialState: AsyncBatchListState<Batch> = {
   value: [],
   loading: false,
+  learningLanguageId: 0,
   error: null
 }
 
@@ -39,18 +44,19 @@ export const BatchListSlice = createSlice({
     }
   },
   extraReducers(builder) {
-      builder
-    .addCase(FetchBatchList.pending, (state) => {
-        state.loading = true;
-    })
-    .addCase(FetchBatchList.fulfilled, (state, action) => {
-        state.loading = false;
-        state.value = action.payload;
-    })
-    .addCase(FetchBatchList.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-    });
+    builder
+      .addCase(FetchBatchList.pending, (state) => {
+          state.loading = true;
+      })
+      .addCase(FetchBatchList.fulfilled, (state, action) => {
+          state.loading = false;
+          state.value = action.payload?.data;
+          state.learningLanguageId = action.payload?.learningLanguageId
+      })
+      .addCase(FetchBatchList.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message;
+      });
   }
 })
 

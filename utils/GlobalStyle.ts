@@ -11,7 +11,9 @@ export const globalstyles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
+        padding: Styles.mainPadding,
+        paddingTop: 0
     },
     flatList: {
         // height: 10,
@@ -100,6 +102,7 @@ export const globalstyles = StyleSheet.create({
         // height: '100%',
         // top: 15,
         // zIndex: 4
+        padding: 15
     },
     headerRightButton: {
         // right: headerButtonsSideGap

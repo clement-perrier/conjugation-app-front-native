@@ -280,6 +280,7 @@ export default function Question() {
             {/*  Input & Info button + Tooltip*/}
             <View style={{flex: 1, justifyContent: 'center'}}>
 
+              {/* Pronoun + Input */}
               <View style={[globalstyles.flexRow]}>
                 <Text style={[globalstyles.text, {textTransform: 'uppercase', fontWeight: 'bold'}]}>{currentConjugation.pronoun.name}</Text>
                 <TextInput
@@ -292,7 +293,7 @@ export default function Question() {
               </View>
 
               {/* Info button & tooltip */}
-              <View style={[styles.tooltipContainer, globalstyles.flexEnd]}>
+              <View style={globalstyles.flexEnd}>
   
                 <InfoButton size={25} handlePress={() => setTooltipVisible(!tooltipVisible)}/>
 
@@ -357,8 +358,7 @@ export default function Question() {
             </View>
           </>
         ) : (
-      // <Text>Loading...</Text>
-      <Spinner text={'Loading'}/>
+          <Spinner text={'Loading'}/>
         )
       }
     </View>
@@ -385,10 +385,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 10,
     paddingRight: 20
-  },
-  tooltipContainer: {
-    // flexDirection: 'row', 
-    marginTop: 10
   },
   tooltip: {
     position: 'absolute',

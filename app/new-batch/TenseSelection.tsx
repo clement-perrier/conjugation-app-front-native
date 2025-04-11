@@ -21,6 +21,7 @@ export default function TenseSelection() {
       <CustomFlatList
         data={tenseList}
         isLoading={tenseListLoading}
+        itemSeparatorHeight={30}
         emptyMessage='No verbs found for this language'
         renderItem={({ item }) => (
             <ListButton

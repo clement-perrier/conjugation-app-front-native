@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   stepContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    // justifyContent: 'center'
   },
   circle: {
     justifyContent: 'center',
@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 2,
-    // width: '100%'
-    flexGrow: 1,
+    width: '100%',
+    flexGrow: 1
   },
   activeLine: {
     backgroundColor: Colors.success,

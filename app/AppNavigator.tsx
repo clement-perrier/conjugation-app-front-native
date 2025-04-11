@@ -37,6 +37,7 @@ import Constants from "expo-constants";
 import { NavigationContainer } from "@react-navigation/native";
 import Styles from "@/constants/Styles";
 import Settings from "./settings/Settings";
+import { globalstyles } from "@/utils/GlobalStyle";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -78,7 +79,7 @@ export default function AppNavigator() {
     },
   };
 
-  const contentStyle = {backgroundColor: 'white', padding: 20}
+  const contentStyle = {backgroundColor: 'white'}
 
   // Functions
   const getOptions = (
@@ -151,13 +152,13 @@ export default function AppNavigator() {
                     <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
                     {/* padding: 20,  */}
                     <Stack.Screen 
-                      name="Learning language list"
-                      component={LearningLanguageList}
+                      name="settings"
+                      component={Settings}
                       options={getOptions(true)}
                     />
                     <Stack.Screen 
-                      name="settings"
-                      component={Settings}
+                      name="Learning language list"
+                      component={LearningLanguageList}
                       options={getOptions(true)}
                     />
                     <Stack.Screen 
@@ -296,9 +297,9 @@ export function BackButton(){
           <View style={{justifyContent: 'center'}}>
               <IconButton 
                   icon='arrow-back'
-                  size={26} // Adjust size to match default button icon size
+                  size={30} // Adjust size to match default button icon size
                   onPress={() => navigation.goBack()}
-                  style={{}}
+                  style={globalstyles.headerButton}
               />
           </View>
   )
@@ -319,9 +320,9 @@ function CancelStackButton({selectionToBeCleared} : {selectionToBeCleared?: bool
       <View>
         <IconButton 
             icon='close'
-            size={26} // Adjust size to match default button icon size
+            size={Styles.headerIconSize} 
             onPress={handlePress}
-            style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center'}}
+            style={globalstyles.headerButton}
         />
       </View>
   )

@@ -13,20 +13,16 @@ interface IconButtonProps {
 
 export default function IconButton({ icon, onPress, style, color, size }: IconButtonProps) {
 
-  // States
-  const [isPressed, setIspressed] = useState(false)
-
   // Derived data
   const iconColor = color ? color : Colors.textPrimary
 
   return (
     <Pressable 
-      style={({pressed}) => [styles.iconButton, style, {opacity: pressed ? 0.7 : 1}]} 
+      style={({pressed}) => [styles.iconButton, style, {opacity: pressed ? 0.5 : 1}]} 
       onPress={onPress}
     >
 
       <MaterialIcons 
-        style={{opacity: isPressed ? 0.7 : 1}}
         name={icon} 
         size={size} 
         color={iconColor}/>

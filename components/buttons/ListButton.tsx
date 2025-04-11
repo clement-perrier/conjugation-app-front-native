@@ -55,12 +55,13 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
                 disabled={disabled}
                 style={({ pressed }) => [
                     styles.button,
-                    disabled && styles.disabled,
-                    { backgroundColor: pressed ? 'grey' : Colors.secondary }
+                    // disabled && styles.disabled,
+                    { backgroundColor: Colors.secondary },
+                    {opacity: disabled || pressed ? 0.5 : 1}
                 ]}
             >
                 { focus && <View style={styles.circle}></View> }
-                <Text style={[globalstyles.text, globalstyles.uppercase]}>{label}</Text>
+                <Text style={[globalstyles.text, globalstyles.uppercase, focus && { textDecorationLine: 'underline', fontWeight: 'bold'}]}>{label}</Text>
                 <MaterialIcons name={icon} size={20} color={Colors.textSecondary} style={styles.icon} />
             </Pressable>
         // </Animated.View>
@@ -69,7 +70,7 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
 
 const styles = StyleSheet.create({
     button: {
-        height: 45,
+        height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',

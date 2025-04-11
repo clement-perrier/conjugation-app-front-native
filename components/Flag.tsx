@@ -1,5 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch } from '@/state/hooks';
+import { globalstyles } from '@/utils/GlobalStyle';
 import { Pressable, StyleSheet, Image, Text } from 'react-native';
 
 const flags: any = {
@@ -19,7 +20,7 @@ export default function Flag({countryName, onPress} : {countryName: string, onPr
   const flagSource = flags[countryName]
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} style={({pressed}) => [globalstyles.headerButton, {opacity: pressed ? 0.5 : 1}]}>
       <Image 
         style={styles.image} 
         source={flagSource}

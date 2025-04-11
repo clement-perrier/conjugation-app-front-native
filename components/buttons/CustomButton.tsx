@@ -7,12 +7,13 @@ export default function CustomButton({ label, onPress } : {label:string, onPress
       return (  
         // <View style={styles.buttonContainer}>
           <Pressable 
-          style={({pressed}) => [
-            styles.button,
-            {opacity: pressed ? 0.4 : 1}
-          ]}
-          onPress={onPress}>
-              <Text style={{color: 'white', textAlign: 'center'}}>{label}</Text>
+            style={({pressed}) => [
+              styles.button,
+              {opacity: pressed ? 0.5 : 1}
+            ]}
+            onPress={onPress}
+          >
+            <Text style={{color: 'white', textAlign: 'center'}}>{label}</Text>
           </Pressable>
         // {/* </View> */}
       );

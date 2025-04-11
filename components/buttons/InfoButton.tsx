@@ -1,5 +1,5 @@
 import Colors from '@/constants/Colors';
-import { StyleSheet, Text, Pressable } from 'react-native';
+import { StyleSheet, Text, Pressable, View } from 'react-native';
 
 interface InfoButtonProps {
     size: number,
@@ -11,8 +11,10 @@ export default function InfoButton({handlePress, size} : InfoButtonProps) {
     const style = {height: size, width: size, borderRadius: halfSize}
 
     return (
-        <Pressable onPress={handlePress} style={[styles.innerCircle, style]}>
-            <Text style={[styles.iconText, {fontSize: halfSize}]}>i</Text>
+        <Pressable onPress={handlePress} style={{padding: 10, paddingRight: 0}}>
+            <View style={[styles.innerCircle, style]}>
+                <Text style={[styles.iconText, {fontSize: halfSize}]}>i</Text>
+            </View>
         </Pressable>
     )
 }

@@ -15,6 +15,7 @@ import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import { formatDateAsISO } from '@/utils/Date';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { handleSuccess } from '@/utils/Messages';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Text, StyleSheet, BackHandler } from 'react-native';
 
@@ -114,6 +115,7 @@ export default function BatchProgress() {
           isLoading={false}
           emptyMessage='Selection is empty'
           data={selectedTableList}
+          itemSeparatorHeight={20}
           renderItem={({item}) => 
               <ListButton
                 label={item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()} 

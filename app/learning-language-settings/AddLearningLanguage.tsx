@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { addLearningLanguage, updateDefaultLearningLanguage } from '@/state/slices/UserSlice';
 import { UpdateUserDefaultLearningLanguage, UpdateUserLearningLanguageList } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import React from 'react';
 
 export default function AddLearningLanguage() {
 
@@ -31,11 +32,12 @@ export default function AddLearningLanguage() {
   return (
     <MainLayout title='Available languages'>
       <>
-      <CustomFlatList
-        data={learningLanguageList}
-        isLoading={learningLanguageListLoading}
-        emptyMessage='No languages available for this user.'
-        renderItem={({item}) => 
+        <CustomFlatList
+          data={learningLanguageList}
+          isLoading={learningLanguageListLoading}
+          itemSeparatorHeight={30}
+          emptyMessage='No languages available for this user.'
+          renderItem={({item}) => 
             <ListButton 
               key={item.id}
               label={item.name}
@@ -50,16 +52,13 @@ export default function AddLearningLanguage() {
                     UpdateUserLearningLanguageList(user.id, item.id),
                     UpdateUserDefaultLearningLanguage(user.id, item.id)
                   )
-                !isOnBoarding && 
-                  (
-                    navigation.navigate('Home')
-                  )
+                !isOnBoarding && navigation.navigate('Home')
               }}
               // icon='chevron-right'
-          />}
-      >
+            />}
+        >
 
-      </CustomFlatList>
+        </CustomFlatList>
       </>
 
     </MainLayout>

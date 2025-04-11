@@ -203,7 +203,10 @@ export const FetchBatchList = createAsyncThunk(
     async ({userId, languageId} : {userId: number, languageId: number}) => {
         try {
             const response = await apiService.get(`batchesByUserAndLanguage?userId=${userId}&languageId=${languageId}`);
-            return response.data;
+            return {
+                data: response.data,
+                learningLanguageId: languageId
+            }
         } catch (error) {
             handleRequestError('Fetching repetitions failed', error)
         }

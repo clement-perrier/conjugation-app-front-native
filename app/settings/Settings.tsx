@@ -74,7 +74,7 @@ export default function Settings() {
   return (
     <MainLayout title='Settings'>
 
-        <View style={globalstyles.flexColumn}>
+        <View style={[globalstyles.flexColumn, {rowGap: 30}]}>
 
           {
             user?.isGuest

@@ -12,8 +12,9 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly, 
             style={({pressed}) => [
                 styles.button, 
                 globalstyles.flexRow,
-                disabled ? styles.disabled : styles.active,
-                {backgroundColor: pressed ? 'grey' : (color ? color : Colors.primary)}
+                // disabled ? styles.disabled : styles.active,
+                {backgroundColor: color ? color : Colors.primary},
+                {opacity: disabled || pressed ? 0.5 : 1}
             ]} 
             disabled={disabled}
         >
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     disabled: {
-        backgroundColor: 'grey',
         opacity: 0.3
     },
     text: {
