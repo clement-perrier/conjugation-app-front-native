@@ -17,8 +17,8 @@ export default function BottomButton({label, onPress, icon, disabled, iconOnly, 
             ]} 
             disabled={disabled}
         >
-            {label && <Text style={styles.text}>{label}</Text>}
             {icon && <MaterialIcons name={icon} size={iconSize} color={'white'}/>}
+            {label && <Text style={styles.text}>{label}</Text>}
         </Pressable>
     )
 }

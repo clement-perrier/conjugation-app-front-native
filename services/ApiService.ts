@@ -256,6 +256,19 @@ export const UpdateUserDeviceToken = async (userId: number, deviceToken: string)
     }
 }
 
+export const DeleteUser = async (userId: number) => {
+    try {
+        const response = await apiService.delete(`deleteUser/${userId}`);
+        return response.data;
+    } catch (error) {
+        handleFail('Delete User Error', 'User couldn\'t be deleted.')
+        consoleError('ApiService', 'DeleteUser', error)
+        throw error
+    }
+}
+
+
+
 export const RemoveBatch = async(batchId: number) => {
     try {
         const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);

@@ -74,26 +74,16 @@ export default function Home() {
 
   return (
     <>
-    {/* <View style={{flex: 1, padding: 20}}> */}
-      {/* Header with Settings and Flags buttons */}
       <View style={[globalstyles.flexRow, styles.header]}>
+
       { 
         user &&
           <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
       }
         <IconButton  
-          icon='logout' 
-          size={35}
-          onPress={() => CustomAlert(
-            'Confirm logout', 
-            'Are you sure you want to logout ?',
-            async () => {
-                setLoading(true)
-                await AppSecureStore.SaveItemAsync('access_token', '');
-                await AppSecureStore.SaveItemAsync('refresh_token', '');
-                dispatch(updateIsAuthenticated(false))
-            }
-            )}
+          icon='settings' 
+          size={33}
+          onPress={() => navigation.navigate('settings')}
           />
       </View>
 
@@ -140,7 +130,6 @@ export default function Home() {
           />
           </>
       </MainLayout>
-    {/* </View> */}
     </>
   );
 }

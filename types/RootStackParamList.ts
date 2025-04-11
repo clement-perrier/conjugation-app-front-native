@@ -17,4 +17,5 @@ export type RootStackParamList = {
     'New password': undefined
     'Success screen': undefined
     'Tutorial': undefined
+    'settings': undefined
   };

@@ -190,7 +190,7 @@ const TutorialScreen = () => {
                 data={tutorialContent[step].contentList}
                 itemSeparatorHeight={15}
                 renderItem={({ item, index } : {item: ContentProps, index: number}) => (
-                    <View style={globalstyles.flexColumn}>
+                    <View key={index} style={globalstyles.flexColumn}>
                         <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'center', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
                         {
                             item.image && 
@@ -215,7 +215,7 @@ const TutorialScreen = () => {
 
             <View style={[{width: '100%', marginTop: 20}, globalstyles.flexRow, globalstyles.flexCenter]}>
                 {buttons?.map((button, index) => 
-                    <View style={{flex: 1, alignItems: 'center'}}>
+                    <View  key={index} style={{flex: 1, alignItems: 'center'}}>
                     {/* <View style={[isFirstStep ? {width: '100%'} : {width: '50%'}, {flex: 1, alignItems: 'center'}]}> */}
                         <BottomButton 
                             key={index}
