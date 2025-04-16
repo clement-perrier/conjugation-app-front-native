@@ -1,5 +1,5 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useAppDispatch } from '@/state/hooks';
+import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { StyleSheet, View, Text } from 'react-native';
 import { useState } from 'react';
 import { Login } from '@/services/AuthenticationService';
@@ -10,6 +10,7 @@ import BottomButton from '@/components/buttons/BottomButton';
 import Spinner from '@/components/layout/Spinner';
 import Styles from '@/constants/Styles';
 import EmailInput from '@/components/layout/EmailInput';
+import { handleSuccess } from '@/utils/Messages';
 
 export default function LogIn() {
 
@@ -18,6 +19,7 @@ export default function LogIn() {
 
   // States
   const [isLoading, setIsLoading] = useState(false);
+  const userIsLoading = useAppSelector(state => state.User.loading)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,13 +31,17 @@ export default function LogIn() {
     } catch (error) {
       console.error('Login.tsx - handleLogin() failed: ', error);
     }
+    setIsLoading(false)
     // if(!token){
-      setIsLoading(false)
     // }
   };
 
   if(isLoading){
     return <Spinner text={'Logging in'}/>
+  }
+
+  if(userIsLoading){
+    return <Spinner text={'Loading user'}/>
   }
 
   return (

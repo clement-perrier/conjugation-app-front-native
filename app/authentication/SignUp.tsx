@@ -1,5 +1,5 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useAppDispatch } from '@/state/hooks';
+import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import {  StyleSheet, View, Text } from 'react-native';
 import {  useState } from 'react';
 import * as AuthenticationService from '@/services/AuthenticationService';
@@ -19,7 +19,9 @@ export default function SignUp() {
   const dispatch = useAppDispatch();
 
   // States
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
+  const [isSigningUpGuest, setIsSigningUpGuest] = useState(false);
+  const userIsLoading = useAppSelector(state => state.User.loading)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -31,7 +33,7 @@ export default function SignUp() {
 
   // Handlers
   const handleSignup = async () => {
-    setIsLoading(true)
+    setIsSigningUp(true)
     const emailTrimmed = email.trim()
     try {
       const registeredUser = await ApiService.AuthSignup({email: emailTrimmed, password})
@@ -41,20 +43,28 @@ export default function SignUp() {
     }
     // if(registeredUser){
     // }
-    setIsLoading(false)
+    setIsSigningUp(false)
   }
 
   const handleGuest = async () => {
-    setIsLoading(true)
+    setIsSigningUpGuest(true)
     const registeredUser: User = await ApiService.AuthSignupAsGuest()
     const jwtResponse: JwtResponse = await ApiService.AuthLoginAsGuest(registeredUser.id)
     AuthenticationService.SaveJwtInfoLocally(jwtResponse)
     AuthenticationService.LoadInitialData(dispatch, registeredUser.id)
-    setIsLoading(false)
+    setIsSigningUpGuest(false)
+  }
+  
+  if(isSigningUp){
+    return <Spinner text={'Signing up'}/>
   }
 
-  if(isLoading){
-    return <Spinner text={'Signing up'}/>
+  if(isSigningUpGuest){
+    return <Spinner text={'Creating guest user'}/>
+  }
+
+  if(userIsLoading){
+    return <Spinner text={'Loading user'}/>
   }
 
   return (

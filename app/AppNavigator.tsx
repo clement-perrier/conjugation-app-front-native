@@ -53,6 +53,7 @@ export default function AppNavigator() {
   const isOnboarding = useAppSelector(state => state.IsOnBoarding.value)
   const isAuthenticated = useAppSelector(state => state.IsAuthenticated.value)
   const user = useAppSelector(state => state.User.value);
+  const isUserLoading = useAppSelector(state => state.User.loading)
 
   // Handlers
   const handleNetworkChange: NetInfoChangeHandler = (state: NetInfoState) => {
@@ -132,9 +133,11 @@ export default function AppNavigator() {
     }
   }, [user]);
 
-  if (isAuthenticated === null || (isAuthenticated === true && user === null)) {
-    return <Spinner text={isAuthenticated === null ? 'Authenticating' : 'Loading user'}/>
+  if (isAuthenticated === null) {
+    return <Spinner text={'Logging in'}/>
   }
+
+  if (isUserLoading) return <Spinner text={'Loading user'}/>
   
   return (
    <>

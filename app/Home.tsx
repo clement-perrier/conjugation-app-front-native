@@ -31,12 +31,10 @@ export default function Home() {
   
   // Selectors
   const user = useAppSelector(state => state.User.value)
+  const userIsLoading = useAppSelector(state => state.User.loading)
   const batchList = useAppSelector(state => state.BatchList.value)
   const batchListLearningLanguageId = useAppSelector(state => state.BatchList.learningLanguageId)
   const batchListLoading = useAppSelector(state => state.BatchList.loading)
-
-  // States
-  const [loading, setLoading] = useState(false)
 
   // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
@@ -71,8 +69,8 @@ export default function Home() {
     }
   ]
 
-  if(loading){
-    return <Spinner text={'Logging out'}/>
+  if(userIsLoading){
+    return <Spinner text={'Loading user home'}/>
   }
 
   return (

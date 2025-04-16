@@ -22,27 +22,75 @@ export default function Settings() {
   // Selectors
   const user = useAppSelector(state => state.User.value)
 
+  // States
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false)
+  const [isDeletingUser, setIsDeletingUser] = useState(false)
+
   // Constants
-  const accountDeletionUrl = 'https://sites.google.com/view/conjugations-app/account-deletion'
+  // const accountDeletionUrl = 'https://sites.google.com/view/conjugations-app/account-deletion'
 
   // Handles
-  const handleLogout = () => {
-    CustomAlert(
-      'Confirm logout', 
-      'Are you sure you want to logout ?',
-      () => {
-          AppSecureStore.SaveItemAsync('access_token', '');
-          AppSecureStore.SaveItemAsync('refresh_token', '');
-          dispatch(updateIsAuthenticated(false))
-      }
-    )
-  }
+  // const handleLogout = async () => {
+  //   return new Promise<void>((resolve) => {
+  //     CustomAlert(
+  //       'Confirm logout', 
+  //       'Are you sure you want to logout ?',
+  //       async () => {
+  //         setIsLoggingOut(true)
+  //         try {
+  //           // TODO => Delete user refresh token
+  //           const refreshToken = await AppSecureStore.GetItemAsync('refresh_token')
+  //           refreshToken && await ApiService.DeleteRefreshToken(refreshToken)
+  //           AppSecureStore.SaveItemAsync('access_token', '');
+  //           AppSecureStore.SaveItemAsync('refresh_token', '');
+  //           handleSuccess('Logged out')
+  //           dispatch(updateIsAuthenticated(false))
+  //         } catch (error) {
+  //           consoleError('Settings', 'HandleLogout', error)
+  //         }
+  //         setIsLoggingOut(false)
+  //         resolve()
+  //       }
+  //     )
+  //   })
+  // }
+  const handleLogout = async () => {
+    return new Promise<void>((resolve) => {
+      CustomAlert(
+        'Confirm logout',
+        'Are you sure you want to logout ?',
+        async () => {
+          setIsLoggingOut(true);
+          try {
+            const refreshToken = await AppSecureStore.GetItemAsync('refresh_token');
+  
+            if (refreshToken) {
+              await ApiService.DeleteRefreshToken(refreshToken); // 100% awaited now
+            }
+  
+            await AppSecureStore.SaveItemAsync('access_token', '');
+            await AppSecureStore.SaveItemAsync('refresh_token', '');
+  
+            handleSuccess('Logged out ddddd');
+            dispatch(updateIsAuthenticated(false));
+          } catch (error) {
+            consoleError('Settings', 'HandleLogout', error);
+          }
+          setIsLoggingOut(false);
+          resolve(); // ✅ force resolution when everything finishes
+        }
+      );
+    });
+  };
+  
 
   const handleSignout = () => {
     CustomAlert(
       'Confirm signout', 
       'Your current session data will be erased, are you sure you want to exit your guest session?',
       async () => {
+        setIsSigningOut(true)
         try {
           user && await ApiService.DeleteUser(user.id)
           AppSecureStore.SaveItemAsync('access_token', '');
@@ -52,6 +100,7 @@ export default function Settings() {
         } catch (error) {
           consoleError('Settings', 'SignOut Guest', error)
         }
+        setIsSigningOut(false)
       })
   }
 
@@ -60,16 +109,27 @@ export default function Settings() {
       'Confirm Deletion', 
       'Are you sure you want to delete this user and all associated data?',
       () => {
+        setIsDeletingUser(true)
         try {
           user && ApiService.DeleteUser(user.id)
         } catch (error) {
-            consoleError('Settings', 'Delete account', error)
+          consoleError('Settings', 'Delete account', error)
         }
         dispatch(updateIsAuthenticated(false))
         handleSuccess('User deleted successfully', 'The user and all associated data have been permanently deleted')
+        setIsDeletingUser(false)
       }
     )
   }
+
+  // Spinner while logging out user
+  if (isLoggingOut) return <Spinner text={'Logging out'}/>
+
+  // Spinner while signing out guest user (deleting user in db)
+  if (isSigningOut) return <Spinner text={'Signing out'}/>
+
+  // Spinner while deleting user account 
+  if (isDeletingUser) return <Spinner text={'Deleting account'}/>
 
   return (
     <MainLayout title='Settings'>

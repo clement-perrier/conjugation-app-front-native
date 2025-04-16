@@ -48,7 +48,7 @@ const TutorialScreen = () => {
                 text: 'Welcome to the app that will help you master conjugations for good!',
             },
             {
-                text: 'Several languages are available for your learning: French, Spanish, German, and Italian.',
+                text: 'Several languages are available for your learning: French, Spanish, Italian and German.',
                 image: {
                     source: require('../../assets/images/tutorial/flag_list.png'),
                     height: 40

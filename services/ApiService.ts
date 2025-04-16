@@ -270,8 +270,6 @@ export const DeleteUser = async (userId: number) => {
     }
 }
 
-
-
 export const RemoveBatch = async(batchId: number) => {
     try {
         const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
@@ -355,6 +353,16 @@ export const AuthRefreshToken = async(refreshToken: string) => {
         return response.data;
     } catch (error) {
         // handleRequestError('Refresh token error', error)
+    }
+}
+
+export const DeleteRefreshToken = async (refreshToken: string) => {
+    try {
+        const response = await apiService.delete(`auth/refreshToken/${refreshToken}`);
+        return response.data;
+    } catch (error) {
+        consoleError('ApiService', 'DeleteRefreshToken', error)
+        throw error
     }
 }
 
