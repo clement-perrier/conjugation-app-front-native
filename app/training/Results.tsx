@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native';
 import Styles from '@/constants/Styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
+import { getLabel, getLabelLong } from '@/types/DayNumber';
 
 export default function Results() {
 
@@ -88,7 +89,7 @@ function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
               isCorrect ?
                 <>
                     <MaterialIcons name={'check'} size={35}  color={Colors.success}/>
-                    <Text style={{color: Colors.success, flex: 1}}>Well done! You've progressed to <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text></Text>
+                    <Text style={{color: Colors.success, flex: 1}}>Well done! You've progressed to <Text style={{fontWeight: 'bold'}}>{getLabelLong(batch.dayNumber)}</Text></Text>
                 </>
                 :
                 <>

@@ -30,7 +30,7 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title,
 
                     <View key={index} style={{width: '100%'}}>
 
-                        { button.topMessage && <Text style={globalstyles.text}>{button.topMessage}</Text> }
+                        { button.topMessage && <Text style={[globalstyles.text, {marginBottom: 20}]}>{button.topMessage}</Text> }
 
                         <BottomButton 
                             key={index}

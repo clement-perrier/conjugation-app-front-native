@@ -202,7 +202,7 @@ export default function AppNavigator() {
                     <Stack.Screen 
                       name="Results" 
                       component={Results}
-                      options={getOptions(false, false)}
+                      options={getOptions(false, true)}
                     /> 
                   </Stack.Navigator>
                 ) : (

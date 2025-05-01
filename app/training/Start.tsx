@@ -8,7 +8,6 @@ import CustomFlatList from '@/components/layout/CustomFlatList';
 import { formatBatchTitle } from '@/utils/Date';
 import Colors from '@/constants/Colors';
 import CustomProgressSteps from '@/components/CustomProgressSteps';
-import Styles from '@/constants/Styles';
 import React from 'react';
 
 export default function Start() {
@@ -44,12 +43,12 @@ export default function Start() {
   return (
     <MainLayout buttons={buttons} title={formatBatchTitle(selectedBatch)}>
       <>
-        <View style={{marginTop: Styles.mainPadding}}>
+        <View style={{marginTop: 40}}>
           <CustomProgressSteps currentStep={selectedBatch.dayNumber}/>
         </View>
         <CustomFlatList
           data={selectedBatch?.tableList}
-          itemSeparatorHeight={7}
+          itemSeparatorHeight={15}
           renderItem={({item}) => 
             <Text style={[styles.table, globalstyles.text]}>{item.verb.name.toUpperCase() + ' - ' + item.tense.name.toUpperCase()}</Text>
           }

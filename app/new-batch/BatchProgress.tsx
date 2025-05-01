@@ -44,7 +44,7 @@ export default function BatchProgress() {
       // New batch object
       const newBatch: Batch = {
         dayNumber: 0,
-        reviewingDate: formatDateAsISO(new Date()),
+        reviewingDate: new Date().toISOString(),
         tableList: selectedTableList,
         userLearningLanguage
       }
@@ -103,7 +103,7 @@ export default function BatchProgress() {
   ]
 
   if(loading) {
-    return <Spinner text={'Creation'}/>
+    return <Spinner text={'Loading set'}/>
   }
 
   return (

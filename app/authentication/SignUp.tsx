@@ -12,6 +12,7 @@ import Spinner from '@/components/layout/Spinner';
 import { JwtResponse } from '@/types/JwtResponse';
 import { User } from '@/types/User';
 import EmailInput from '@/components/layout/EmailInput';
+import IsAuthenticated from '@/state/slices/isAuthtenticated';
 
 export default function SignUp() {
 
@@ -21,6 +22,7 @@ export default function SignUp() {
   // States
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [isSigningUpGuest, setIsSigningUpGuest] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
   const userIsLoading = useAppSelector(state => state.User.loading)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,17 +35,21 @@ export default function SignUp() {
 
   // Handlers
   const handleSignup = async () => {
-    setIsSigningUp(true)
     const emailTrimmed = email.trim()
+    setIsSigningUp(true)
     try {
       const registeredUser = await ApiService.AuthSignup({email: emailTrimmed, password})
-      registeredUser && AuthenticationService.Login(dispatch, emailTrimmed, password, true)
+      setIsSigningUp(false)
+      if (registeredUser){
+        setIsLogging(true)
+        registeredUser && await AuthenticationService.Login(dispatch, emailTrimmed, password, true)
+        setIsLogging(false)
+      }
     } catch (error) {
       console.error('SignUp.tsx - handleSignup() failed', error)
+      setIsSigningUp(false)
+      setIsLogging(false)
     }
-    // if(registeredUser){
-    // }
-    setIsSigningUp(false)
   }
 
   const handleGuest = async () => {
@@ -61,6 +67,10 @@ export default function SignUp() {
 
   if(isSigningUpGuest){
     return <Spinner text={'Creating guest user'}/>
+  }
+
+  if(isLogging){
+    return <Spinner text={'Logging in'}/>
   }
 
   if(userIsLoading){

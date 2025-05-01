@@ -1,4 +1,5 @@
 import { Batch } from "@/types/Batch";
+import { getLabelLong } from "@/types/DayNumber";
 
 function getDaySuffix(day: number) {
   if (day >= 11 && day <= 13) {
@@ -42,5 +43,5 @@ export function formatDateAsISO(date: Date): string {
 }
 
 export function formatBatchTitle(batch: Batch){
-  return (formatDateAsLong(batch.reviewingDate) + ' - day ' + batch.dayNumber).toUpperCase();
+  return (formatDateAsLong(batch.reviewingDate) + ' - ' + getLabelLong(batch.dayNumber)).toUpperCase();
 }

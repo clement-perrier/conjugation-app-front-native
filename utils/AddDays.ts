@@ -9,6 +9,6 @@ export default function addDays(daysIncrement: number) : string {
     // Add  the number of days to the date
     newDate.setDate(new Date().getDate() + daysIncrement);
 
-    return formatDateAsISO(newDate);
+    return newDate.toISOString();
     
 }

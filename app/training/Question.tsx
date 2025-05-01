@@ -293,7 +293,7 @@ export default function Question() {
               </View>
 
               {/* Info button & tooltip */}
-              <View style={globalstyles.flexEnd}>
+              {/* <View style={globalstyles.flexEnd}>
   
                 <InfoButton size={25} handlePress={() => setTooltipVisible(!tooltipVisible)}/>
 
@@ -305,7 +305,7 @@ export default function Question() {
                   manual={true}
                 />
                 
-              </View>
+              </View> */}
               
             </View>
             

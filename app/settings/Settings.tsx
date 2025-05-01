@@ -72,7 +72,7 @@ export default function Settings() {
             await AppSecureStore.SaveItemAsync('access_token', '');
             await AppSecureStore.SaveItemAsync('refresh_token', '');
   
-            handleSuccess('Logged out ddddd');
+            handleSuccess('Logged out');
             dispatch(updateIsAuthenticated(false));
           } catch (error) {
             consoleError('Settings', 'HandleLogout', error);
@@ -95,12 +95,13 @@ export default function Settings() {
           user && await ApiService.DeleteUser(user.id)
           AppSecureStore.SaveItemAsync('access_token', '');
           AppSecureStore.SaveItemAsync('refresh_token', '');
-          handleSuccess('Signed out')
           dispatch(updateIsAuthenticated(false))
+          handleSuccess('Signed out')
+          setIsSigningOut(false)
         } catch (error) {
           consoleError('Settings', 'SignOut Guest', error)
+          setIsSigningOut(false)
         }
-        setIsSigningOut(false)
       })
   }
 
@@ -108,16 +109,19 @@ export default function Settings() {
     CustomAlert(
       'Confirm Deletion', 
       'Are you sure you want to delete this user and all associated data?',
-      () => {
+      async () => {
         setIsDeletingUser(true)
         try {
-          user && ApiService.DeleteUser(user.id)
+          user && await ApiService.DeleteUser(user.id)
+          AppSecureStore.SaveItemAsync('access_token', '');
+          AppSecureStore.SaveItemAsync('refresh_token', '');
+          dispatch(updateIsAuthenticated(false))
+          handleSuccess('User deleted successfully', 'The user and all associated data have been permanently deleted')
+          setIsDeletingUser(false)
         } catch (error) {
           consoleError('Settings', 'Delete account', error)
+          setIsDeletingUser(false)
         }
-        dispatch(updateIsAuthenticated(false))
-        handleSuccess('User deleted successfully', 'The user and all associated data have been permanently deleted')
-        setIsDeletingUser(false)
       }
     )
   }

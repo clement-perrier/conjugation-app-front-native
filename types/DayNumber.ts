@@ -54,3 +54,14 @@ export const getIncrement = (currentDayNumber: DayNumber): DayNumber => {
         : DayNumber.ONE; // Return DayNumber.ONE if not found
         
 };
+
+export const getLabel = (dayNumber: DayNumber): string => {
+
+    return dayNumber < 7 ? 'D' + dayNumber : (dayNumber < 30 ? 'W' + Math.floor(dayNumber / 7) : 'M' + dayNumber / 30)
+        
+};
+export const getLabelLong = (dayNumber: DayNumber): string => {
+
+    return dayNumber < 7 ? 'Day ' + dayNumber : (dayNumber < 30 ? 'Week ' + Math.floor(dayNumber / 7) : 'Month ' + dayNumber / 30)
+        
+};

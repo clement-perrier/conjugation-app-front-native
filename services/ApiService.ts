@@ -7,10 +7,10 @@ import CustomError from '@/utils/CustomError';
 import { consoleError, handleFail, handleSuccess } from '@/utils/Messages';
 
 // Axios configuration
-const local = 'localhost:8080'
-const localMobile = '10.0.0.222:8080'
-const aws = `conjugationapp-env.eba-bfp22n3k.eu-north-1.elasticbeanstalk.com`
-const API_BASE_URL = `http://${localMobile}`
+const local = 'http://localhost:8080'
+const localMobile = 'http://10.0.0.222:8080'
+const aws = `https://api-conjugationapp.crcbp.com`
+const API_BASE_URL = aws
 
 const apiService = axios.create({
     baseURL: API_BASE_URL,
@@ -385,7 +385,8 @@ export const AuthChangePassword = async(changePasswordRequest: ChangePasswordReq
         handleSuccess('Your password has been updated successfully.')
         return response.data;
     } catch (error) {
-        handleRequestError('Update password request error', error)
+        consoleError('ApiService', 'AuthChangePassword', error)
+        throw error
     }
 }
 

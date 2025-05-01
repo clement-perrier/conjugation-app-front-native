@@ -8,6 +8,7 @@ import { AuthChangePassword } from '@/services/ApiService';
 import { TextInput } from 'react-native';
 import Spinner from '@/components/layout/Spinner';
 import OtpTextInput from 'react-native-text-input-otp'
+import { consoleError, handleFail } from '@/utils/Messages';
 
 export default function NewPassword() {
 
@@ -25,16 +26,19 @@ export default function NewPassword() {
   // Function to handle the reset password request
   const handleResetPassword = async () => {
     setIsLoading(true)
-    const response = await AuthChangePassword({code, newPassword: password})
-    if(response){
+    try {
+      await AuthChangePassword({code, newPassword: password})
       navigation.navigate('Log in')
-    } else {
+      setIsLoading(false)
+    } catch (error) {
+      consoleError('NewPassword', 'handleResetPassword', error)
+      handleFail('Error', 'Reset password failed.')
       setIsLoading(false)
     }
   };
 
   if(isLoading){
-    return <Spinner text={'Sending'}/>
+    return <Spinner text={'Updating use password'}/>
   }
 
   return (
