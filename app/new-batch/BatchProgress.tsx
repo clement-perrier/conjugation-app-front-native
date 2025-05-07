@@ -12,7 +12,7 @@ import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/Sele
 import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
-import { formatDateAsISO } from '@/utils/Date';
+import { formatDateAsISO, getTodayYMD } from '@/utils/Date';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { handleSuccess } from '@/utils/Messages';
 import React from 'react';
@@ -44,7 +44,7 @@ export default function BatchProgress() {
       // New batch object
       const newBatch: Batch = {
         dayNumber: 0,
-        reviewingDate: new Date().toISOString(),
+        reviewingDate: getTodayYMD(),
         tableList: selectedTableList,
         userLearningLanguage
       }

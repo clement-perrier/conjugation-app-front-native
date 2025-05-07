@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, _View } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppSelector } from '@/state/hooks';
 import MainLayout from '@/components/layout/MainLayout';
@@ -9,6 +9,7 @@ import { formatBatchTitle } from '@/utils/Date';
 import Colors from '@/constants/Colors';
 import CustomProgressSteps from '@/components/CustomProgressSteps';
 import React from 'react';
+import * as DateService from '@/utils/Date';
 
 export default function Start() {
 
@@ -20,7 +21,8 @@ export default function Start() {
   // States
 
   // Derived data
-  const isDueToday: boolean = new Date(selectedBatch.reviewingDate) <= new Date()
+  // const isDueToday: boolean = localDate.getTime() <= today.getTime()
+  const isDueToday: boolean = DateService.isDueToday(selectedBatch.reviewingDate)
 
   // Effects
 

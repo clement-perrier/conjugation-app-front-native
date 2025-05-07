@@ -37,65 +37,69 @@ const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgress
 
       <View style={styles.progressContainer}>
 
-        {steps.map((step, index) => {
+        {
 
-          const label = getLabel(step)
-          const isActive = step < currentStep;
-          const isCurrent = step === currentStep
-          const isNext = step === getNextDayNumber(currentStep)
-          const isPrevious = step === getPreviousDayNumber(currentStep)
-          const isLast = (isResult ? isNext : index === steps.length - 1)
+          steps.map((step, index) => {
 
-          // const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
-          // const isNotDisplayed = isResult && (
-          //                         !isCurrent ||
-          //                         !(step === getNextDayNumber(currentStep)) || 
-          //                         !(step === getPreviousDayNumber(currentStep))
-          //                         )
+            const label = getLabel(step)
+            const isActive = step < currentStep;
+            const isCurrent = step === currentStep
+            const isNext = step === getNextDayNumber(currentStep)
+            const isPrevious = step === getPreviousDayNumber(currentStep)
+            const isLast = (isResult ? isNext : index === steps.length - 1)
 
-          const isDisplayed = !isResult || (
-                                isResult && (
-                                  isCurrent || isNext || isPrevious
+            // const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
+            // const isNotDisplayed = isResult && (
+            //                         !isCurrent ||
+            //                         !(step === getNextDayNumber(currentStep)) || 
+            //                         !(step === getPreviousDayNumber(currentStep))
+            //                         )
+
+            const isDisplayed = !isResult || (
+                                  isResult && (
+                                    isCurrent || isNext || isPrevious
+                                  )
                                 )
-                              )
 
-            // Defining line style
-            let lineStyle;
-            if (isResult) {
-              // In result page, correct = green line - mistake = red line
-              lineStyle = isActive ? (isCorrect ? styles.successLine : styles.errorLine) : styles.inactiveLine;
-            } else {
-              // In start page, active = green line - inactive = grey line
-              lineStyle = isActive ? styles.successLine : styles.inactiveLine;
-            }
+              // Defining line style
+              let lineStyle;
+              if (isResult) {
+                // In result page, correct = green line - mistake = red line
+                lineStyle = isActive ? (isCorrect ? styles.successLine : styles.errorLine) : styles.inactiveLine;
+              } else {
+                // In start page, active = green line - inactive = grey line
+                lineStyle = isActive ? styles.successLine : styles.inactiveLine;
+              }
 
-          return (
-            isDisplayed && 
-              <View key={index} style={[styles.stepContainer, !isLast && {flex: 1}]}>
-                {/* Circle */}
-                <View
-                  style={[
-                    styles.circle,
-                    {width: circleSize, height: circleSize, borderRadius: 8,},
-                    isCurrent ? ((!isResult || isCorrect) ? styles.currentCircle : styles.incorrectCircle) : (isActive ? styles.activeCircle : styles.inactiveCircle)
-                  ]}
-                >
-                  <Text 
+            return (
+              isDisplayed && 
+                <View key={index} style={[styles.stepContainer, !isLast && {flex: 1}]}>
+                  {/* Circle */}
+                  <View
                     style={[
-                      styles.circleText, 
-                      {fontSize: 13},
-                      isActive ? styles.activeCircleText : styles.circleText
-                    ]}>
-                      { label }
-                    </Text>
-                </View>
+                      styles.circle,
+                      {width: circleSize, height: circleSize, borderRadius: 8,},
+                      isCurrent ? ((!isResult || isCorrect) ? styles.currentCircle : styles.incorrectCircle) : (isActive ? styles.activeCircle : styles.inactiveCircle)
+                    ]}
+                  >
+                    <Text 
+                      style={[
+                        styles.circleText, 
+                        {fontSize: 13},
+                        isActive ? styles.activeCircleText : styles.circleText
+                      ]}>
+                        { label }
+                      </Text>
+                  </View>
 
-                {/* Line */}
-                { !isLast && <View style={[styles.line, lineStyle]} /> }
-               
-              </View>
-          )
-        })}
+                  {/* Line */}
+                  { !isLast && <View style={[styles.line, lineStyle]} /> }
+                
+                </View>
+            )
+          })
+          
+        }
 
       </View>
 

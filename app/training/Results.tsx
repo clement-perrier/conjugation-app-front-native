@@ -110,7 +110,7 @@ function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
         {/* Table List */}
         {
             batch.tableList.map((item, index) => 
-              <View>
+              <View key={index}>
                 <View style={{height: 15}}></View>
                 <TableView table={item} isResult={true} key={index}/>
               </View>

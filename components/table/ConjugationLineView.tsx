@@ -4,6 +4,7 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { View, Text, StyleSheet } from "react-native";
 import Colors from "@/constants/Colors";
 import { Conjugation } from "@/types/Conjugation";
+import React from "react";
 
 interface ConjugationLineViewProps {
     conjugation: Conjugation,

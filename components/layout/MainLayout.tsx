@@ -30,10 +30,9 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title,
 
                     <View key={index} style={{width: '100%'}}>
 
-                        { button.topMessage && <Text style={[globalstyles.text, {marginBottom: 20}]}>{button.topMessage}</Text> }
+                        { typeof button.topMessage === 'string' && <Text style={[globalstyles.text, {marginBottom: 20}]}>{button.topMessage}</Text> }
 
                         <BottomButton 
-                            key={index}
                             label={button.label}
                             onPress={button.onPress}
                             icon={button.icon}

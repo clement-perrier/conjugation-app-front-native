@@ -23,6 +23,7 @@ import { requestNotificationPermission } from '@/services/NotificationService';
 import Styles from '@/constants/Styles';
 import CustomButton from '@/components/buttons/CustomButton';
 import { TutorialButton } from '@/components/buttons/TutorialButton';
+import { isDueToday } from '@/utils/Date';
 
 export default function Home() {
 
@@ -112,7 +113,7 @@ export default function Home() {
                     navigation.navigate('Start')
                   }}
                   // icon='chevron-right'
-                  focus={new Date(item.reviewingDate) <= new Date()}
+                  focus={isDueToday(item.reviewingDate)}
                 />
 
                 <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
