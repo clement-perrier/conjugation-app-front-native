@@ -19,7 +19,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.clement.conjugationapp",
-      "buildNumber": "4",
+      "buildNumber": "6",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Your message here",

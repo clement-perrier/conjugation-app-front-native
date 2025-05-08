@@ -1,14 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AsyncBatchListState, AsyncListState } from '../interfaces/AsyncListState'
+import { AsyncBatchListState } from '../interfaces/AsyncListState'
 import { Batch } from '@/types/Batch'
 import { FetchBatchList } from '@/services/ApiService'
-import { Table } from '@/types/Table'
-import addDays from '@/utils/AddDays'
-import { getIncrement, getNextDayNumber } from '@/types/DayNumber'
-import LearningLanguageListSlice from './LearningLanguageListSlice'
-import { defaultLearningLanguage } from '@/types/LearningLanguage'
-import UserSlice from './UserSlice'
-import { store } from '../store'
 
 // Define the initial state using that type
 const initialState: AsyncBatchListState<Batch> = {

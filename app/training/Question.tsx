@@ -5,7 +5,7 @@ import { Conjugation } from '@/types/Conjugation';
 import React, { useEffect, useState, useRef } from 'react';
 import { updateSelectedBatch, updateWithResult } from '@/state/slices/SelectedBatchSlice';
 import { addBatch, updateBatchInfo } from '@/state/slices/BatchListSlice';
-import addDays from '@/utils/AddDays';
+import addDays from '@/utils/Date';
 import { hasMistake } from '@/types/Table';
 import { getIncrement, getNextDayNumber } from '@/types/DayNumber';
 import { Batch } from '@/types/Batch';
