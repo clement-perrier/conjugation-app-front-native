@@ -1,6 +1,6 @@
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
-import { dayNumberList, getLabel, getNextDayNumber, getPreviousDayNumber } from '@/types/DayNumber';
+import { DayNumber, dayNumberList, getLabel, getNextDayNumber, getPreviousDayNumber } from '@/types/DayNumber';
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
@@ -10,102 +10,181 @@ interface CustomProgressStepsProps {
   isCorrect?: boolean
 }
 
-const CustomProgressSteps = ({currentStep, isResult, isCorrect} : CustomProgressStepsProps) => {
+export default function CustomProgressSteps ({currentStep, isResult, isCorrect} : CustomProgressStepsProps) {
   
   // Data
   const steps = [...dayNumberList];
-  const stepsLength = steps.length
-  
-  const circleSize = 29
-
-  // let { width: screenWidth } = Dimensions.get('window');
-  // screenWidth = screenWidth - Styles.mainPadding * 2
-
-  // const lineWidth = (screenWidth - steps.length * circleSize) / (steps.length - 1);
-
-  // Functions
-  // Function to dynamically calculate font size based on circle size and text length
-  const calculateFontSize = (textLength: number) => {
-    const baseFontSize = circleSize * 0.45; // Base font size: 60% of circle size
-    // Adjust font size based on text length (reduce font size for longer text)
-    return baseFontSize / Math.max(1, textLength / 2.1);
-  };
-
+  const previousDayLabel = isResult ? getLabel(getPreviousDayNumber(currentStep)) : null
+  const currentDayLabel = isResult ? getLabel(currentStep) : null
+  const nextDayLabel = isResult ? getLabel(getNextDayNumber(currentStep)) : null
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.progressContainer}>
+    {
 
-        {
+      isResult ? (
 
-          steps.map((step, index) => {
-
-            const label = getLabel(step)
-            const isActive = step < currentStep;
-            const isCurrent = step === currentStep
-            const isNext = step === getNextDayNumber(currentStep)
-            const isPrevious = step === getPreviousDayNumber(currentStep)
-            const isLast = (isResult ? isNext : index === steps.length - 1)
-
-            // const fontSize = calculateFontSize(step.valueOf().toLocaleString().length)
-            // const isNotDisplayed = isResult && (
-            //                         !isCurrent ||
-            //                         !(step === getNextDayNumber(currentStep)) || 
-            //                         !(step === getPreviousDayNumber(currentStep))
-            //                         )
-
-            const isDisplayed = !isResult || (
-                                  isResult && (
-                                    isCurrent || isNext || isPrevious
-                                  )
-                                )
-
-              // Defining line style
-              let lineStyle;
-              if (isResult) {
-                // In result page, correct = green line - mistake = red line
-                lineStyle = isActive ? (isCorrect ? styles.successLine : styles.errorLine) : styles.inactiveLine;
-              } else {
-                // In start page, active = green line - inactive = grey line
-                lineStyle = isActive ? styles.successLine : styles.inactiveLine;
-              }
-
-            return (
-              isDisplayed && 
-                <View key={index} style={[styles.stepContainer, !isLast && {flex: 1}]}>
-                  {/* Circle */}
-                  <View
-                    style={[
-                      styles.circle,
-                      {width: circleSize, height: circleSize, borderRadius: 8,},
-                      isCurrent ? ((!isResult || isCorrect) ? styles.currentCircle : styles.incorrectCircle) : (isActive ? styles.activeCircle : styles.inactiveCircle)
-                    ]}
-                  >
-                    <Text 
-                      style={[
-                        styles.circleText, 
-                        {fontSize: 13},
-                        isActive ? styles.activeCircleText : styles.circleText
-                      ]}>
-                        { label }
-                      </Text>
-                  </View>
-
-                  {/* Line */}
-                  { !isLast && <View style={[styles.line, lineStyle]} /> }
-                
-                </View>
-            )
-          })
+        // Result page progress bar
+        <View style={styles.progressContainer}>
           
-        }
+          {
+            currentStep === DayNumber.ZERO 
+            ? 
+              // Starting Point user doing Day 0
+              <View style={[styles.stepContainer, styles.flex1]}>
+                <View style={styles.startingPoint}/>
+                <View style={[styles.stepLine, {backgroundColor: Colors.secondary}]}/>
+              </View>
+            : 
+              // Previous day when != Day 0 - Colors always green success
+              <ProgressStep 
+                label={previousDayLabel}
+                hasLine={true}
+                lineColor={Colors.success}
+                itemBorderWidth={2}
+                itemBorderColor={Colors.success}
+                itemBackgroundColor={Colors.successBg}
+              />
+          }
 
-      </View>
+          {/* Current step */}
+          {/* Colors based on isCorrect ? green success : red error */}
+          <ProgressStep 
+            label={currentDayLabel}
+            hasLine={true}
+            lineColor={isCorrect ? Colors.secondary : Colors.error}
+            itemBorderWidth={2}
+            itemBorderColor={isCorrect ? Colors.primary : Colors.error}
+            itemBackgroundColor={isCorrect ? Colors.secondary : Colors.errorBg}
+          />
 
+          {/* Next Step - Neutral color */}
+          <ProgressStep 
+            label={nextDayLabel}
+            hasLine={false}
+            lineColor={null}
+            itemBorderWidth={1}
+            itemBorderColor={Colors.tertiary}
+            itemBackgroundColor={Colors.secondary}
+          />
+          
+        </View>
+
+      ) : (
+        // Start page Progress Bar
+        <View style={styles.progressContainer}>
+          
+          {
+
+            // Displaying totality of steps for Start Page
+            steps.map((step, index) => {
+
+              // DX / WX / MX format label
+              const label = getLabel(step)
+              // Define if browsed step has already been done by user
+              const isDone = step < currentStep;
+              // Define if browsed step is current user step
+              const isCurrent = step === currentStep
+              // Define if browsed step is last ever step (no line at the end)
+              const isLast = index === steps.length - 1
+
+              // Line Color => isDone =  green - !isDone =  grey
+              const lineColor = !isLast ? (isDone ? Colors.success : Colors.secondary) : null
+
+              // Item border width => if step done or current 2 else 1
+              const itemBorderWidth = (isDone || isCurrent) ? 2 : 1
+
+              // Item border color => if step done = green - if step current = primary - else = tertiary
+              const itemBorderColor = isDone ? Colors.success : (isCurrent ? Colors.primary : Colors.tertiary) 
+
+              // Item background color => if step done = green else = tertiary
+              const itemBackgroundColor = isDone ? Colors.successBg : Colors.secondary
+
+              return (
+
+                <ProgressStep 
+                  label={label}
+                  hasLine={!isLast}
+                  lineColor={lineColor}
+                  itemBorderWidth={itemBorderWidth}
+                  itemBorderColor={itemBorderColor}
+                  itemBackgroundColor={itemBackgroundColor}
+                />
+
+              )
+              
+            })
+
+          }
+
+        </View>
+      )
+
+    }
+      
     </View>
-  );
+  )
+  
 };
+
+
+interface ProgressStepProps {
+  // DX / WX / MX format label
+  label: string | null, 
+  // If no line CSS is not the same
+  hasLine: boolean,
+  // Color of the line going to the next step
+  lineColor: string | null,  
+  // Border width of the step item
+  itemBorderWidth: number, 
+  // Border color of the step item
+  itemBorderColor: string, 
+  // Border background color of the step item
+  itemBackgroundColor: string 
+}
+
+export function ProgressStep (
+
+  {
+    label, 
+    hasLine,
+    lineColor,  
+    itemBorderWidth, 
+    itemBorderColor, 
+    itemBackgroundColor 
+
+  } : ProgressStepProps
+  
+) {
+
+  return (
+
+    <View style={[styles.stepContainer, hasLine && styles.flex1]}>
+
+        {/* Step Item */}
+        <View
+          style={[
+            styles.stepItem, 
+            {
+              backgroundColor: itemBackgroundColor,
+              borderWidth: itemBorderWidth,
+              borderColor: itemBorderColor 
+            }
+          ]}
+        >
+          {/* Step Item Label */}
+          <Text style={[styles.stepItemText, {color: Colors.accent}]}> { label } </Text>
+
+        </View>
+
+        {/* Step Line */}
+        { hasLine && <View style={[styles.stepLine, lineColor && {backgroundColor: lineColor}]} /> }
+      
+    </View>
+
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -114,66 +193,36 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    // maxWidth: 400,
     flex: 1
-    // marginVertical: Styles.mainPadding
   },
   stepContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'center'
   },
-  circle: {
+  stepItem: {
     justifyContent: 'center',
     alignItems: 'center',
-    fontWeight: 'bold'
-  },
-  currentCircle: {
-    backgroundColor: Colors.secondary,
-    borderWidth: 2,
-    borderColor: Colors.primary 
-  },
-  activeCircle: {
-    backgroundColor: Colors.successBg,
-    borderWidth: 2,
-    borderColor: Colors.success,
-    color: Colors.success
-  },
-  inactiveCircle: {
-    backgroundColor: Colors.secondary,
-    borderWidth: 1,
-    borderColor: Colors.tertiary
-  },
-  incorrectCircle: {
-    backgroundColor: Colors.secondary,
-    borderWidth: 2,
-    borderColor: Colors.error
-  },
-  circleText: {
-    color: Colors.textPrimary,
     fontWeight: 'bold',
+    width: 31,
+    height: 31,
+    borderRadius: 8
   },
-  activeCircleText: {
-    // color: Colors.success
+  stepItemText: {
+    fontWeight: 'bold',
+    fontSize: 13
   },
-  line: {
+  stepLine: {
     height: 2,
     width: '100%',
-    flexGrow: 1
+    flex: 1
   },
-  successLine: {
-    backgroundColor: Colors.success,
+  startingPoint: {
+    height: 10, 
+    width: 10, 
+    borderRadius: 20,
+    backgroundColor: Colors.secondary
   },
-  errorLine: {
-    backgroundColor: Colors.error,
-  },
-  inactiveLine: {
-    backgroundColor: Colors.secondary,
-    
-  },
+  flex1: {
+    flex: 1
+  }
 });
-
-export default CustomProgressSteps; 

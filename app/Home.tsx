@@ -1,7 +1,7 @@
-import { View, StyleSheet, Text, Modal, StatusBar, Alert } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -15,14 +15,8 @@ import CustomFlatList from '@/components/layout/CustomFlatList';
 import Flag from '@/components/Flag';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import Spinner from '@/components/layout/Spinner';
-import { CustomAlert } from '@/utils/CustomAlert';
-import { updateIsAuthenticated } from '@/state/slices/isAuthtenticated';
-import AppSecureStore from '@/state/SecureStore';
 import Colors from '@/constants/Colors';
-import { requestNotificationPermission } from '@/services/NotificationService';
 import Styles from '@/constants/Styles';
-import CustomButton from '@/components/buttons/CustomButton';
-import { TutorialButton } from '@/components/buttons/TutorialButton';
 import { isDueToday } from '@/utils/Date';
 
 export default function Home() {
