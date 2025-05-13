@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -23,6 +23,9 @@ export default function Home() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
+
+  // States
+  const [refreshing, setRefreshing] = useState(false);
   
   // Selectors
   const user = useAppSelector(state => state.User.value)
@@ -30,6 +33,17 @@ export default function Home() {
   const batchList = useAppSelector(state => state.BatchList.value)
   const batchListLearningLanguageId = useAppSelector(state => state.BatchList.learningLanguageId)
   const batchListLoading = useAppSelector(state => state.BatchList.loading)
+
+  // Functions
+  const onRefresh = async () => {
+    setRefreshing(true);
+    
+    // Simulate a network request or fetch data here
+    // await new Promise(resolve => setTimeout(resolve, 2000));
+    user && await dispatch(FetchBatchList({userId: user.id, languageId: user.defaultLearningLanguage.id}))
+
+    setRefreshing(false);
+  };
 
   // Sorted batch list by ascending reviewing date then by ascending day number
   const sortedBatchList: Batch[] = useMemo(() => {
@@ -65,7 +79,7 @@ export default function Home() {
   ]
 
   if(userIsLoading){
-    return <Spinner text={'Loading user home'}/>
+    return <Spinner text={'Loading user'}/>
   }
 
   return (
@@ -90,7 +104,9 @@ export default function Home() {
         <>
           <CustomFlatList
             data={sortedBatchList}
-            isLoading={batchListLoading}
+            isLoading={batchListLoading && !refreshing}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             emptyMessage="Create a repetition set to start learning"
             itemSeparatorHeight={25}
             renderItem={({ item, index } : {item: Batch, index: number}) => (

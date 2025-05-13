@@ -104,6 +104,7 @@ export default function CustomProgressSteps ({currentStep, isResult, isCorrect} 
               return (
 
                 <ProgressStep 
+                  key={index}
                   label={label}
                   hasLine={!isLast}
                   lineColor={lineColor}

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle, Dimensions } from 'react-native';
+import { FlatList, View, Text, ActivityIndicator, ListRenderItem, StyleProp, ViewStyle, Dimensions, RefreshControl } from 'react-native';
 import { globalstyles } from '@/utils/GlobalStyle';
 import { Verb } from '@/types/Verb';
 import Spinner from './Spinner';
 import Styles from '@/constants/Styles';
+import Colors from '@/constants/Colors';
 
 export default function CustomFlatList(
     { 
         data,
         renderItem,
         isLoading,
+        refreshing,
+        onRefresh,
         emptyMessage,
         contentContainerStyle,
         itemSeparatorHeight = Styles.itemSeparatorHeight,
@@ -22,6 +25,8 @@ export default function CustomFlatList(
         data: any[]| null | undefined,
         renderItem: ListRenderItem<any> | null | undefined,
         isLoading?: boolean,
+        refreshing?: boolean,
+        onRefresh?: () => void,
         emptyMessage?: string,
         contentContainerStyle?: StyleProp<ViewStyle>,
         itemSeparatorHeight?: number,
@@ -61,6 +66,9 @@ export default function CustomFlatList(
       style={style || globalstyles.flatList}
       contentContainerStyle={contentContainerStyle || globalstyles.flatListContent}
       data={data}
+      refreshControl={
+        onRefresh && <RefreshControl refreshing={refreshing != undefined && refreshing} onRefresh={onRefresh}  tintColor={Colors.primary} />
+      }
       renderItem={renderItem}
       ItemSeparatorComponent={() => <View style={{ height: itemSeparatorHeight }} />}
       numColumns={numColumns}
