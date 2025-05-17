@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import { Text, Pressable, StyleSheet, View, Animated } from "react-native";
 
-export default function ListButton({label, onPress, icon, disabled, focus } : LayoutButton){
+export default function ListButton({label, onPress, icon, disabled, focus, color, labelColor } : LayoutButton){
     
     const borderColor = useRef(new Animated.Value(0)).current;
   
@@ -56,13 +56,21 @@ export default function ListButton({label, onPress, icon, disabled, focus } : La
                 style={({ pressed }) => [
                     styles.button,
                     // disabled && styles.disabled,
-                    { backgroundColor: Colors.secondary },
+                    { backgroundColor: color ? color :Colors.secondary },
                     {opacity: disabled || pressed ? 0.5 : 1}
                 ]}
             >
                 { focus && <View style={styles.circle}></View> }
-                <Text style={[globalstyles.text, globalstyles.uppercase, focus && { textDecorationLine: 'underline', fontWeight: 'bold'}]}>{label}</Text>
-                <MaterialIcons name={icon} size={20} color={Colors.textSecondary} style={styles.icon} />
+                <MaterialIcons name={icon} size={20} color={labelColor ? labelColor : Colors.textSecondary} style={styles.icon} />
+                <Text style={[
+                        labelColor ? globalstyles.textNoColor : globalstyles.text, 
+                        globalstyles.uppercase, 
+                        focus && { textDecorationLine: 'underline', fontWeight: 'bold'},
+                        {color: labelColor && labelColor}
+                    ]}
+                >
+                    { label }
+                </Text>
             </Pressable>
         // </Animated.View>
     )
@@ -76,6 +84,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         borderRadius: 12,
+        gap: 10
         // borderWidth: 1,
         // borderColor: Colors.tertiary
         // borderWidth: 5
@@ -102,7 +111,7 @@ const styles = StyleSheet.create({
         height: 9
     },
     icon: {
-        position: 'absolute',
-        right: 15
+        // position: 'absolute',
+        // right: 15
     }
 })

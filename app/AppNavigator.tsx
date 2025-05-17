@@ -38,6 +38,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import Styles from "@/constants/Styles";
 import Settings from "./settings/Settings";
 import { globalstyles } from "@/utils/GlobalStyle";
+import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { CopilotProvider } from "react-native-copilot";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -89,8 +91,9 @@ export default function AppNavigator() {
                         selectionToBeCleared?: boolean, 
                         removeBatchButton?: boolean,
                         headerPaddingBottom?: boolean
-                      ) => {
+                      ) : NativeStackNavigationOptions => {
     return {
+      animation: 'simple_push',
       header: () => <CustomHeader 
                       previousButton={previousButton}
                       cancelButton={cancelButton}
@@ -101,10 +104,10 @@ export default function AppNavigator() {
                     
                     // contentStyle: {padding: 20, backgroundColor: 'white', alignItems: 'center'},
                     // contentStyle: {padding: 20}, 
-      transitionSpec: {
-        open: config,
-        close: config
-      },
+      // transitionSpec: {
+      //   open: config,
+      //   close: config,
+      // },
     }
   }
   const test = getOptions()
@@ -138,131 +141,135 @@ export default function AppNavigator() {
   }
 
   if (isUserLoading) return <Spinner text={'Loading user'}/>
-  
+
   return (
    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
-      <View style={{flex: 1,alignItems: 'center'}}>
-        <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
-          {/* <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth, padding: Styles.mainPadding}}> */}
-            {
-              isAuthenticated ? (
-                // User authenticated
-                user?.defaultLearningLanguage ? (
-                  // At least one learning language selected
-                  <Stack.Navigator initialRouteName="Home" screenOptions={{contentStyle}}>
-                  {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
-                    <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
-                    {/* padding: 20,  */}
+      <CopilotProvider>
+        <View style={{flex: 1,alignItems: 'center'}}>
+          <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
+            {/* <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth, padding: Styles.mainPadding}}> */}
+              {
+                isAuthenticated ? (
+                  // User authenticated
+                  user?.defaultLearningLanguage ? (
+                    // At least one learning language selected
+                    <Stack.Navigator initialRouteName="Home" screenOptions={{contentStyle}}>
+                    {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
+                      <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
+                      {/* padding: 20,  */}
+                      <Stack.Screen 
+                        name="settings"
+                        component={Settings}
+                        options={getOptions(true)}
+                      />
+                      <Stack.Screen 
+                        name="Learning language list"
+                        component={LearningLanguageList}
+                        options={getOptions(true)}
+                      />
+                      <Stack.Screen 
+                        name="Add learning language"
+                        component={AddLearningLanguage}
+                        options={getOptions(true, true)}
+                      />
+                      <Stack.Screen 
+                        name="Tense(s) selection"
+                        component={TenseSelection}
+                        options={getOptions(true, false)}
+                      />
+                      <Stack.Screen 
+                        name="Verb(s) selection" 
+                        component={VerbSelection}
+                        options={getOptions(true, true, true)}
+                      />
+                      <Stack.Screen 
+                        name="Batch progress"  
+                        component={BatchProgress}
+                        options={getOptions(false, true, true)}
+                      />
+                      <Stack.Screen 
+                        name="Batch created"
+                        component={BatchCreated} 
+                        options={getOptions(false, true)}
+                      />
+                      <Stack.Screen 
+                        name="Start"
+                        component={Start} 
+                        options={getOptions(true, false, false, true)}
+                      />
+                      <Stack.Screen 
+                        name="Question" 
+                        component={Question}
+                        options={getOptions(false, true)}
+                      />
+                      <Stack.Screen 
+                        name="Results" 
+                        component={Results}
+                        options={getOptions(false, true)}
+                      /> 
+                    </Stack.Navigator>
+                  ) : (
+                    // No learning language selected
+                    <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'} screenOptions={{contentStyle}}>
+                      {
+                        isOffline 
+                          ?
+                            <Stack.Screen 
+                              name="Offline"
+                              component={Offline}
+                              options={getOptions()}
+                            />
+                          :
+                            <>
+                              <Stack.Screen 
+                                name="Tutorial"
+                                component={TutorialScreen}
+                                options={getOptions()}
+                              />
+                              <Stack.Screen 
+                                name="On boarding learning language"
+                                component={AddLearningLanguage}
+                                options={getOptions()}
+                              />
+                            </>
+                      }
+                    </Stack.Navigator>
+                  )
+                ) : (
+                  // User not authenticated
+                  <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'} screenOptions={{contentStyle}}>
                     <Stack.Screen 
-                      name="settings"
-                      component={Settings}
-                      options={getOptions(true)}
-                    />
+                      name="Log in" 
+                      component={LogIn}
+                      options={getOptions()}
+                    /> 
                     <Stack.Screen 
-                      name="Learning language list"
-                      component={LearningLanguageList}
-                      options={getOptions(true)}
-                    />
+                      name="Sign up" 
+                      component={SignUp}
+                      options={getOptions()}
+                    /> 
                     <Stack.Screen 
-                      name="Add learning language"
-                      component={AddLearningLanguage}
-                      options={getOptions(true, true)}
-                    />
-                    <Stack.Screen 
-                      name="Tense(s) selection"
-                      component={TenseSelection}
+                      name="Reset password request" 
+                      component={PasswordResetRequest}
                       options={getOptions(true, false)}
                     />
                     <Stack.Screen 
-                      name="Verb(s) selection" 
-                      component={VerbSelection}
-                      options={getOptions(true, true, true)}
-                    />
-                    <Stack.Screen 
-                      name="Batch progress"  
-                      component={BatchProgress}
-                      options={getOptions(false, true, true)}
-                    />
-                    <Stack.Screen 
-                      name="Batch created"
-                      component={BatchCreated} 
+                      name="New password" 
+                      component={NewPassword}
                       options={getOptions(false, true)}
                     />
-                    <Stack.Screen 
-                      name="Start"
-                      component={Start} 
-                      options={getOptions(true, false, false, true)}
-                    />
-                    <Stack.Screen 
-                      name="Question" 
-                      component={Question}
-                      options={getOptions(false, true)}
-                    />
-                    <Stack.Screen 
-                      name="Results" 
-                      component={Results}
-                      options={getOptions(false, true)}
-                    /> 
-                  </Stack.Navigator>
-                ) : (
-                  // No learning language selected
-                  <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'} screenOptions={{contentStyle}}>
-                    {
-                      isOffline 
-                        ?
-                          <Stack.Screen 
-                            name="Offline"
-                            component={Offline}
-                            options={getOptions()}
-                          />
-                        :
-                          <>
-                            <Stack.Screen 
-                              name="Tutorial"
-                              component={TutorialScreen}
-                              options={getOptions()}
-                            />
-                            <Stack.Screen 
-                              name="On boarding learning language"
-                              component={AddLearningLanguage}
-                              options={getOptions()}
-                            />
-                          </>
-                    }
                   </Stack.Navigator>
                 )
-              ) : (
-                // User not authenticated
-                <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'} screenOptions={{contentStyle}}>
-                  <Stack.Screen 
-                    name="Log in" 
-                    component={LogIn}
-                    options={getOptions()}
-                  /> 
-                  <Stack.Screen 
-                    name="Sign up" 
-                    component={SignUp}
-                    options={getOptions()}
-                  /> 
-                  <Stack.Screen 
-                    name="Reset password request" 
-                    component={PasswordResetRequest}
-                    options={getOptions(true, false)}
-                  />
-                  <Stack.Screen 
-                    name="New password" 
-                    component={NewPassword}
-                    options={getOptions(false, true)}
-                  />
-                </Stack.Navigator>
-              )
-            }
+              }
+          </View>
         </View>
-      </View>
+      </CopilotProvider>
     </>
   );
 }
+
+
 
 export function CustomHeader(
   {

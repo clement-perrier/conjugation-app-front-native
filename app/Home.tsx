@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, InteractionManager } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -67,6 +67,7 @@ export default function Home() {
         dispatch(updateIsOnBoarding(false))
       }
     }
+
   }, [])
 
   // Buttons
@@ -90,17 +91,18 @@ export default function Home() {
           user &&
             <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
         }
+
         <IconButton  
           icon='settings' 
           size={33}
           onPress={() => navigation.navigate('settings')}
           style={globalstyles.headerButton}
-          />
-
+        /> 
+        
       </View>
 
       {/* Batches list */}
-      <MainLayout  buttons={buttons}>
+      <MainLayout buttons={buttons}>
         <>
           <CustomFlatList
             data={sortedBatchList}

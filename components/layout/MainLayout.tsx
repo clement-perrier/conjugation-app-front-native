@@ -15,6 +15,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({children, buttons, buttonsHorizontal, title, customStyle} : MainLayoutProps){
     
+    
     return (
         <View style={[globalstyles.container, customStyle]}>
 
@@ -32,15 +33,16 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title,
 
                         { typeof button.topMessage === 'string' && <Text style={[globalstyles.text, {marginBottom: 20}]}>{button.topMessage}</Text> }
 
-                        <BottomButton 
-                            label={button.label}
-                            onPress={button.onPress}
-                            icon={button.icon}
-                            iconSize={button.iconSize}
-                            color={button.color}
-                            disabled={button.disabled}
-                            iconOnly={button.iconOnly}
-                        />
+                    
+                            <BottomButton 
+                                label={button.label}
+                                onPress={button.onPress}
+                                icon={button.icon}
+                                iconSize={button.iconSize}
+                                color={button.color}
+                                disabled={button.disabled}
+                                iconOnly={button.iconOnly}
+                                />
 
                     </View>
                 )}

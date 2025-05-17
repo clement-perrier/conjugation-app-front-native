@@ -41,6 +41,13 @@ export const globalstyles = StyleSheet.create({
         textAlign: 'center',
         color: Colors.textSecondary
     },
+    textNoColor: {
+        justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        alignContent: 'center',
+        textAlign: 'center',
+    },
     uppercase: {
         textTransform: 'uppercase',
     },

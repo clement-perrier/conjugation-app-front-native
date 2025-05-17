@@ -6,6 +6,7 @@ export type LayoutButton = {
     icon?: keyof typeof MaterialIcons.glyphMap
     iconSize?: number
     color?: string
+    labelColor?: string
     disabled?: boolean
     iconOnly?: boolean
     focus?: boolean,
