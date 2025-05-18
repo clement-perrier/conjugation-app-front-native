@@ -14,16 +14,16 @@ import {
   StyleSheet, 
 } from 'react-native';
 
+interface ImageProps {
+    source: any, 
+    height: number,
+    imageLegend?: string
+}
+
 interface ContentProps {
     text: string, 
-    image?: {
-        source: any, 
-        height: number
-    },
-    image2?: {
-        source: any, 
-        height: number
-    }
+    image?: ImageProps,
+    image2?: ImageProps,
 }
 
 interface ScreenProps {
@@ -51,14 +51,15 @@ const TutorialScreen = () => {
                 text: 'Several languages are available for your learning: French, Spanish, Italian and German.',
                 image: {
                     source: require('../../assets/images/tutorial/flag_list.png'),
-                    height: 40
+                    height: 60
                 }
             },
             {
-                text: 'The app is based on spaced repetition memorization. As this name suggests, you will practice your conjugations multiple times, but spaced out in the most optimized way possible to retain information with minimal revisions.',
+                text: '\nThe app is based on spaced repetition memorization. \n\n As this name suggests, you will practice your conjugations multiple times, but spaced out in the most optimized way possible to retain information with minimal revisions.',
                 image: {
                     source: require('../../assets/images/tutorial/retention_graph.png'),
-                    height: 200
+                    height: 240,
+                    imageLegend: 'Repetitions spacing is based on Ebbinghaus forgetting curve'
                 }
             }
         ],
@@ -67,34 +68,21 @@ const TutorialScreen = () => {
         title: 'HOW IT WORKS',
         contentList: [
             {
-                text: 'Once you correctly recall a conjugation table for the first time, you will need to practice it again at key intervals:',
+                text: 'Once you correctly recall a conjugation table for the first time, you will need to practice it again at key intervals:'
             },
             {
-                text: '• The next day (Day 1)'
-            },
-            {
-                text: '• The day after (Day 2)'
-            },
-            {
-                text: '• Four days later (Day 4)'
-            },
-            {
-                text: '• One week later (Day 7)'
-            },
-            {
-                text: '• Two weeks later (Day 15)'
-            },
-            {
-                text: '• One month later (Day 30)'
-            },
-            {
-                text: '• Two months later (Day 60)'
-            },
-            {
-                text: '• And finally four months later (Day 120)',
+                text: "• The next day (D1)\n" +
+                        "• The day after (D2)\n" +
+                        "• Four days later (D4)\n" +
+                        "• One week later (W1)\n" +
+                        "• Two weeks later (W2)\n" +
+                        "• One month later (M1)\n" +
+                        "• Two months later (M2)\n" +
+                        "• Four months later (M4)\n"
+,
                 image: {
                     source: require('../../assets/images/tutorial/progress2.png'),
-                    height: 30
+                    height: 55
                 }
             },
             {
@@ -106,23 +94,27 @@ const TutorialScreen = () => {
         title: 'GETTING STARTED',
         contentList: [
             {
-                text: 'After choosing the language, start by creating a new set using the "+" button in the main menu.',
+                text: 'After choosing the language, start by creating a new set using the "+" button in the main page:',
                 image: {
                     source: require('../../assets/images/tutorial/plus_button.png'),
-                    height: 25
+                    height: 45
                 }
             },
             {
-                text: 'A set consists of several conjugation tables, allowing you to revise multiple tables simultaneously. You can add up to 5 conjugation tables per set; beyond that, revision can become tedious and affect your motivation.',
+                text: 'A set consists of several conjugation tables, allowing you to train multiple tables at the same time.',
                 image: {
                     source: require('../../assets/images/tutorial/set_list.png'),
-                    height: 300
+                    height: 450,
+                    imageLegend: 'Conjugation tables are represented by a VERB-TENSE pair'
                 }
+            },
+            {
+                text: 'You can add up to 5 conjugation tables per set; beyond that, revision can become tedious and affect your motivation.',
             }
         ]
         },
         {
-        title: 'RESULTS OF PRACTICING',
+        title: 'RESULTS AFTER PRACTICING',
         contentList: [
             {
                 text: 'There are three possibilities when you finish reviewing a set of tables:',
@@ -131,14 +123,14 @@ const TutorialScreen = () => {
                 text: '1. You recalled all the tables correctly, and the set moves to the next repetition level.',
                 image: {
                     source: require('../../assets/images/tutorial/results.png'),
-                    height: 280
+                    height: 350
                 }
             },
             {
                 text: '2. You did not recall any tables correctly; in this case, the reviewing will be postponed to the next day until you recall them correctly.',
                 image2: {
                     source: require('../../assets/images/tutorial/results_wrong.png'),
-                    height: 280
+                    height: 350
                 }
             },
             {
@@ -167,7 +159,7 @@ const TutorialScreen = () => {
 
     const buttons: LayoutButton[] = [
         {
-            label: !isLastStep ? 'NEXT' : 'OK', 
+            label: !isLastStep ? 'NEXT' : 'FINISH', 
             onPress: nextStep,
             // icon: 'arrow-forward',
             // iconSize: !isLastStep ? 28 : 0,
@@ -184,21 +176,27 @@ const TutorialScreen = () => {
     )
 
     return (
-        <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center', padding: 20}} >
+        <View style={{backgroundColor: 'white', flex: 1, alignItems: 'center', padding: 20}}>
+
             <Text style={globalstyles.title}>{tutorialContent[step].title}</Text> 
             <CustomFlatList
                 data={tutorialContent[step].contentList}
                 itemSeparatorHeight={15}
                 renderItem={({ item, index } : {item: ContentProps, index: number}) => (
-                    <View key={index} style={globalstyles.flexColumn}>
+                    <View key={index} style={[globalstyles.flexColumn, {rowGap: 5}]}>
                         <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'center', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
                         {
                             item.image && 
-                                <Image 
-                                    source={item.image.source} 
-                                    style={[styles.image, {height: item.image.height}]} 
-                                    resizeMode="contain" 
-                                />
+                                <>
+                                    <Image 
+                                        source={item.image.source} 
+                                        style={[styles.image, {height: item.image.height}]} 
+                                        resizeMode="contain" 
+                                    />
+                                    { item.image?.imageLegend && <Text style={[globalstyles.text, styles.italic]}>{item.image.imageLegend}</Text> }
+                                </>
+                                
+                            
                         }
                         {
                             item.image2 &&
@@ -232,34 +230,6 @@ const TutorialScreen = () => {
             </View>
             
         </View>
-        // <MainLayout title={tutorialContent[step].title} buttons={buttons}>
-        //     <CustomFlatList
-        //         data={tutorialContent[step].contentList}
-        //         itemSeparatorHeight={15}
-        //         renderItem={({ item, index } : {item: ContentProps, index: number}) => (
-        //             <View style={globalstyles.flexColumn}>
-        //                 <Text style={[{color: Colors.textSecondary, lineHeight: 23, textAlign: 'center', fontSize: 16, fontWeight: '400'}]}>{item.text}</Text>
-        //                 {
-        //                     item.image && 
-        //                         <Image 
-        //                             source={item.image.source} 
-        //                             style={[styles.image, {height: item.image.height}]} 
-        //                             resizeMode="contain" 
-        //                         />
-        //                 }
-        //                 {
-        //                     item.image2 &&
-        //                     <Image 
-        //                         source={item.image2.source} 
-        //                         style={[styles.image, {height: item.image2.height}]} 
-        //                         resizeMode="contain"
-        //                     />
-        //                 }
-                        
-        //             </View>
-        //         )}
-        //     />
-        // </MainLayout>
     );
 };
 
@@ -267,6 +237,9 @@ const styles = StyleSheet.create({
   image: {
     width: '100%'
   },
+  italic: {
+    fontStyle: 'italic'
+  }
 });
 
 export default TutorialScreen;
