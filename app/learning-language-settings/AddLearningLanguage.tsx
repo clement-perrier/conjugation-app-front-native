@@ -10,6 +10,7 @@ import { UpdateUserDefaultLearningLanguage, UpdateUserLearningLanguageList } fro
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import React from 'react';
 import Styles from '@/constants/Styles';
+import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 
 export default function AddLearningLanguage() {
 
@@ -43,17 +44,26 @@ export default function AddLearningLanguage() {
               key={item.id}
               label={item.name}
               disabled={(user && user.learningLanguageList) ? user.learningLanguageList.some(language => language.id === item.id) : false}
-              onPress={() =>{
-                // Updating Redux state
+              onPress={() => {
+                // Updating Redux state - user learning language list and user default learning language
                 dispatch(addLearningLanguage(item))
                 dispatch(updateDefaultLearningLanguage(item))
+                // WHen on boarding, user chose at least one language, then he is not considered on boarding anymore
+                isOnBoarding && dispatch(updateIsOnBoarding(false))
                 user && 
                   (
                     // Updating database
                     UpdateUserLearningLanguageList(user.id, item.id),
                     UpdateUserDefaultLearningLanguage(user.id, item.id)
                   )
+                // Navigation back home
+                console.log(isOnBoarding)
                 !isOnBoarding && navigation.navigate('Home')
+
+                // setTimeout(() => {
+                  
+                  // navigation.navigate('Home')
+                // }, 1000);
               }}
               // icon='chevron-right'
             />}

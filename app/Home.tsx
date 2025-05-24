@@ -57,8 +57,8 @@ export default function Home() {
   useEffect(() => {
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
-      const alreadyLoaded = batchListLearningLanguageId === languageId
-      if (!alreadyLoaded && !batchListLoading){
+      // const alreadyLoaded = batchListLearningLanguageId === languageId
+      if (!batchListLoading){
         dispatch(FetchTenseList(languageId))
         dispatch(FetchVerbList(languageId))
         dispatch(FetchPronounList(languageId))
@@ -95,7 +95,7 @@ export default function Home() {
         <IconButton  
           icon='settings' 
           size={33}
-          onPress={() => navigation.navigate('settings')}
+          onPress={() => navigation.navigate('Settings')}
           style={globalstyles.headerButton}
         /> 
         

@@ -70,6 +70,7 @@ export default function Settings() {
           user && await ApiService.DeleteUser(user.id)
           AppSecureStore.SaveItemAsync('access_token', '');
           AppSecureStore.SaveItemAsync('refresh_token', '');
+          AppSecureStore.SaveItemAsync('user_id', '');
           dispatch(updateIsAuthenticated(false))
           handleSuccess('Signed out')
           setIsSigningOut(false)
@@ -103,6 +104,12 @@ export default function Settings() {
 
   // Button list
   const buttonList: LayoutButton[] = [
+    {
+      label: 'getting started',
+      iconSize: 25,
+      icon: 'rocket',
+      onPress: () => navigation.navigate('Tutorial'),
+    },
     {
       label: user?.isGuest ? 'sign out' : 'log out',
       iconSize: 25,
@@ -139,52 +146,21 @@ export default function Settings() {
         data={buttonList}
         itemSeparatorHeight={25}
         renderItem={({ item }) => (
-          <ListButton
-            key={item.key}
-            label={item.label}
-            iconSize={item.iconSize}
-            icon={item.icon}
-            color={item.color}
-            labelColor={item.labelColor}
-            disabled={item.disabled}
-            onPress={item.onPress}
-          />
+          !item.disabled ?
+            <ListButton
+              key={item.key}
+              label={item.label}
+              iconSize={item.iconSize}
+              icon={item.icon}
+              color={item.color}
+              labelColor={item.labelColor}
+              // disabled={item.disabled}
+              onPress={item.onPress}
+            />
+            :
+            null
         )}
       />
-
-
-        {/* <View style={[globalstyles.flexColumn, {rowGap: 30}]}>
-
-          {
-            user?.isGuest
-              ?
-                <ListButton 
-                  label='sign out' 
-                  iconSize={25} 
-                  icon={'logout'} 
-                  color={Colors.secondary}
-                  onPress={handleSignout}
-                />
-              :
-                <ListButton 
-                  label='log out' 
-                  iconSize={25} 
-                  icon={'logout'} 
-                  color={Colors.secondary}
-                  onPress={handleLogout}
-                />
-          }
-
-          <ListButton 
-            label='delete account'
-            iconSize={25} 
-            icon='remove-circle-outline' 
-            // color={Colors.error}
-            disabled={user?.isGuest}
-            onPress={handleAccountDeletion}
-          />
-
-        </View> */}
 
     </MainLayout>
   );

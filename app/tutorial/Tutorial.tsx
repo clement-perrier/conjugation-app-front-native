@@ -4,6 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useAppSelector } from '@/state/hooks';
 import { LayoutButton } from '@/types/LayoutButton';
 import { globalstyles } from '@/utils/GlobalStyle';
 import React, { useState } from 'react';
@@ -14,6 +15,7 @@ import {
   StyleSheet, 
 } from 'react-native';
 
+//  Interfaces
 interface ImageProps {
     source: any, 
     height: number,
@@ -35,6 +37,9 @@ const TutorialScreen = () => {
 
     // Hooks
     const navigation = useAppNavigation()
+
+    // Selectors
+    const user = useAppSelector(state => state.User.value)
 
     // States
     const [step, setStep] = useState(0);
@@ -82,7 +87,7 @@ const TutorialScreen = () => {
 ,
                 image: {
                     source: require('../../assets/images/tutorial/progress2.png'),
-                    height: 55
+                    height: 45
                 }
             },
             {
@@ -153,7 +158,7 @@ const TutorialScreen = () => {
         if (!isLastStep) {
         setStep(step + 1);
         } else {
-            navigation.navigate('On boarding learning language')
+            user?.defaultLearningLanguage ? navigation.navigate('Home') : navigation.navigate('On boarding learning language')
         }
     };
 

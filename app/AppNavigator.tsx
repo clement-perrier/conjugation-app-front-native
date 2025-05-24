@@ -110,7 +110,7 @@ export default function AppNavigator() {
       // },
     }
   }
-  const test = getOptions()
+
   // Effects
   useEffect(() => {
 
@@ -145,7 +145,6 @@ export default function AppNavigator() {
   return (
    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
-      <CopilotProvider>
         <View style={{flex: 1,alignItems: 'center'}}>
           <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
             {/* <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth, padding: Styles.mainPadding}}> */}
@@ -159,7 +158,7 @@ export default function AppNavigator() {
                       <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
                       {/* padding: 20,  */}
                       <Stack.Screen 
-                        name="settings"
+                        name="Settings"
                         component={Settings}
                         options={getOptions(true)}
                       />
@@ -208,6 +207,11 @@ export default function AppNavigator() {
                         component={Results}
                         options={getOptions(false, true)}
                       /> 
+                      <Stack.Screen 
+                        name="Tutorial"
+                        component={TutorialScreen}
+                        options={getOptions(true, true)}
+                      />
                     </Stack.Navigator>
                   ) : (
                     // No learning language selected
@@ -223,7 +227,7 @@ export default function AppNavigator() {
                           :
                             <>
                               <Stack.Screen 
-                                name="Tutorial"
+                                name="OnBoardingTutorial"
                                 component={TutorialScreen}
                                 options={getOptions()}
                               />
@@ -264,7 +268,6 @@ export default function AppNavigator() {
               }
           </View>
         </View>
-      </CopilotProvider>
     </>
   );
 }
