@@ -17,6 +17,7 @@ import { CustomAlert } from '@/utils/CustomAlert';
 import Styles from '@/constants/Styles';
 import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 import React from 'react';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function VerbSelection() {
 
@@ -86,11 +87,7 @@ export default function VerbSelection() {
           CustomAlert('Set limit reached', 'You\'ve reached the limit of 5 verbs per repetition set to keep the learning manageable. Please remove some verbs from the set to continue.')
         } else {
           dispatch(addSelectedTable(getSelectedConjugationTableList()))
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'Batch progress' }],
-          // });
-          navigation.navigate('Batch progress')
+          navigation.navigate(Routes.BatchProgress)
         }
       },
       disabled: selectedVerbList.length === 0

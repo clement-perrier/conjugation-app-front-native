@@ -8,6 +8,7 @@ import EmailInput from '@/components/layout/EmailInput';
 import { AuthPasswordResetRequest } from '@/services/ApiService';
 import Spinner from '@/components/layout/Spinner';
 import { consoleError } from '@/utils/Messages';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function PasswordResetRequest() {
 
@@ -22,7 +23,7 @@ export default function PasswordResetRequest() {
     setIsLoading(true)
     try {
       const resetPasswordResponse = await AuthPasswordResetRequest(email)
-      resetPasswordResponse && navigation.navigate('New password')
+      resetPasswordResponse && navigation.navigate(Routes.NewPassword)
     } catch (error) {
       consoleError('PasswordResetRequest.tsx', 'handleResetRequest', error)
     }

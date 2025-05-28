@@ -31,14 +31,14 @@ export const Login = async (dispatch: any, email: string, password: string, sign
       throw error
       // return null;  // Return null or fallback value
   }
-  }
+}
   
-  export const SaveJwtInfoLocally = async (jwtResponse: JwtResponse) => {
-    await AppSecureStore.SaveItemAsync('access_token', jwtResponse.accessToken);
-    await AppSecureStore.SaveItemAsync('refresh_token', jwtResponse.refreshToken);
-    await AppSecureStore.SaveItemAsync('refresh_token_expiry_date', jwtResponse.refreshTokenExpiryDate);
-    await AppSecureStore.SaveItemAsync('user_id', jwtResponse.userId.toString());
-  }
+export const SaveJwtInfoLocally = async (jwtResponse: JwtResponse) => {
+  await AppSecureStore.SaveItemAsync('access_token', jwtResponse.accessToken);
+  await AppSecureStore.SaveItemAsync('refresh_token', jwtResponse.refreshToken);
+  await AppSecureStore.SaveItemAsync('refresh_token_expiry_date', jwtResponse.refreshTokenExpiryDate);
+  await AppSecureStore.SaveItemAsync('user_id', jwtResponse.userId.toString());
+}
 
 export const LoadInitialData = async (dispatch: any, userId: number) => {
   try {

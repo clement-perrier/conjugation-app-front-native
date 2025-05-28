@@ -10,6 +10,7 @@ import Colors from '@/constants/Colors';
 import CustomProgressSteps from '@/components/CustomProgressSteps';
 import React from 'react';
 import * as DateService from '@/utils/Date';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function Start() {
 
@@ -36,7 +37,7 @@ export default function Start() {
       label: 'START',
       disabled: !isDueToday,
       onPress: () => {
-        navigation.navigate('Question')
+        navigation.navigate(Routes.Question)
       },
       topMessage: !isDueToday ? 'This set is not due today' : ''
     }

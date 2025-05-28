@@ -10,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Spinner from './Spinner';
 import { validateEmail } from '@/utils/ValidateEmail';
 import PasswordInput from './PasswordInput';
+import { Routes } from '@/types/RootStackParamList';
 
 interface AuthenticationLayoutProps {
   isLogin: boolean,
@@ -86,7 +87,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
         isLogin && 
           <View style={styles.forgotPasswordContainer}>
             <Text 
-              onPress={() => navigation.navigate('Reset password request')} 
+              onPress={() => navigation.navigate(Routes.ResetPasswordRequest)} 
               style={styles.forgotPassword}
             >
               Forgot your password?
@@ -106,7 +107,7 @@ export default function AuthenticationLayout({isLogin, onPrimaryPress, isLoading
         <Text>{isLogin ? `Don't have an account?` : 'Already have an account?'}</Text>
         <Text 
           style={styles.bottomText}
-          onPress={() => navigation.navigate(isLogin ? 'Sign up' : 'Log in')}
+          onPress={() => navigation.navigate(isLogin ? Routes.Signup : Routes.Login)}
         >
           {isLogin ? 'Sign up' : 'Log in'}
         </Text>

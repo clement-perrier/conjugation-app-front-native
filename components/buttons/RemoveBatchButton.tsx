@@ -6,6 +6,7 @@ import { removeBatch } from "@/state/slices/BatchListSlice";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { Alert, Platform } from "react-native";
 import Colors from "@/constants/Colors";
+import { Routes } from "@/types/RootStackParamList";
 
 export default function RemoveBatchButton() {
 
@@ -26,7 +27,7 @@ export default function RemoveBatchButton() {
                         RemoveBatch(selectedBatch.id),
                         dispatch(removeBatch(selectedBatch.id))
                     );
-                navigation.navigate('Home');
+                navigation.navigate(Routes.Home);
             }
         } else {
             // Use Alert.alert for Android and iOS
@@ -46,7 +47,7 @@ export default function RemoveBatchButton() {
                                     RemoveBatch(selectedBatch.id),
                                     dispatch(removeBatch(selectedBatch.id))
                                 );
-                            navigation.navigate('Home');
+                            navigation.navigate(Routes.Home);
                         }
                     }
                 ]

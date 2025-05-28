@@ -19,6 +19,7 @@ import Spinner from '@/components/layout/Spinner';
 import CustomTooltip from '@/components/CustomTooltip';
 import { updateIsNewBatchAdded } from '@/state/slices/isNewBatchAdded';
 import InfoButton from '@/components/buttons/InfoButton';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function Question() {
 
@@ -161,7 +162,7 @@ export default function Question() {
       // Training is finished
       else {
         handleResults()
-        navigation.navigate('Results')
+        navigation.navigate(Routes.Results)
       }
 
   }

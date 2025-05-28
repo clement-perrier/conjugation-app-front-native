@@ -11,6 +11,7 @@ import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
 import { clearSelectedTableList, removeSelectedTable } from '@/state/slices/SelectedTableListSlice';
 import { Batch } from '@/types/Batch';
 import { LayoutButton } from '@/types/LayoutButton';
+import { Routes } from '@/types/RootStackParamList';
 import { UserLearningLanguage } from '@/types/UserLearningLanguage';
 import { formatDateAsISO, getTodayYMD } from '@/utils/Date';
 import { globalstyles } from '@/utils/GlobalStyle';
@@ -70,7 +71,7 @@ export default function BatchProgress() {
     dispatch(clearSelectedTableList())
 
     // Navigation to next page
-    navigation.navigate('Batch created')
+    navigation.navigate(Routes.BatchCreated)
   }
 
   // States
@@ -88,7 +89,7 @@ export default function BatchProgress() {
       label: 'ADD MORE',
       onPress: () => {
         backHandler.remove()
-        navigation.push('Tense(s) selection')
+        navigation.push(Routes.TenseSelection)
       },
       disabled: isSetLimitReached
     },

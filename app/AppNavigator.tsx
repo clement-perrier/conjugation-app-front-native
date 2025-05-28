@@ -40,6 +40,7 @@ import Settings from "./settings/Settings";
 import { globalstyles } from "@/utils/GlobalStyle";
 import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { CopilotProvider } from "react-native-copilot";
+import { Routes } from "@/types/RootStackParamList";
 
 const Stack = createNativeStackNavigator();
 // const Stack = createStackNavigator();
@@ -59,14 +60,15 @@ export default function AppNavigator() {
 
   // Handlers
   const handleNetworkChange: NetInfoChangeHandler = (state: NetInfoState) => {
-    if(!state.isConnected){
-      setIsOffline(true)
-      if(isAuthenticated) {
-        CustomAlert('No internet connection', 'Please reconnect to the internet to ensure that your changes are saved', () => {})
-      } else {
-        CustomAlert('No internet connection', 'Please reconnect to the internet to properly use the app', () => {})
-      }
-    }
+    // if(!state.isConnected){
+    //   setIsOffline(true)
+    //   if(isAuthenticated) {
+    //     CustomAlert('No internet connection', 'Please reconnect to the internet to ensure that your changes are saved', () => {})
+    //   } else {
+    //     CustomAlert('No internet connection', 'Please reconnect to the internet to properly use the app', () => {})
+    //   }
+    // }
+    state.isConnected ? setIsOffline(false) : setIsOffline(true)
   };
 
   // Constants
@@ -129,11 +131,12 @@ export default function AppNavigator() {
   useEffect(() => {
 
     // Update device token and listening to firebase push notification
-    user && requestNotificationPermission(user.id)
+    // user && requestNotificationPermission(user.id)
 
-    if (user?.defaultLearningLanguage === null) {
-      dispatch(updateIsOnBoarding(true));
-    }
+    // if (user?.defaultLearningLanguage === null) {
+    //   dispatch(updateIsOnBoarding(true));
+    //   console.log('hey')
+    // }
   }, [user]);
 
   if (isAuthenticated === null) {
@@ -143,131 +146,53 @@ export default function AppNavigator() {
   if (isUserLoading) return <Spinner text={'Loading user'}/>
 
   return (
-   <>
+    <>
       <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
-        <View style={{flex: 1,alignItems: 'center'}}>
-          <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth}}>
-            {/* <View style={{flex: 1, width: '100%', maxWidth: Styles.maxWidth, padding: Styles.mainPadding}}> */}
-              {
-                isAuthenticated ? (
-                  // User authenticated
-                  user?.defaultLearningLanguage ? (
-                    // At least one learning language selected
-                    <Stack.Navigator initialRouteName="Home" screenOptions={{contentStyle}}>
-                    {/* <Stack.Navigator initialRouteName="Tense(s) selection"> */}
-                      <Stack.Screen  name="Home" component={Home} options={{ headerShown: false }} />
-                      {/* padding: 20,  */}
-                      <Stack.Screen 
-                        name="Settings"
-                        component={Settings}
-                        options={getOptions(true)}
-                      />
-                      <Stack.Screen 
-                        name="Learning language list"
-                        component={LearningLanguageList}
-                        options={getOptions(true)}
-                      />
-                      <Stack.Screen 
-                        name="Add learning language"
-                        component={AddLearningLanguage}
-                        options={getOptions(true, true)}
-                      />
-                      <Stack.Screen 
-                        name="Tense(s) selection"
-                        component={TenseSelection}
-                        options={getOptions(true, false)}
-                      />
-                      <Stack.Screen 
-                        name="Verb(s) selection" 
-                        component={VerbSelection}
-                        options={getOptions(true, true, true)}
-                      />
-                      <Stack.Screen 
-                        name="Batch progress"  
-                        component={BatchProgress}
-                        options={getOptions(false, true, true)}
-                      />
-                      <Stack.Screen 
-                        name="Batch created"
-                        component={BatchCreated} 
-                        options={getOptions(false, true)}
-                      />
-                      <Stack.Screen 
-                        name="Start"
-                        component={Start} 
-                        options={getOptions(true, false, false, true)}
-                      />
-                      <Stack.Screen 
-                        name="Question" 
-                        component={Question}
-                        options={getOptions(false, true)}
-                      />
-                      <Stack.Screen 
-                        name="Results" 
-                        component={Results}
-                        options={getOptions(false, true)}
-                      /> 
-                      <Stack.Screen 
-                        name="Tutorial"
-                        component={TutorialScreen}
-                        options={getOptions(true, true)}
-                      />
-                    </Stack.Navigator>
-                  ) : (
-                    // No learning language selected
-                    <Stack.Navigator initialRouteName={isOffline ? 'Offline' : 'Tutorial'} screenOptions={{contentStyle}}>
-                      {
-                        isOffline 
-                          ?
-                            <Stack.Screen 
-                              name="Offline"
-                              component={Offline}
-                              options={getOptions()}
-                            />
-                          :
-                            <>
-                              <Stack.Screen 
-                                name="OnBoardingTutorial"
-                                component={TutorialScreen}
-                                options={getOptions()}
-                              />
-                              <Stack.Screen 
-                                name="On boarding learning language"
-                                component={AddLearningLanguage}
-                                options={getOptions()}
-                              />
-                            </>
-                      }
-                    </Stack.Navigator>
-                  )
-                ) : (
-                  // User not authenticated
-                  <Stack.Navigator initialRouteName={isOnboarding ? 'Sign up' : 'Log in'} screenOptions={{contentStyle}}>
-                    <Stack.Screen 
-                      name="Log in" 
-                      component={LogIn}
-                      options={getOptions()}
-                    /> 
-                    <Stack.Screen 
-                      name="Sign up" 
-                      component={SignUp}
-                      options={getOptions()}
-                    /> 
-                    <Stack.Screen 
-                      name="Reset password request" 
-                      component={PasswordResetRequest}
-                      options={getOptions(true, false)}
-                    />
-                    <Stack.Screen 
-                      name="New password" 
-                      component={NewPassword}
-                      options={getOptions(false, true)}
-                    />
-                  </Stack.Navigator>
-                )
-              }
-          </View>
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <View style={{ flex: 1, width: '100%', maxWidth: Styles.maxWidth }}>
+          {
+            isOffline ? 
+              <Stack.Navigator screenOptions={{ contentStyle }}>
+                <Stack.Screen
+                  name={Routes.Offline}
+                  component={Offline}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            :
+            isAuthenticated ? (
+              user?.defaultLearningLanguage ? (
+                <Stack.Navigator initialRouteName={Routes.Home} screenOptions={{ contentStyle }}>
+                  <Stack.Screen name={Routes.Home} component={Home} options={{ headerShown: false }} />
+                  <Stack.Screen name={Routes.Settings} component={Settings} options={getOptions(true)} />
+                  <Stack.Screen name={Routes.LearningLanguageList} component={LearningLanguageList} options={getOptions(true)} />
+                  <Stack.Screen name={Routes.AddLearningLanguage} component={AddLearningLanguage} options={getOptions(true, true)} />
+                  <Stack.Screen name={Routes.TenseSelection} component={TenseSelection} options={getOptions(true, false)} />
+                  <Stack.Screen name={Routes.VerbSelection} component={VerbSelection} options={getOptions(true, true, true)} />
+                  <Stack.Screen name={Routes.BatchProgress} component={BatchProgress} options={getOptions(false, true, true)} />
+                  <Stack.Screen name={Routes.BatchCreated} component={BatchCreated} options={getOptions(false, true)} />
+                  <Stack.Screen name={Routes.Start} component={Start} options={getOptions(true, false, false, true)} />
+                  <Stack.Screen name={Routes.Question} component={Question} options={getOptions(false, true)} />
+                  <Stack.Screen name={Routes.Results} component={Results} options={getOptions(false, true)} />
+                  <Stack.Screen name={Routes.Tutorial} component={TutorialScreen} options={getOptions(true, true)} />
+                </Stack.Navigator>
+              ) : (
+                <Stack.Navigator initialRouteName={Routes.OnBoardingTutorial} screenOptions={{ contentStyle }}>
+                  {/* <Stack.Screen name={Routes.OnBoardingTutorial} component={TutorialScreen} options={getOptions()} /> */}
+                  <Stack.Screen name={Routes.OnBoardingLearningLanguage} component={AddLearningLanguage} options={getOptions()} />
+                </Stack.Navigator>
+              )
+            ) : (
+              <Stack.Navigator initialRouteName={Routes.Login} screenOptions={{ contentStyle }}>
+                <Stack.Screen name={Routes.Login} component={LogIn} options={getOptions()} />
+                <Stack.Screen name={Routes.Signup} component={SignUp} options={getOptions()} />
+                <Stack.Screen name={Routes.ResetPasswordRequest} component={PasswordResetRequest} options={getOptions(true, false)} />
+                <Stack.Screen name={Routes.NewPassword} component={NewPassword} options={getOptions(false, true)} />
+              </Stack.Navigator>
+            )
+          }
         </View>
+      </View>
     </>
   );
 }
@@ -307,14 +232,14 @@ export function BackButton(){
   const navigation = useAppNavigation();
 
   return (
-          <View style={{justifyContent: 'center'}}>
-              <IconButton 
-                  icon='arrow-back'
-                  size={30} // Adjust size to match default button icon size
-                  onPress={() => navigation.goBack()}
-                  style={globalstyles.headerButton}
-              />
-          </View>
+    <View style={{justifyContent: 'center'}}>
+        <IconButton 
+            icon='arrow-back'
+            size={30} // Adjust size to match default button icon size
+            onPress={() => navigation.goBack()}
+            style={globalstyles.headerButton}
+        />
+    </View>
   )
     
 }
@@ -326,7 +251,7 @@ function CancelStackButton({selectionToBeCleared} : {selectionToBeCleared?: bool
 
   const handlePress = () => {
       selectionToBeCleared && dispatch(clearSelectedTableList())
-      navigation.navigate('Home')
+      navigation.navigate(Routes.Home)
   }
 
   return (

@@ -10,6 +10,7 @@ import { updateDefaultLearningLanguage } from '@/state/slices/UserSlice';
 import { LayoutButton } from '@/types/LayoutButton';
 import { UpdateUserDefaultLearningLanguage } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function LearningLanguageList() {
 
@@ -34,7 +35,7 @@ export default function LearningLanguageList() {
   // Buttons
   const buttons: LayoutButton[] = [
     {
-      onPress: () => navigation.navigate('Add learning language'),
+      onPress: () => navigation.navigate(Routes.AddLearningLanguage),
       icon: 'add',
       iconOnly: true
     }
@@ -55,7 +56,7 @@ export default function LearningLanguageList() {
             onPress={() =>{
               dispatch(updateDefaultLearningLanguage(item))
               user && UpdateUserDefaultLearningLanguage(user.id, item.id)
-              navigation.navigate('Home')
+              navigation.navigate(Routes.Home)
             }}
             // icon='chevron-right'
           />

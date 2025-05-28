@@ -11,6 +11,7 @@ import Spinner from '@/components/layout/Spinner';
 import Styles from '@/constants/Styles';
 import EmailInput from '@/components/layout/EmailInput';
 import { handleSuccess } from '@/utils/Messages';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function LogIn() {
 
@@ -65,7 +66,7 @@ export default function LogIn() {
       {/* Forgot password */}
       <View style={styles.forgotPasswordContainer}>
         <Text 
-          onPress={() => navigation.navigate('Reset password request')} 
+          onPress={() => navigation.navigate(Routes.ResetPasswordRequest)} 
           style={styles.forgotPassword}
         >
           Forgot your password?
@@ -84,7 +85,7 @@ export default function LogIn() {
         <Text>{`Don't have an account ?`}</Text>
         <Text 
           style={styles.bottomText}
-          onPress={() => navigation.navigate('Sign up')}
+          onPress={() => navigation.navigate(Routes.Signup)}
         >
           Sign up
         </Text>

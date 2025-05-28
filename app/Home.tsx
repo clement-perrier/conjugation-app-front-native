@@ -1,7 +1,7 @@
-import { View, StyleSheet, Text, InteractionManager } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FetchPronounList, FetchBatchList, FetchTableList, FetchTenseList, FetchVerbList } from '@/services/ApiService';
 import { formatBatchTitle } from '@/utils/Date';
 import { updateSelectedBatch } from '@/state/slices/SelectedBatchSlice';
@@ -18,6 +18,7 @@ import Spinner from '@/components/layout/Spinner';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import { isDueToday } from '@/utils/Date';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function Home() {
 
@@ -55,6 +56,7 @@ export default function Home() {
 
   // Effects
   useEffect(() => {
+    console.log('mounted')
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
       // const alreadyLoaded = batchListLearningLanguageId === languageId
@@ -67,13 +69,15 @@ export default function Home() {
         dispatch(updateIsOnBoarding(false))
       }
     }
-
+    return () => {
+      console.log('Home unmounted');
+    };
   }, [])
 
   // Buttons
   const buttons: LayoutButton[] = [
     {
-      onPress: () => navigation.navigate('Tense(s) selection'),
+      onPress: () => navigation.navigate(Routes.TenseSelection),
       icon: 'add',
       iconOnly: true
     }
@@ -89,13 +93,13 @@ export default function Home() {
 
         { 
           user &&
-            <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate('Learning language list')}/>
+            <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate(Routes.LearningLanguageList)}/>
         }
 
         <IconButton  
           icon='settings' 
           size={33}
-          onPress={() => navigation.navigate('Settings')}
+          onPress={() => navigation.navigate(Routes.Settings)}
           style={globalstyles.headerButton}
         /> 
         
@@ -122,7 +126,7 @@ export default function Home() {
                   label={formatBatchTitle(item)}
                   onPress={() => {
                     dispatch(updateSelectedBatch(item));
-                    navigation.navigate('Start')
+                    navigation.navigate(Routes.Start)
                   }}
                   // icon='chevron-right'
                   focus={isDueToday(item.reviewingDate)}
@@ -144,7 +148,7 @@ export default function Home() {
               </>
             )}
           />
-          </>
+        </>
       </MainLayout>
     </>
   );

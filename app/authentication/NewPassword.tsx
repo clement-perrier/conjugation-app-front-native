@@ -9,6 +9,7 @@ import { TextInput } from 'react-native';
 import Spinner from '@/components/layout/Spinner';
 import OtpTextInput from 'react-native-text-input-otp'
 import { consoleError, handleFail } from '@/utils/Messages';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function NewPassword() {
 
@@ -28,7 +29,7 @@ export default function NewPassword() {
     setIsLoading(true)
     try {
       await AuthChangePassword({code, newPassword: password})
-      navigation.navigate('Log in')
+      navigation.navigate(Routes.Login)
       setIsLoading(false)
     } catch (error) {
       consoleError('NewPassword', 'handleResetPassword', error)

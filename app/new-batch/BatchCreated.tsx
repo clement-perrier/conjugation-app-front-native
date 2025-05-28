@@ -6,6 +6,7 @@ import Colors from "@/constants/Colors";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useAppSelector } from "@/state/hooks";
 import { LayoutButton } from "@/types/LayoutButton";
+import { Routes } from "@/types/RootStackParamList";
 import { formatBatchTitle } from "@/utils/Date";
 import { globalstyles } from "@/utils/GlobalStyle";
 import { StyleSheet, View, Text } from "react-native";
@@ -21,7 +22,7 @@ export default function BatchCreated() {
   const buttons: LayoutButton[] = [
     {
       label:'START',
-      onPress:() => navigation.navigate('Question')
+      onPress:() => navigation.navigate(Routes.Question)
     }
   ]
   

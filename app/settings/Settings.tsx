@@ -15,6 +15,7 @@ import { consoleError, handleSuccess } from '@/utils/Messages';
 import ListButton from '@/components/buttons/ListButton';
 import { LayoutButton } from '@/types/LayoutButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function Settings() {
 
@@ -108,7 +109,7 @@ export default function Settings() {
       label: 'getting started',
       iconSize: 25,
       icon: 'rocket',
-      onPress: () => navigation.navigate('Tutorial'),
+      onPress: () => navigation.navigate(Routes.Tutorial),
     },
     {
       label: user?.isGuest ? 'sign out' : 'log out',

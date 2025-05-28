@@ -11,6 +11,7 @@ import CustomFlatList from '@/components/layout/CustomFlatList';
 import React from 'react';
 import Styles from '@/constants/Styles';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function AddLearningLanguage() {
 
@@ -27,7 +28,7 @@ export default function AddLearningLanguage() {
   // Effects
   useEffect(() => {
     if (isOnBoarding && user?.defaultLearningLanguage) {
-      navigation.navigate('Home');
+      navigation.navigate(Routes.Home);
     }
   }, [isOnBoarding, user?.defaultLearningLanguage]);
 
@@ -58,14 +59,8 @@ export default function AddLearningLanguage() {
                   )
                 // Navigation back home
                 console.log(isOnBoarding)
-                !isOnBoarding && navigation.navigate('Home')
-
-                // setTimeout(() => {
-                  
-                  // navigation.navigate('Home')
-                // }, 1000);
+                !isOnBoarding && navigation.navigate(Routes.Home)
               }}
-              // icon='chevron-right'
             />}
         >
 

@@ -6,6 +6,7 @@ import Styles from '@/constants/Styles';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useAppSelector } from '@/state/hooks';
 import { LayoutButton } from '@/types/LayoutButton';
+import { Routes } from '@/types/RootStackParamList';
 import { globalstyles } from '@/utils/GlobalStyle';
 import React, { useState } from 'react';
 import { 
@@ -156,9 +157,9 @@ const TutorialScreen = () => {
 
     const nextStep = () => {
         if (!isLastStep) {
-        setStep(step + 1);
+            setStep(step + 1);
         } else {
-            user?.defaultLearningLanguage ? navigation.navigate('Home') : navigation.navigate('On boarding learning language')
+            user?.defaultLearningLanguage ? navigation.navigate(Routes.Home) : navigation.navigate(Routes.OnBoardingLearningLanguage)
         }
     };
 

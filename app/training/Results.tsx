@@ -17,6 +17,7 @@ import Styles from '@/constants/Styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { getLabel, getLabelLong } from '@/types/DayNumber';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function Results() {
 
@@ -49,7 +50,7 @@ export default function Results() {
       label: 'OK',
       onPress: () => {
         dispatch(updateIsNewBatchAdded(false))
-        navigation.navigate('Home')
+        navigation.navigate(Routes.Home)
       }
     }
   ]

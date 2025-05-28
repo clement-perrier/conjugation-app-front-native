@@ -13,6 +13,7 @@ import { JwtResponse } from '@/types/JwtResponse';
 import { User } from '@/types/User';
 import EmailInput from '@/components/layout/EmailInput';
 import IsAuthenticated from '@/state/slices/isAuthtenticated';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function SignUp() {
 
@@ -123,7 +124,7 @@ export default function SignUp() {
             <Text>{'Already have an account ?'}</Text>
             <Text 
               style={styles.bottomText}
-              onPress={() => navigation.navigate('Log in')}
+              onPress={() => navigation.navigate(Routes.Login)}
             >
               {'Log in'}
             </Text>
