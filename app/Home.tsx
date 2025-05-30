@@ -19,6 +19,7 @@ import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import { isDueToday } from '@/utils/Date';
 import { Routes } from '@/types/RootStackParamList';
+import { registerForPushNotificationsAsync } from '@/services/NotificationService';
 
 export default function Home() {
 
@@ -56,10 +57,8 @@ export default function Home() {
 
   // Effects
   useEffect(() => {
-    console.log('mounted')
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
-      // const alreadyLoaded = batchListLearningLanguageId === languageId
       if (!batchListLoading){
         dispatch(FetchTenseList(languageId))
         dispatch(FetchVerbList(languageId))
@@ -69,10 +68,21 @@ export default function Home() {
         dispatch(updateIsOnBoarding(false))
       }
     }
-    return () => {
-      console.log('Home unmounted');
-    };
   }, [])
+
+  useEffect(() => {
+    const setupNotifications = async () => {
+      if (user) { // Ensure the user is logged in
+        const token = await registerForPushNotificationsAsync(user.id);
+        if (token) {
+          console.log('Push notification token:', token);
+          // Save the token to your backend or state
+        }
+      }
+    };
+
+    setupNotifications();
+  }, [user]); // Run this effect when the user changes
 
   // Buttons
   const buttons: LayoutButton[] = [
@@ -135,10 +145,11 @@ export default function Home() {
                 <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
                   {
                     item.tableList.map((table, index) => 
-                      
-                      <Text style={[globalstyles.text, globalstyles.uppercase, {margin: 1, fontSize: 11, fontStyle: 'italic', padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8}]} key={index}>
+                      <View style={{ margin: 1, padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8 }}>
+                        <Text style={[globalstyles.text, globalstyles.uppercase, { fontSize: 11, fontStyle: 'italic' }]} key={index}>
                           {table.verb.name} - {table.tense.name}
-                      </Text>
+                        </Text>
+                      </View>
                     )
                   }
                 </View>
@@ -157,8 +168,17 @@ export default function Home() {
 const styles = StyleSheet.create({
   header: {
     justifyContent: 'space-between',
-    // height: 'auto',
-    // backgroundColor: 'white',
-    // paddingBottom: Styles.mainPadding,
-  }
+  },
+  tableContainer: {
+    margin: 1,
+    padding: 5,
+    backgroundColor: Colors.tertiary,
+    borderRadius: 8,
+  },
+  tableText: {
+    ...globalstyles.text,
+    ...globalstyles.uppercase,
+    fontSize: 11,
+    fontStyle: 'italic',
+  },
 });

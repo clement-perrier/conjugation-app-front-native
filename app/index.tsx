@@ -6,7 +6,7 @@ import AppNavigator from "./AppNavigator";
 import Toast from 'react-native-toast-message';
 import { globalstyles } from "@/utils/GlobalStyle";
 import Styles from "@/constants/Styles";
-import { View } from "react-native";
+import { StatusBar, View } from "react-native";
 
 export default function Index() {
 
@@ -14,7 +14,7 @@ export default function Index() {
     <SafeAreaProvider>
       <Provider store={store}>
         <View style={[{flex: 1}, globalstyles.backgroundColor]}>
-          {/* <StatusBar barStyle="dark-content" translucent backgroundColor={'white'} /> */}
+          <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" translucent={true} />
           <AppNavigator/>
           <Toast/>
         </View>

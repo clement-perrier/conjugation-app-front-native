@@ -60,14 +60,7 @@ export default function AppNavigator() {
 
   // Handlers
   const handleNetworkChange: NetInfoChangeHandler = (state: NetInfoState) => {
-    // if(!state.isConnected){
-    //   setIsOffline(true)
-    //   if(isAuthenticated) {
-    //     CustomAlert('No internet connection', 'Please reconnect to the internet to ensure that your changes are saved', () => {})
-    //   } else {
-    //     CustomAlert('No internet connection', 'Please reconnect to the internet to properly use the app', () => {})
-    //   }
-    // }
+    // Check if the device is online or offline
     state.isConnected ? setIsOffline(false) : setIsOffline(true)
   };
 
@@ -147,7 +140,6 @@ export default function AppNavigator() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" translucent backgroundColor={'transparent'} />
       <View style={{ flex: 1, alignItems: 'center' }}>
         <View style={{ flex: 1, width: '100%', maxWidth: Styles.maxWidth }}>
           {
@@ -196,8 +188,6 @@ export default function AppNavigator() {
     </>
   );
 }
-
-
 
 export function CustomHeader(
   {

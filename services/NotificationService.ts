@@ -1,18 +1,55 @@
-import { CustomAlert } from '@/utils/CustomAlert';
-// import {firebase} from "@react-native-firebase/messaging";
-// import { initializeApp } from "firebase/app"
-// import messaging from '@react-native-firebase/messaging';
-import Constants from 'expo-constants';
-// import { Linking } from 'react-native';
 import * as Linking from 'expo-linking';
-// import { Platform } from 'react-native';
-import { User } from '@/types/User';
 import { UpdateUserDeviceToken } from './ApiService';
 import { Alert } from 'react-native';
 import { NOTIFICATION_PERMISSION_ASKED } from '@/constants/Configuration';
 import AppSecureStore from '@/state/SecureStore';
 import * as Notifications from 'expo-notifications';
-import { FIREBASE_CONFIG } from "@/constants/Configuration";
+
+export async function registerForPushNotificationsAsync(userId: number) {
+  console.log('Checking notification permissions...');
+  
+  // Check current notification permissions
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  console.log('Existing notification permission status:', existingStatus);
+  let finalStatus = existingStatus;
+
+  // Request permissions if not already granted
+  if (existingStatus !== 'granted') {
+    console.log('Requesting notification permissions...');
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+    console.log('New notification permission status:', finalStatus);
+  }
+
+  // If permissions are still not granted, return null
+  if (finalStatus !== 'granted') {
+    console.log('Notification permissions not granted');
+    alert('Please enable notifications in your device settings.');
+    return null;
+  }
+
+  // Get the Expo push token
+  console.log('Fetching Expo push token...');
+  const token = (await Notifications.getExpoPushTokenAsync()).data;
+  console.log('Push Notification Token:', token);
+
+  // Check if the token has changed
+  const storedToken = await AppSecureStore.GetItemAsync('device_token');
+  if (storedToken !== token) {
+    console.log('Token has changed or is not stored. Updating backend...');
+    try {
+      await UpdateUserDeviceToken(userId, token); // Save the token to the backend
+      await AppSecureStore.SaveItemAsync('device_token', token); // Save the new token locally
+      console.log('User device token updated successfully.');
+    } catch (error) {
+      console.error('Failed to update user device token:', error);
+    }
+  } else {
+    console.log('Token has not changed. No update needed.');
+  }
+
+  return token;
+}
 
 // async function requestUserPermission() {
 //   const authStatus = await messaging().requestPermission();
