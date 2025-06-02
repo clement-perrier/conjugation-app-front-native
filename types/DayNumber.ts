@@ -65,3 +65,26 @@ export const getLabelLong = (dayNumber: DayNumber): string => {
     return dayNumber < 7 ? 'Day ' + dayNumber : (dayNumber < 30 ? 'Week ' + Math.floor(dayNumber / 7) : 'Month ' + dayNumber / 30)
         
 };
+
+export const getDifferenceWithPreviousDayNumber = (currentDayNumber: DayNumber): string => {
+    const currentIndex = dayNumberList.indexOf(currentDayNumber);
+
+    if (currentIndex <= 0) {
+        return 'No previous day number available';
+    }
+
+    const previousDayNumber = dayNumberList[currentIndex - 1];
+    const difference = currentDayNumber - previousDayNumber;
+
+    if (difference <= 1) {
+        return 'tomorrow';
+    }
+
+    const units = difference < 7
+        ? { value: difference, label: 'day' }
+        : difference < 30
+        ? { value: Math.floor(difference / 7), label: 'week' }
+        : { value: Math.floor(difference / 30), label: 'month' };
+
+    return `in ${units.value} ${units.label}${units.value > 1 ? 's' : ''}`;
+};

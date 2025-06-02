@@ -20,6 +20,7 @@ import Styles from '@/constants/Styles';
 import { isDueToday } from '@/utils/Date';
 import { Routes } from '@/types/RootStackParamList';
 import { registerForPushNotificationsAsync } from '@/services/NotificationService';
+import { Platform } from 'react-native';
 
 export default function Home() {
 
@@ -72,7 +73,7 @@ export default function Home() {
 
   useEffect(() => {
     const setupNotifications = async () => {
-      if (user) { // Ensure the user is logged in
+      if (Platform.OS !== 'web' && user) { // Ensure the app is not running on web and the user is logged in
         const token = await registerForPushNotificationsAsync(user.id);
         if (token) {
           console.log('Push notification token:', token);
@@ -145,7 +146,7 @@ export default function Home() {
                 <View style={[{width: '100%', columnGap: 0, justifyContent: 'center', margin: 1}]}>
                   {
                     item.tableList.map((table, index) => 
-                      <View style={{ margin: 1, padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8 }}>
+                      <View key={index}  style={{ margin: 1, padding: 5, backgroundColor: Colors.tertiary, borderRadius: 8 }}>
                         <Text style={[globalstyles.text, globalstyles.uppercase, { fontSize: 11, fontStyle: 'italic' }]} key={index}>
                           {table.verb.name} - {table.tense.name}
                         </Text>

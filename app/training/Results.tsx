@@ -16,7 +16,7 @@ import { ScrollView } from 'react-native';
 import Styles from '@/constants/Styles';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
-import { getLabel, getLabelLong } from '@/types/DayNumber';
+import { getDifferenceWithPreviousDayNumber, getLabel, getLabelLong, getPreviousDayNumber } from '@/types/DayNumber';
 import { Routes } from '@/types/RootStackParamList';
 
 export default function Results() {
@@ -64,6 +64,7 @@ export default function Results() {
           <View style={[globalstyles.flexColumn, {flex: 1, paddingVertical: Styles.mainPadding}]}>
 
             {/* When batch is split between correct and wrong table(s) => displaying wrong table first */}
+            {/* { isNewBatchAdded && <Result batch={getLastBatchAdded()} isCorrect={false}/> } */}
             { isNewBatchAdded && <Result batch={getLastBatchAdded()} isCorrect={false}/> }
             
             {/* Displaying either all wrong/all correct table */}
@@ -79,6 +80,7 @@ export default function Results() {
 }
 
 function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
+
   
   return (
     
@@ -89,15 +91,19 @@ function Result({batch, isCorrect} : {batch: Batch, isCorrect: boolean}){
             {
               isCorrect ?
                 <>
-                    <MaterialIcons name={'check'} size={35}  color={Colors.success}/>
-                    <Text style={{color: Colors.success, flex: 1}}>Well done! You've progressed to <Text style={{fontWeight: 'bold'}}>{getLabelLong(batch.dayNumber)}</Text></Text>
+                  <MaterialIcons name={'check'} size={35}  color={Colors.success}/>
+                  <Text style={{color: Colors.success, flex: 1}}>
+                    Well done! You've completed <Text style={styles.dayText}>{getLabelLong(getPreviousDayNumber(batch.dayNumber))}</Text>!
+                    Next step is <Text style={styles.dayText}>{getLabelLong(batch.dayNumber)} </Text> 
+                    {getDifferenceWithPreviousDayNumber(batch.dayNumber)}.
+                  </Text>
                 </>
                 :
                 <>
-                    <MaterialIcons name={'loop'} size={35}  color={Colors.error}/>
-                    <Text style={{color: Colors.error, flex: 1}}>
-                        Some answers weren’t quite right. Repeat <Text style={{fontWeight: 'bold'}}>Day {batch.dayNumber}</Text> tomorrow. You’ll get it!
-                    </Text>
+                  <MaterialIcons name={'loop'} size={35}  color={Colors.error}/>
+                  <Text style={{color: Colors.error, flex: 1}}>
+                      Some answers weren’t quite right. Repeat <Text style={styles.dayText}>{getLabelLong(batch.dayNumber)}</Text> tomorrow. You’ll get it!
+                  </Text>
                 </>
             }
         </View>
@@ -128,5 +134,8 @@ const styles = StyleSheet.create({
   },
   incorrect: {
       backgroundColor: Colors.errorBg
+  },
+  dayText: {
+    fontWeight: 'bold',
   }
 })

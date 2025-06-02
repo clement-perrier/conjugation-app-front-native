@@ -5,6 +5,7 @@ import { updateSelectedTense } from '@/state/slices/SelectedTenseSlice';
 import MainLayout from '@/components/layout/MainLayout';
 import ListButton from '@/components/buttons/ListButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
+import { Routes } from '@/types/RootStackParamList';
 
 export default function TenseSelection() {
 
@@ -28,7 +29,7 @@ export default function TenseSelection() {
               label={item.name}
               onPress={() => {
                 dispatch(updateSelectedTense(item));
-                navigation.push('Verb(s) selection');
+                navigation.navigate(Routes.VerbSelection);
               }}
             />
         )}

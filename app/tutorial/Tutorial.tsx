@@ -48,103 +48,137 @@ const TutorialScreen = () => {
     // Data  
     const tutorialContent: ScreenProps[] = [
         {
-        title: 'INTRODUCTION',
-        contentList: [
+          title: 'INTRODUCTION',
+          contentList: [
             {
-                text: 'Welcome to the app that will help you master conjugations for good!',
+              text: 'Welcome to the app that will help you master conjugations for good!',
             },
             {
-                text: 'Several languages are available for your learning: French, Spanish, Italian and German.',
-                image: {
-                    source: require('../../assets/images/tutorial/flag_list.png'),
-                    height: 60
-                }
-            },
-            {
-                text: '\nThe app is based on spaced repetition memorization. \n\n As this name suggests, you will practice your conjugations multiple times, but spaced out in the most optimized way possible to retain information with minimal revisions.',
-                image: {
-                    source: require('../../assets/images/tutorial/retention_graph.png'),
-                    height: 240,
-                    imageLegend: 'Repetitions spacing is based on Ebbinghaus forgetting curve'
-                }
+              text: 'Several languages are available for your learning: French, Spanish, Italian and German.',
+              image: {
+                source: require('../../assets/images/tutorial/flag_list.png'),
+                height: 60
+              }
             }
-        ],
+          ]
         },
         {
-        title: 'HOW IT WORKS',
-        contentList: [
+          title: 'SPACED REPETITION',
+          contentList: [
             {
-                text: 'Once you correctly recall a conjugation table for the first time, you will need to practice it again at key intervals:'
+              text: 'The app is based on spaced repetition memorization.',
             },
             {
-                text: "• The next day (D1)\n" +
-                        "• The day after (D2)\n" +
-                        "• Four days later (D4)\n" +
-                        "• One week later (W1)\n" +
-                        "• Two weeks later (W2)\n" +
-                        "• One month later (M1)\n" +
-                        "• Two months later (M2)\n" +
-                        "• Four months later (M4)\n"
-,
-                image: {
-                    source: require('../../assets/images/tutorial/progress2.png'),
-                    height: 45
-                }
-            },
-            {
-                text: `After four months of spaced repetition, you can be confident that the conjugations you've learned are fully mastered.`,
+              text: 'As the name suggests, you will practice your conjugations multiple times, but spaced out in the most optimized way possible to retain information with minimal revisions.',
+              image: {
+                source: require('../../assets/images/tutorial/retention_graph.png'),
+                height: 240,
+                imageLegend: 'Repetitions spacing is based on Ebbinghaus forgetting curve'
+              }
             }
-        ]
+          ]
         },
         {
-        title: 'GETTING STARTED',
-        contentList: [
+          title: 'HOW IT WORKS',
+          contentList: [
             {
-                text: 'After choosing the language, start by creating a new set using the "+" button in the main page:',
-                image: {
-                    source: require('../../assets/images/tutorial/plus_button.png'),
-                    height: 45
-                }
+              text: 'Once you correctly recall a conjugation table for the first time, you will need to practice it again at key intervals.'
             },
             {
-                text: 'A set consists of several conjugation tables, allowing you to train multiple tables at the same time.',
-                image: {
-                    source: require('../../assets/images/tutorial/set_list.png'),
-                    height: 450,
-                    imageLegend: 'Conjugation tables are represented by a VERB-TENSE pair'
-                }
-            },
-            {
-                text: 'You can add up to 5 conjugation tables per set; beyond that, revision can become tedious and affect your motivation.',
+              text: "• The next day (D1)\n" +
+                    "• The day after (D2)\n" +
+                    "• Four days later (D4)\n" +
+                    "• One week later (W1)\n" +
+                    "• Two weeks later (W2)\n" +
+                    "• One month later (M1)\n" +
+                    "• Two months later (M2)\n" +
+                    "• Four months later (M4)\n",
+              image: {
+                source: require('../../assets/images/tutorial/progress2.png'),
+                height: 45
+              }
             }
-        ]
+          ]
         },
         {
-        title: 'RESULTS AFTER PRACTICING',
-        contentList: [
+          title: 'GETTING STARTED',
+          contentList: [
             {
-                text: 'There are three possibilities when you finish reviewing a set of tables:',
+              text: 'After choosing the language, start by creating a new set using the "+" button in the main page:',
+              image: {
+                source: require('../../assets/images/tutorial/plus_button.png'),
+                height: 45
+              }
             },
             {
-                text: '1. You recalled all the tables correctly, and the set moves to the next repetition level.',
-                image: {
-                    source: require('../../assets/images/tutorial/results.png'),
-                    height: 350
-                }
-            },
-            {
-                text: '2. You did not recall any tables correctly; in this case, the reviewing will be postponed to the next day until you recall them correctly.',
-                image2: {
-                    source: require('../../assets/images/tutorial/results_wrong.png'),
-                    height: 350
-                }
-            },
-            {
-                text: '3. You recalled some tables correctly and some incorrectly; two sets will be created: one for correct tables that move to the next level (as case 1.) and another for incorrect tables that need to be reviewed the next day (as case 2.).',
+              text: 'Then you can select the verbs and tenses you want to train for this set.'
             }
-        ]
+          ]
         },
-    ];
+        {
+          title: 'WHAT IS A SET?',
+          contentList: [
+            {
+              text: 'A set consists of several conjugation tables, allowing you to train multiple tables at the same time.',
+              image: {
+                source: require('../../assets/images/tutorial/set_list.png'),
+                height: 450,
+                imageLegend: 'Conjugation tables are represented by a VERB-TENSE pair'
+              }
+            }
+          ]
+        },
+        {
+          title: 'RESULTS AFTER PRACTICING',
+          contentList: [
+            {
+              text: 'There are three possibilities when you finish reviewing a set of tables:',
+            }
+          ]
+        },
+        {
+          title: 'CASE 1: ALL CORRECT',
+          contentList: [
+            {
+              text: '1. You recalled all the tables correctly, and the set moves to the next repetition level.',
+              image: {
+                source: require('../../assets/images/tutorial/results.png'),
+                height: 350
+              }
+            }
+          ]
+        },
+        {
+          title: 'CASE 2: NONE CORRECT',
+          contentList: [
+            {
+              text: '2. You did not recall any tables correctly; in this case, the reviewing will be postponed to the next day until you recall them correctly.',
+              image2: {
+                source: require('../../assets/images/tutorial/results_wrong.png'),
+                height: 350
+              }
+            }
+          ]
+        },
+        {
+          title: 'CASE 3: MIXED RESULTS',
+          contentList: [
+            {
+              text: '3. You recalled some tables correctly and some incorrectly. Two sets will be created:\n\n• One for correct tables that move to the next level (as in case 1).\n\n• Another for incorrect tables to review the next day (as in case 2).'
+            }
+          ]
+        },
+        {
+          title: 'READY TO MASTER CONJUGATIONS?',
+          contentList: [
+            {
+              text: `After four months of spaced repetition, you can be confident that the conjugations you've learned are fully mastered.`
+            }
+          ]
+        }
+      ];
+      
+      
 
     // Derived data
     const isFirstStep = step === 0

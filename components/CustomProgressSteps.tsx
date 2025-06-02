@@ -41,7 +41,7 @@ export default function CustomProgressSteps ({currentStep, isResult, isCorrect} 
               <ProgressStep 
                 label={previousDayLabel}
                 hasLine={true}
-                lineColor={Colors.success}
+                lineColor={Colors.primary}
                 itemBorderWidth={2}
                 itemBorderColor={Colors.success}
                 itemBackgroundColor={Colors.successBg}
