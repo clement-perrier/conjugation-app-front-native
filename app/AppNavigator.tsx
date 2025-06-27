@@ -170,7 +170,7 @@ export default function AppNavigator() {
                 </Stack.Navigator>
               ) : (
                 <Stack.Navigator initialRouteName={Routes.OnBoardingTutorial} screenOptions={{ contentStyle }}>
-                  {/* <Stack.Screen name={Routes.OnBoardingTutorial} component={TutorialScreen} options={getOptions()} /> */}
+                  <Stack.Screen name={Routes.OnBoardingTutorial} component={TutorialScreen} options={getOptions()} />
                   <Stack.Screen name={Routes.OnBoardingLearningLanguage} component={AddLearningLanguage} options={getOptions()} />
                 </Stack.Navigator>
               )

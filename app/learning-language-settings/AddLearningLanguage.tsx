@@ -27,13 +27,15 @@ export default function AddLearningLanguage() {
 
   // Effects
   useEffect(() => {
+    console.log('boading', isOnBoarding)
     if (isOnBoarding && user?.defaultLearningLanguage) {
       navigation.navigate(Routes.Home);
     }
   }, [isOnBoarding, user?.defaultLearningLanguage]);
 
   return (
-    <MainLayout title='Available languages' customStyle={isOnBoarding && {marginTop: Styles.mainPadding}}>
+    // <MainLayout title='Available languages' customStyle={isOnBoarding && {marginTop: Styles.mainPadding}}>
+    <MainLayout title='Available languages' customStyle={!user?.defaultLearningLanguage && styles.container}>
       <>
         <CustomFlatList
           data={learningLanguageList}
@@ -57,9 +59,9 @@ export default function AddLearningLanguage() {
                     UpdateUserLearningLanguageList(user.id, item.id),
                     UpdateUserDefaultLearningLanguage(user.id, item.id)
                   )
-                // Navigation back home
-                console.log(isOnBoarding)
-                !isOnBoarding && navigation.navigate(Routes.Home)
+                // Navigation back home => No need, dispatching user.defaultLearningLanguage update is enough for the navigation stack to update
+                // console.log(isOnBoarding)
+                user?.defaultLearningLanguage && navigation.navigate(Routes.Home)
               }}
             />}
         >
@@ -72,5 +74,9 @@ export default function AddLearningLanguage() {
 }
 
 const styles = StyleSheet.create({
-
+   container: {
+      flex: 1,
+      justifyContent: 'center',
+      padding: Styles.mainPadding,
+  },
 });

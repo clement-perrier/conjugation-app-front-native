@@ -61,7 +61,7 @@ export default function ListButton({label, onPress, icon, disabled, focus, color
                 ]}
             >
                 { focus && <View style={styles.circle}></View> }
-                <MaterialIcons name={icon} size={20} color={labelColor ? labelColor : Colors.textSecondary} style={styles.icon} />
+                { icon && <MaterialIcons name={icon} size={20} color={labelColor ? labelColor : Colors.textSecondary} style={styles.icon} />}
                 <Text style={[
                         labelColor ? globalstyles.textNoColor : globalstyles.text, 
                         globalstyles.uppercase, 

@@ -17,7 +17,7 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title,
     
     
     return (
-        <View style={[globalstyles.container, customStyle]}>
+        <View style={customStyle ? customStyle : globalstyles.container}>
 
             { title && <Text style={globalstyles.title}>{title}</Text>  }
 
@@ -33,7 +33,6 @@ export default function MainLayout({children, buttons, buttonsHorizontal, title,
 
                         { typeof button.topMessage === 'string' && <Text style={[globalstyles.text, {marginBottom: 20}]}>{button.topMessage}</Text> }
 
-                    
                             <BottomButton 
                                 label={button.label}
                                 onPress={button.onPress}
