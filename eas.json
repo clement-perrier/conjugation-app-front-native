@@ -15,6 +15,9 @@
       "ios": {
         "buildConfiguration": "Release",
         "autoIncrement": true
+      },
+      "android": {
+        "autoIncrement": true
       }
     },
     "release": {

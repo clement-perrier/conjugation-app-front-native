@@ -35,7 +35,6 @@
     },
     "android": {
       "googleServicesFile": "./android/app/google-services.json",
-      "versionCode": 5,
       "bundleIdentifier": "com.clement.conjugationapp",
       "permissions": [
         "android.permission.CAMERA_ROLL",
