@@ -18,11 +18,15 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { getDifferenceWithPreviousDayNumber, getLabel, getLabelLong, getPreviousDayNumber } from '@/types/DayNumber';
 import { Routes } from '@/types/RootStackParamList';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function Results() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch()
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // Selectors
   const isNewBatchAdded = useAppSelector(state => state.IsNewBatchAdded.value)

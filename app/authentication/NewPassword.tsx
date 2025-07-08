@@ -10,15 +10,21 @@ import Spinner from '@/components/layout/Spinner';
 import OtpTextInput from 'react-native-text-input-otp'
 import { consoleError, handleFail } from '@/utils/Messages';
 import { Routes } from '@/types/RootStackParamList';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function NewPassword() {
 
   const navigation = useAppNavigation()
+  // Disable the back button for this screen
+  useDisableBackHandler()
+  
   //  States
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [isLoading, setIsLoading] = useState(false)
+
+  
 
   // Derived data
   const codeFilled = code.length === 4

@@ -4,6 +4,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import TableView from "@/components/table/TableView";
 import Colors from "@/constants/Colors";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
+import useDisableBackHandler from "@/hooks/useDisableBackHandler";
 import { useAppSelector } from "@/state/hooks";
 import { LayoutButton } from "@/types/LayoutButton";
 import { Routes } from "@/types/RootStackParamList";
@@ -14,6 +15,9 @@ import { StyleSheet, View, Text } from "react-native";
 export default function BatchCreated() {
 
   const navigation = useAppNavigation();
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
   
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value)

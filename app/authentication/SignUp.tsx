@@ -14,11 +14,15 @@ import { User } from '@/types/User';
 import EmailInput from '@/components/layout/EmailInput';
 import IsAuthenticated from '@/state/slices/isAuthtenticated';
 import { Routes } from '@/types/RootStackParamList';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function SignUp() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // States
   const [isSigningUp, setIsSigningUp] = useState(false);

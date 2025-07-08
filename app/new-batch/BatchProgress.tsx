@@ -4,6 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import Spinner from '@/components/layout/Spinner';
 import { SET_NUMBER_LIMIT } from '@/constants/Configuration';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 import { SaveBatch } from '@/services/ApiService';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
 import { addBatch } from '@/state/slices/BatchListSlice';
@@ -24,7 +25,9 @@ export default function BatchProgress() {
 
   const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
-  const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+  
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // Selectors
   const selectedTableList = useAppSelector(state => state.selectedTableList.value)
@@ -77,18 +80,11 @@ export default function BatchProgress() {
   // States
   const [loading, setLoading] = useState(false)
 
-  // Effects
-  useEffect(() => {
-    
-    return () => backHandler.remove()
-  }, [])
-
   // Buttons
   const buttons: LayoutButton[] = [
     {
       label: 'ADD MORE',
       onPress: () => {
-        backHandler.remove()
         navigation.push(Routes.TenseSelection)
       },
       disabled: isSetLimitReached
@@ -97,7 +93,6 @@ export default function BatchProgress() {
       label: 'CREATE SET',
       disabled: selectedTableList.length < 1,
       onPress: () => {
-        backHandler.remove()
         handleCreateSet()
       }
     }

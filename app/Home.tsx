@@ -21,11 +21,15 @@ import { isDueToday } from '@/utils/Date';
 import { Routes } from '@/types/RootStackParamList';
 import { registerForPushNotificationsAsync } from '@/services/NotificationService';
 import { Platform } from 'react-native';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function Home() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // States
   const [refreshing, setRefreshing] = useState(false);
@@ -58,6 +62,7 @@ export default function Home() {
 
   // Effects
   useEffect(() => {
+
     if (user && user.defaultLearningLanguage) {
       const languageId = user.defaultLearningLanguage.id
       if (!batchListLoading){

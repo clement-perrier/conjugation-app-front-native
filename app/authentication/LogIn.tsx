@@ -12,11 +12,15 @@ import Styles from '@/constants/Styles';
 import EmailInput from '@/components/layout/EmailInput';
 import { handleSuccess } from '@/utils/Messages';
 import { Routes } from '@/types/RootStackParamList';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function LogIn() {
 
   const navigation = useAppNavigation();
   const dispatch = useAppDispatch();
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // States
   const [isLoading, setIsLoading] = useState(false);

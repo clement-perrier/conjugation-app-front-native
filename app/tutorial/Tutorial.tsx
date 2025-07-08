@@ -4,6 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import Colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 import { useAppSelector } from '@/state/hooks';
 import { LayoutButton } from '@/types/LayoutButton';
 import { Routes } from '@/types/RootStackParamList';
@@ -38,6 +39,8 @@ const TutorialScreen = () => {
 
     // Hooks
     const navigation = useAppNavigation()
+    // Disable the back button for this screen
+    useDisableBackHandler()
 
     // Selectors
     const user = useAppSelector(state => state.User.value)

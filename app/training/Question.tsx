@@ -20,11 +20,15 @@ import CustomTooltip from '@/components/CustomTooltip';
 import { updateIsNewBatchAdded } from '@/state/slices/isNewBatchAdded';
 import InfoButton from '@/components/buttons/InfoButton';
 import { Routes } from '@/types/RootStackParamList';
+import useDisableBackHandler from '@/hooks/useDisableBackHandler';
 
 export default function Question() {
 
   const navigation = useAppNavigation()
   const dispatch = useAppDispatch();
+
+  // Disable the back button for this screen
+  useDisableBackHandler()
 
   // Selectors
   const selectedBatch = useAppSelector(state => state.SelectedBatch.value);
