@@ -87,7 +87,8 @@ export const globalstyles = StyleSheet.create({
         borderColor: Colors.secondary,
         borderRadius: 8,
         width: '100%',
-        maxWidth: Styles.maxWidth
+        maxWidth: Styles.maxWidth,
+        color: Colors.textSecondary
     },
     invalidEmailText: {
       marginTop: -10,
