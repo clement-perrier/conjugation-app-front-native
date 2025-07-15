@@ -49,7 +49,7 @@ export const BatchListSlice = createSlice({
       .addCase(FetchBatchList.rejected, (state, action) => {
           state.loading = false;
           state.error = action.error.message;
-      });
+      })
   }
 })
 

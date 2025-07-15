@@ -22,12 +22,11 @@ export default function RemoveBatchButton() {
             // Use a different method for web, such as the browser's confirm dialog
             if (window.confirm("Are you sure you want to delete this set?")) {
                 // Proceed with the delete action
-                selectedBatch.id &&
-                    (
-                        RemoveBatch(selectedBatch.id),
-                        dispatch(removeBatch(selectedBatch.id))
-                    );
-                navigation.navigate(Routes.Home);
+                if (selectedBatch.id) {
+                    RemoveBatch(selectedBatch.id);
+                    dispatch(removeBatch(selectedBatch.id))
+                }
+                navigation.popToTop();
             }
         } else {
             // Use Alert.alert for Android and iOS
@@ -42,12 +41,11 @@ export default function RemoveBatchButton() {
                         text: "OK",
                         onPress: () => {
                             // Proceed with the delete action
-                            selectedBatch.id &&
-                                (
-                                    RemoveBatch(selectedBatch.id),
-                                    dispatch(removeBatch(selectedBatch.id))
-                                );
-                            navigation.navigate(Routes.Home);
+                            if (selectedBatch.id) {
+                                RemoveBatch(selectedBatch.id);
+                                dispatch(removeBatch(selectedBatch.id))
+                            }
+                            navigation.popToTop();
                         }
                     }
                 ]

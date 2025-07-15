@@ -11,7 +11,6 @@ const initialState: isNewBatchAddedState = {
 
 export const IsNewBatchAdded = createSlice({
   name: 'IsNewBatchAdded',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState: initialState,
   reducers: {
     update: (state, action: PayloadAction<boolean | null>) => {

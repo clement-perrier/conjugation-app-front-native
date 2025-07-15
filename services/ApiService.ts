@@ -279,6 +279,18 @@ export const RemoveBatch = async(batchId: number) => {
     }
 }
 
+// export const RemoveBatch = createAsyncThunk(
+//     'removeBatch',
+//     async (batchId: number) => {
+//         try {
+//             const response = await apiService.delete(`deleteBatch?batchId=${batchId}`);
+//             return response.data;
+//         } catch (error) {
+//             handleRequestError('Repetition deletion failed', error)
+//         }
+//     }
+// );
+
 export const AuthLogin = async(loginUser: LoginUser) => {
     try {
         const response = await apiService.post('auth/login', loginUser);

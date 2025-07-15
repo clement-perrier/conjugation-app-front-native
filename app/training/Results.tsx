@@ -54,7 +54,7 @@ export default function Results() {
       label: 'OK',
       onPress: () => {
         dispatch(updateIsNewBatchAdded(false))
-        navigation.navigate(Routes.Home)
+        navigation.popToTop()
       }
     }
   ]

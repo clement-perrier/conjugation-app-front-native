@@ -169,7 +169,7 @@ export default function AppNavigator() {
                 </Stack.Navigator>
               )
             ) : (
-              <Stack.Navigator initialRouteName={Routes.Login} screenOptions={{ contentStyle }}>
+              <Stack.Navigator initialRouteName={Routes.Signup} screenOptions={{ contentStyle }}>
                 <Stack.Screen name={Routes.Login} component={LogIn} options={getOptions()} />
                 <Stack.Screen name={Routes.Signup} component={SignUp} options={getOptions()} />
                 <Stack.Screen name={Routes.ResetPasswordRequest} component={PasswordResetRequest} options={getOptions(true, false)} />
@@ -235,7 +235,7 @@ function CancelStackButton({selectionToBeCleared} : {selectionToBeCleared?: bool
 
   const handlePress = () => {
       selectionToBeCleared && dispatch(clearSelectedTableList())
-      navigation.navigate(Routes.Home)
+      navigation.popToTop();
   }
 
   return (

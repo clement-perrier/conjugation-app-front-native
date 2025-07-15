@@ -196,7 +196,7 @@ const TutorialScreen = () => {
         if (!isLastStep) {
             setStep(step + 1);
         } else {
-            user?.defaultLearningLanguage ? navigation.navigate(Routes.Home) : navigation.navigate(Routes.OnBoardingLearningLanguage)
+            user?.defaultLearningLanguage ? navigation.popToTop() : navigation.navigate(Routes.OnBoardingLearningLanguage)
         }
     };
 

@@ -56,7 +56,7 @@ export default function LearningLanguageList() {
             onPress={() =>{
               dispatch(updateDefaultLearningLanguage(item))
               user && UpdateUserDefaultLearningLanguage(user.id, item.id)
-              navigation.navigate(Routes.Home)
+              navigation.popToTop()
             }}
             // icon='chevron-right'
           />

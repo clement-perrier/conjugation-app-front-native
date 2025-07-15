@@ -63,20 +63,19 @@ export default function Home() {
   // Effects
   useEffect(() => {
 
-    if (user && user.defaultLearningLanguage) {
-      const languageId = user.defaultLearningLanguage.id
-      if (!batchListLoading){
-        dispatch(FetchTenseList(languageId))
-        dispatch(FetchVerbList(languageId))
-        dispatch(FetchPronounList(languageId))
-        dispatch(FetchTableList(languageId))
-        dispatch(FetchBatchList({userId: user.id, languageId}))
-        dispatch(updateIsOnBoarding(false))
-      }
-    }
-  }, [])
+    // if (user && user.defaultLearningLanguage) {
+    //   const languageId = user.defaultLearningLanguage.id
+    //   if (!batchListLoading){
+    //     dispatch(FetchTenseList(languageId))
+    //     dispatch(FetchVerbList(languageId))
+    //     dispatch(FetchPronounList(languageId))
+    //     dispatch(FetchTableList(languageId))
+    //     dispatch(FetchBatchList({userId: user.id, languageId}))
+    //     dispatch(updateIsOnBoarding(false))
+    //   }
+    // }
+    console.log('couoco')
 
-  useEffect(() => {
     const setupNotifications = async () => {
       if (Platform.OS !== 'web' && user) { // Ensure the app is not running on web and the user is logged in
         const token = await registerForPushNotificationsAsync(user.id);
@@ -88,7 +87,21 @@ export default function Home() {
     };
 
     setupNotifications();
-  }, [user]); // Run this effect when the user changes
+  }, [])
+
+  useEffect(() => {
+    if (user && user.defaultLearningLanguage) {
+      const languageId = user.defaultLearningLanguage.id
+      if (!batchListLoading){
+        dispatch(FetchTenseList(languageId))
+        dispatch(FetchVerbList(languageId))
+        dispatch(FetchPronounList(languageId))
+        dispatch(FetchTableList(languageId))
+        dispatch(FetchBatchList({userId: user.id, languageId}))
+        dispatch(updateIsOnBoarding(false))
+      }
+    }
+  }, [user]); 
 
   // Buttons
   const buttons: LayoutButton[] = [
