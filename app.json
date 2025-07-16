@@ -21,9 +21,8 @@
       "bundleIdentifier": "com.clement.conjugationapp",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Your message here",
-        "NSPhotoLibraryUsageDescription": "Your message here",
-        "NSPhotoLibraryAddUsageDescription": "Your message here",
+        "UIBackgroundModes": ["remote-notification"],
+        "NSUserTrackingUsageDescription": "This app uses notifications to keep you updated.",
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
@@ -35,16 +34,7 @@
     },
     "android": {
       "bundleIdentifier": "com.clement.conjugationapp",
-      "permissions": [
-        "android.permission.CAMERA_ROLL",
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.RECORD_AUDIO"
-      ],
-      "blockedPermissions": [
-        "com.google.android.gms.permission.AD_ID",
-        "android.permission.READ_MEDIA_IMAGES",
-        "android.permission.READ_MEDIA_VIDEO"
-      ],
+      "permissions": ["NOTIFICATIONS"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png"
       },

@@ -12,6 +12,7 @@ import React from 'react';
 import Styles from '@/constants/Styles';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import { Routes } from '@/types/RootStackParamList';
+import Flag from '@/components/layout/Flag';
 
 export default function AddLearningLanguage() {
 
@@ -46,6 +47,7 @@ export default function AddLearningLanguage() {
             <ListButton 
               key={item.id}
               label={item.name}
+              icon={<Flag countryName={item.imageName}/>}
               disabled={(user && user.learningLanguageList) ? user.learningLanguageList.some(language => language.id === item.id) : false}
               onPress={() => {
                 // Updating Redux state - user learning language list and user default learning language

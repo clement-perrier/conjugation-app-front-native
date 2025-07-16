@@ -1,8 +1,8 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import MainLayout from '@/components/layout/MainLayout';
 import { useAppDispatch, useAppSelector } from '@/state/hooks';
-import { Linking, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import { Alert, Linking, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import BottomButton from '@/components/buttons/BottomButton';
 import Colors from '@/constants/Colors';
 import { globalstyles } from '@/utils/GlobalStyle';
@@ -16,12 +16,15 @@ import ListButton from '@/components/buttons/ListButton';
 import { LayoutButton } from '@/types/LayoutButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import { Routes } from '@/types/RootStackParamList';
+import * as Notifications from 'expo-notifications';
 
 export default function Settings() {
 
   const navigation = useAppNavigation()
 
   const dispatch = useAppDispatch();
+
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState<boolean | null>(null);
 
   // Selectors
   const user = useAppSelector(state => state.User.value)
@@ -30,6 +33,15 @@ export default function Settings() {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [isDeletingUser, setIsDeletingUser] = useState(false)
+
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      setIsNotificationEnabled(status === 'granted');
+    };
+    checkPermissions();
+  }, []);
 
   // Handles
   const handleLogout = async () => {
@@ -59,6 +71,19 @@ export default function Settings() {
         }
       );
     });
+  };
+
+  const handleNotifications = async () => {
+    console.log('dfdfd')
+    if (isNotificationEnabled) {
+      // You can't *revoke* permissions programmatically — user must do it in settings
+      Alert.alert("To turn off notifications, please update your system settings.");
+    } else {
+      console.log('test')
+      const { status } = await Notifications.requestPermissionsAsync();
+      setIsNotificationEnabled(status === 'granted');
+      console.log('test3')
+    }
   };
   
   const handleSignout = () => {
@@ -110,6 +135,12 @@ export default function Settings() {
       iconSize: 25,
       icon: 'rocket',
       onPress: () => navigation.navigate(Routes.Tutorial),
+    },
+    {
+      label: isNotificationEnabled ? 'turn off notifications' : 'turn on notifications',
+      iconSize: 25,
+      icon: isNotificationEnabled ? 'notifications' : 'notifications-off',
+      onPress: handleNotifications
     },
     {
       label: user?.isGuest ? 'sign out' : 'log out',

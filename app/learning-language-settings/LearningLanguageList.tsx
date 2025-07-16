@@ -11,6 +11,9 @@ import { LayoutButton } from '@/types/LayoutButton';
 import { UpdateUserDefaultLearningLanguage } from '@/services/ApiService';
 import CustomFlatList from '@/components/layout/CustomFlatList';
 import { Routes } from '@/types/RootStackParamList';
+import React from 'react';
+import FlagButton from '@/components/buttons/FlagButton';
+import Flag from '@/components/layout/Flag';
 
 export default function LearningLanguageList() {
 
@@ -49,17 +52,18 @@ export default function LearningLanguageList() {
         data={learningLanguageList}
         itemSeparatorHeight={30}
         renderItem={({item}) => 
-          <ListButton 
-            key={item.id}
-            label={item.name}
-            disabled={user?.defaultLearningLanguage.id === item.id}
-            onPress={() =>{
-              dispatch(updateDefaultLearningLanguage(item))
-              user && UpdateUserDefaultLearningLanguage(user.id, item.id)
-              navigation.popToTop()
-            }}
-            // icon='chevron-right'
-          />
+            <ListButton 
+              key={item.id}
+              label={item.name}
+              icon={<Flag countryName={item.imageName}/>}
+              disabled={user?.defaultLearningLanguage.id === item.id}
+              onPress={() =>{
+                dispatch(updateDefaultLearningLanguage(item))
+                user && UpdateUserDefaultLearningLanguage(user.id, item.id)
+                navigation.popToTop()
+              }}
+              // icon='chevron-right'
+            />
         }
       >
 

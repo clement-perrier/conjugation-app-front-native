@@ -12,7 +12,7 @@ import { globalstyles } from '@/utils/GlobalStyle';
 import { Batch } from '@/types/Batch';
 import IconButton from '@/components/buttons/IconButton';
 import CustomFlatList from '@/components/layout/CustomFlatList';
-import Flag from '@/components/Flag';
+import FlagButton from '@/components/buttons/FlagButton';
 import { updateIsOnBoarding } from '@/state/slices/isOnBoardingSlice';
 import Spinner from '@/components/layout/Spinner';
 import Colors from '@/constants/Colors';
@@ -74,7 +74,6 @@ export default function Home() {
     //     dispatch(updateIsOnBoarding(false))
     //   }
     // }
-    console.log('couoco')
 
     const setupNotifications = async () => {
       if (Platform.OS !== 'web' && user) { // Ensure the app is not running on web and the user is logged in
@@ -86,7 +85,7 @@ export default function Home() {
       }
     };
 
-    setupNotifications();
+    !user?.defaultLearningLanguage && setupNotifications();
   }, [])
 
   useEffect(() => {
@@ -122,7 +121,7 @@ export default function Home() {
 
         { 
           user &&
-            <Flag countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate(Routes.LearningLanguageList)}/>
+            <FlagButton countryName={user.defaultLearningLanguage.imageName} onPress={() => navigation.navigate(Routes.LearningLanguageList)}/>
         }
 
         <IconButton  
